@@ -3,14 +3,183 @@ Theme Name: Fitness Salzkammergut
 Theme URI: 
 Author: 
 Author URI: 
-Description: 
+Description: Block theme for Fitness Salzkammergut (VIVO & Exciting Fit). Gutenberg-native, plugin-light.
 Requires at least: 6.8
 Tested up to: 6.8
-Requires PHP: 5.7
-Version: 
+Requires PHP: 7.4
+Version: 1.0.0
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: fitness-salzkammergut
-Tags: 
+Tags: block-styles, full-site-editing, blog, grid-layout
 */
 
+/* ============== */
+/* Block Styles   */
+/* ============== */
+
+/* core/group "Card" style */
+.wp-block-group.is-style-card,
+.is-style-card {
+  background: var(--wp--preset--color--soft-white, #FDFDFC);
+  border: 1px solid var(--wp--preset--color--black-30, #EBEBEA);
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  transition: box-shadow 180ms ease, transform 100ms ease;
+}
+.wp-block-group.is-style-card:hover,
+.is-style-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.09);
+}
+.wp-block-group.is-style-card:active,
+.is-style-card:active {
+  transform: translateY(1px);
+}
+
+/* core/paragraph "Badge" variation */
+.wp-block-paragraph.is-style-badge,
+.is-style-badge {
+  display: inline-block;
+  font-size: 12px;
+  line-height: 1.2;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--wp--preset--color--black-30, #EBEBEA);
+  color: var(--wp--preset--color--almost-black, #1B1A18);
+  font-weight: 600;
+}
+
+/* Small helpers */
+.fsg-muted {
+  color: var(--wp--preset--color--black-60, #9F9B93);
+}
+.fsg-chip {
+  display: inline-block;
+  border: 1px solid var(--wp--preset--color--black-30, #EBEBEA);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+/* ===================== */
+/* Kursprogramm & Grid   */
+/* ===================== */
+
+/* Sticky filter bar that can be reused */
+.fsg-filter-bar {
+  position: sticky;
+  top: 0; /* Adjust if admin bar offset is required */
+  z-index: 15;
+  background: var(--wp--preset--color--soft-white, #FDFDFC);
+  border-bottom: 1px solid var(--wp--preset--color--black-30, #EBEBEA);
+}
+
+/* Timetable wrapper grid
+   - 7 columns on desktop (Mon–Sun)
+   - 1 column on mobile with day tabs (handled via patterns/markup later)
+*/
+.fsg-timetable {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 12px;
+}
+
+/* Vertical time scale optional column (if used) */
+.fsg-time-scale {
+  font-size: 12px;
+  color: var(--wp--preset--color--black-60, #9F9B93);
+}
+
+/* Each course tile/card */
+.fsg-timetable .fsg-course {
+  position: relative;
+  border-radius: 10px;
+  padding: 10px;
+  color: var(--wp--preset--color--almost-black, #1B1A18);
+  background: var(--wp--preset--color--black-20, #F8F8F7);
+  border: 1px solid var(--wp--preset--color--black-30, #EBEBEA);
+  box-shadow: 0 4px 12px rgba(0,0,0,.04);
+  overflow: hidden;
+}
+
+/* Subtle status styling: past/now/next */
+.fsg-course.is-past {
+  filter: saturate(0.6) opacity(0.7);
+}
+.fsg-course.is-now {
+  outline: 2px solid var(--wp--preset--color--lime-dark, #B0E336);
+  background: var(--wp--preset--color--lime-light, #DCF3A5);
+}
+.fsg-course.is-next {
+  filter: saturate(1.05);
+}
+
+/* Now marker line */
+.fsg-now-marker {
+  position: sticky;
+  top: 60px; /* approximate header height */
+  height: 2px;
+  background: var(--wp--preset--color--lime-dark, #B0E336);
+  z-index: 10;
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  .fsg-timetable {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===================== */
+/* Navigation tweaks     */
+/* ===================== */
+
+.wp-block-navigation a {
+  text-decoration: none;
+}
+
+.wp-block-navigation a:hover {
+  text-decoration: underline;
+}
+
+/* ===================== */
+/* Footer layout tweaks  */
+/* ===================== */
+
+.site-footer-links a {
+  color: inherit;
+}
+
+/* ===================== */
+/* Accessibility         */
+/* ===================== */
+
+.fsg-visually-hidden {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden; clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+/* ===================== */
+/* Utility colors for Ziele tiles
+   (using palette set in theme.json) */
+/* ===================== */
+.fsg-ziel--sport-performance { background: var(--wp--preset--color--sport-performance); color: #1B1A18; }
+.fsg-ziel--kraft-muskelaufbau { background: var(--wp--preset--color--kraft-muskelaufbau); color: #1B1A18; }
+.fsg-ziel--reha-praevention { background: var(--wp--preset--color--reha-praevention); color: #1B1A18; }
+.fsg-ziel--abnehmen-wohlfuehlen { background: var(--wp--preset--color--abnehmen-wohlfuehlen); color: #1B1A18; }
+.fsg-ziel--fitness-gesundheit { background: var(--wp--preset--color--fitness-gesundheit); color: #1B1A18; }
+
+/* ===================== */
+/* Course detail buttons */
+/* ===================== */
+.fsg-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.fsg-actions .wp-element-button {
+  font-weight: 600;
+}
