@@ -1,10 +1,43 @@
 {
 	"settings": {
 		"appearanceTools": true,
+		"border": {
+			"customRadius": true,
+			"radius": {
+				"none": "0",
+				"sm": "0.375rem",
+				"md": "0.625rem",
+				"lg": "1rem",
+				"xl": "1.5rem",
+				"pill": "999px"
+			}
+		},
 		"color": {
 			"defaultDuotone": false,
 			"defaultGradients": false,
 			"defaultPalette": false,
+			"duotone": [
+				{
+					"colors": [
+						"#1B1A18",
+						"#FDFDFC"
+					],
+					"name": "Studio Overlay",
+					"slug": "studio-overlay"
+				}
+			],
+			"gradients": [
+				{
+					"gradient": "linear-gradient(90deg, rgba(27,26,24,0.85) 0%, rgba(27,26,24,0.0) 65%)",
+					"name": "Overlay Seite → Mitte",
+					"slug": "overlay-side-center"
+				},
+				{
+					"gradient": "linear-gradient(180deg, rgba(27,26,24,0.8) 0%, rgba(27,26,24,0.0) 60%)",
+					"name": "Overlay Unten → Oben",
+					"slug": "overlay-bottom-top"
+				}
+			],
 			"palette": [
 				{
 					"color": "#1B1A18",
@@ -144,7 +177,43 @@
 					"slug": "tiempos-text"
 				}
 			],
-			"fontSizes": []
+			"fontSizes": [
+				{
+					"name": "XS",
+					"size": "0.75rem",
+					"slug": "xs"
+				},
+				{
+					"name": "SM",
+					"size": "0.875rem",
+					"slug": "sm"
+				},
+				{
+					"name": "Base",
+					"size": "1rem",
+					"slug": "base"
+				},
+				{
+					"name": "LG",
+					"size": "1.125rem",
+					"slug": "lg"
+				},
+				{
+					"name": "XL",
+					"size": "1.5rem",
+					"slug": "xl"
+				},
+				{
+					"name": "2XL",
+					"size": "2rem",
+					"slug": "2xl"
+				},
+				{
+					"name": "3XL",
+					"size": "2.5rem",
+					"slug": "3xl"
+				}
+			]
 		},
 		"useRootPaddingAwareAlignments": true
 	},
@@ -168,6 +237,16 @@
 			"link": {
 				"typography": {
 					"fontFamily": "var(--wp--preset--font-family--work-sans)"
+				},
+				"color": {
+					"text": "var(--wp--preset--color--lime)"
+				},
+				"pseudo": {
+					"hover": {
+						"color": {
+							"text": "var(--wp--preset--color--lime-dark)"
+						}
+					}
 				}
 			}
 		},
