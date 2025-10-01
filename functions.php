@@ -35,6 +35,7 @@ add_action('init', function () {
         'rewrite'         => ['slug' => 'studios'],
         'show_in_rest'    => true,
         'supports'        => $supports,
+        'menu_icon'       => 'dashicons-location-alt',
     ]);
 
     register_post_type('kurs', [
@@ -44,6 +45,7 @@ add_action('init', function () {
         'rewrite'         => ['slug' => 'kurse'],
         'show_in_rest'    => true,
         'supports'        => $supports,
+        'menu_icon'       => 'dashicons-calendar-alt',
     ]);
 
     register_post_type('tarif', [
@@ -54,6 +56,7 @@ add_action('init', function () {
         'exclude_from_search'=> true,
         'show_in_rest'       => true,
         'supports'           => $supports,
+        'menu_icon'          => 'dashicons-money',
     ]);
 
     register_post_type('team', [
@@ -62,6 +65,7 @@ add_action('init', function () {
         'has_archive'  => false,
         'show_in_rest' => true,
         'supports'     => ['title', 'editor', 'thumbnail'],
+        'menu_icon'    => 'dashicons-groups',
     ]);
 
     register_post_type('testimonial', [
@@ -70,6 +74,7 @@ add_action('init', function () {
         'has_archive'  => false,
         'show_in_rest' => true,
         'supports'     => ['title', 'editor', 'thumbnail', 'excerpt', 'revisions'],
+        'menu_icon'    => 'dashicons-format-quote',
     ]);
 });
 
