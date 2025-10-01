@@ -200,18 +200,23 @@
 				},
 				{
 					"name": "XL",
-					"size": "1.5rem",
+					"size": "1.25rem",
 					"slug": "xl"
 				},
 				{
 					"name": "2XL",
-					"size": "2rem",
+					"size": "1.5rem",
 					"slug": "2xl"
 				},
 				{
 					"name": "3XL",
-					"size": "2.5rem",
+					"size": "1.875rem",
 					"slug": "3xl"
+				},
+				{
+					"name": "4XL",
+					"size": "2.25rem",
+					"slug": "4xl"
 				}
 			]
 		},

@@ -18,16 +18,16 @@
 		<p class="tw-chip">Kategorie</p>
 		<!-- /wp:paragraph -->
 
-		<!-- wp:heading {"level":3,"className":"tw-text-xl tw-font-semibold tw-leading-snug"} -->
-		<h3 class="tw-text-xl tw-font-semibold tw-leading-snug">Headline für diesen Inhalt</h3>
+		<!-- wp:heading {"level":3,"className":"tw-font-semibold tw-leading-snug","fontSize":"xl"} -->
+		<h3 class="tw-font-semibold tw-leading-snug has-xl-font-size">Headline für diesen Inhalt</h3>
 		<!-- /wp:heading -->
 
-<!-- wp:paragraph {"className":"tw-text-base tw-leading-relaxed tw-text-grey"} -->
-<p class="tw-text-base tw-leading-relaxed tw-text-grey">Kurzer Teasertext mit maximal drei Zeilen, der Leser:innen Lust auf mehr macht.</p>
+<!-- wp:paragraph {"className":"tw-leading-relaxed","fontSize":"base","textColor":"grey"} -->
+<p class="tw-leading-relaxed has-grey-color has-text-color has-base-font-size">Kurzer Teasertext mit maximal drei Zeilen, der Leser:innen Lust auf mehr macht.</p>
 		<!-- /wp:paragraph -->
 
-		<!-- wp:paragraph {"className":"tw-flex tw-items-center tw-gap-2 tw-text-sm tw-font-medium tw-text-almost-black"} -->
-		<p class="tw-flex tw-items-center tw-gap-2 tw-text-sm tw-font-medium tw-text-almost-black">Veröffentlicht am · 12. Juni 2024<span aria-hidden="true">→</span></p>
+		<!-- wp:paragraph {"className":"tw-flex tw-items-center tw-gap-2 tw-font-medium","fontSize":"sm","textColor":"almost-black"} -->
+		<p class="tw-flex tw-items-center tw-gap-2 tw-font-medium has-almost-black-color has-text-color has-sm-font-size">Veröffentlicht am · 12. Juni 2024<span aria-hidden="true">→</span></p>
 		<!-- /wp:paragraph -->
 	</div>
 	<!-- /wp:group -->

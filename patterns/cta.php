@@ -6,18 +6,18 @@
  * Description: Call-to-action Banner mit Headline, Subtext und Button in Lime.
  */
 ?>
-<!-- wp:group {"className":"tw-rounded-2.5xl tw-bg-almost-black tw-text-soft-white tw-px-8 tw-py-10","layout":{"type":"constrained"}} -->
-<div class="wp-block-group tw-rounded-2.5xl tw-bg-almost-black tw-text-soft-white tw-px-8 tw-py-10">
+<!-- wp:group {"className":"tw-rounded-2.5xl tw-bg-almost-black tw-px-8 tw-py-10","layout":{"type":"constrained"},"textColor":"soft-white"} -->
+<div class="wp-block-group tw-rounded-2.5xl tw-bg-almost-black tw-px-8 tw-py-10 has-soft-white-color has-text-color">
 	<!-- wp:group {"className":"tw-flex tw-flex-col tw-gap-6 md:tw-flex-row md:tw-items-center md:tw-justify-between"} -->
 	<div class="wp-block-group tw-flex tw-flex-col tw-gap-6 md:tw-flex-row md:tw-items-center md:tw-justify-between">
 		<!-- wp:group {"className":"tw-flex tw-flex-col tw-gap-3"} -->
 		<div class="wp-block-group tw-flex tw-flex-col tw-gap-3">
-			<!-- wp:heading {"level":2,"className":"tw-text-3xl tw-font-semibold tw-leading-tight"} -->
-			<h2 class="tw-text-3xl tw-font-semibold tw-leading-tight">Bereit für dein Probetraining?</h2>
+			<!-- wp:heading {"level":2,"className":"tw-font-semibold tw-leading-tight","fontSize":"3xl"} -->
+			<h2 class="tw-font-semibold tw-leading-tight has-3xl-font-size">Bereit für dein Probetraining?</h2>
 			<!-- /wp:heading -->
 
-			<!-- wp:paragraph {"className":"tw-text-base tw-leading-relaxed tw-text-grey"} -->
-			<p class="tw-text-base tw-leading-relaxed tw-text-grey">Sichere dir jetzt deinen Termin – wir melden uns innerhalb von 24&nbsp;Stunden.</p>
+			<!-- wp:paragraph {"className":"tw-leading-relaxed","fontSize":"base","textColor":"grey"} -->
+			<p class="tw-leading-relaxed has-grey-color has-text-color has-base-font-size">Sichere dir jetzt deinen Termin – wir melden uns innerhalb von 24&nbsp;Stunden.</p>
 			<!-- /wp:paragraph -->
 		</div>
 		<!-- /wp:group -->
