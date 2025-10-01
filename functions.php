@@ -3,6 +3,64 @@
  * Theme bootstrap with CPTs, taxonomies, and Ziel filters.
  */
 
+if (! function_exists('fitness_skg_cpt_labels')) {
+    /** Provide consistent German labels for post types. */
+    function fitness_skg_cpt_labels(string $singular, string $plural): array
+    {
+        return [
+            'name'                     => $plural,
+            'singular_name'            => $singular,
+            'menu_name'                => $plural,
+            'name_admin_bar'           => $singular,
+            'add_new'                  => 'Neu hinzufügen',
+            'add_new_item'             => sprintf('%s anlegen', $singular),
+            'edit_item'                => sprintf('%s bearbeiten', $singular),
+            'new_item'                 => sprintf('%s anlegen', $singular),
+            'view_item'                => sprintf('%s ansehen', $singular),
+            'view_items'               => sprintf('%s ansehen', $plural),
+            'search_items'             => sprintf('%s suchen', $plural),
+            'not_found'                => sprintf('Keine %s gefunden', $plural),
+            'not_found_in_trash'       => sprintf('Keine %s im Papierkorb', $plural),
+            'all_items'                => sprintf('Alle %s', $plural),
+            'archives'                 => sprintf('%s-Archiv', $singular),
+            'attributes'               => sprintf('%s-Eigenschaften', $singular),
+            'insert_into_item'         => 'In Eintrag einfügen',
+            'uploaded_to_this_item'    => 'Zu diesem Eintrag hochgeladen',
+            'filter_items_list'        => sprintf('%s filtern', $plural),
+            'items_list'               => sprintf('%s-Liste', $plural),
+            'items_list_navigation'    => sprintf('%s-Navigation', $plural),
+            'item_published'           => sprintf('%s veröffentlicht', $singular),
+            'item_updated'             => sprintf('%s aktualisiert', $singular),
+            'parent_item_colon'        => sprintf('%s übergeordnet:', $singular),
+        ];
+    }
+}
+
+if (! function_exists('fitness_skg_tax_labels')) {
+    /** Provide consistent German labels for taxonomies. */
+    function fitness_skg_tax_labels(string $singular, string $plural): array
+    {
+        return [
+            'name'              => $plural,
+            'singular_name'     => $singular,
+            'menu_name'         => $plural,
+            'all_items'         => sprintf('Alle %s', $plural),
+            'edit_item'         => sprintf('%s bearbeiten', $singular),
+            'view_item'         => sprintf('%s ansehen', $singular),
+            'update_item'       => sprintf('%s aktualisieren', $singular),
+            'add_new_item'      => sprintf('%s hinzufügen', $singular),
+            'new_item_name'     => sprintf('Neuer Name für %s', $singular),
+            'separate_items_with_commas' => sprintf('%s mit Kommas trennen', $plural),
+            'add_or_remove_items'        => sprintf('%s hinzufügen oder entfernen', $plural),
+            'choose_from_most_used'      => 'Aus den häufigsten wählen',
+            'search_items'        => sprintf('%s durchsuchen', $plural),
+            'not_found'           => sprintf('Keine %s gefunden', $plural),
+            'parent_item'         => sprintf('%s übergeordnet', $singular),
+            'parent_item_colon'   => sprintf('%s übergeordnet:', $singular),
+        ];
+    }
+}
+
 add_action('after_setup_theme', function () {
     add_theme_support('editor-styles');
 
@@ -28,8 +86,10 @@ add_action('wp_enqueue_scripts', function () {
 add_action('init', function () {
     $supports = ['title', 'editor', 'thumbnail', 'excerpt', 'revisions'];
 
+    $studio_labels = fitness_skg_cpt_labels('Studio', 'Studios');
     register_post_type('studio', [
-        'label'           => 'Studios',
+        'labels'          => $studio_labels,
+        'label'           => $studio_labels['name'],
         'public'          => true,
         'has_archive'     => true,
         'rewrite'         => ['slug' => 'studios'],
@@ -38,8 +98,10 @@ add_action('init', function () {
         'menu_icon'       => 'dashicons-location-alt',
     ]);
 
+    $course_labels = fitness_skg_cpt_labels('Kurs', 'Kurse');
     register_post_type('kurs', [
-        'label'           => 'Kurse',
+        'labels'          => $course_labels,
+        'label'           => $course_labels['name'],
         'public'          => true,
         'has_archive'     => true,
         'rewrite'         => ['slug' => 'kurse'],
@@ -48,8 +110,10 @@ add_action('init', function () {
         'menu_icon'       => 'dashicons-calendar-alt',
     ]);
 
+    $tarif_labels = fitness_skg_cpt_labels('Tarif', 'Tarife');
     register_post_type('tarif', [
-        'label'              => 'Tarife',
+        'labels'             => $tarif_labels,
+        'label'              => $tarif_labels['name'],
         'public'             => true,
         'has_archive'        => false,
         'publicly_queryable' => false,
@@ -59,8 +123,10 @@ add_action('init', function () {
         'menu_icon'          => 'dashicons-money',
     ]);
 
+    $team_labels = fitness_skg_cpt_labels('Teammitglied', 'Teammitglieder');
     register_post_type('team', [
-        'label'        => 'Team',
+        'labels'       => $team_labels,
+        'label'        => $team_labels['name'],
         'public'       => true,
         'has_archive'  => false,
         'show_in_rest' => true,
@@ -68,8 +134,10 @@ add_action('init', function () {
         'menu_icon'    => 'dashicons-groups',
     ]);
 
+    $testimonial_labels = fitness_skg_cpt_labels('Erfahrungsbericht', 'Erfahrungsberichte');
     register_post_type('testimonial', [
-        'label'        => 'Testimonials',
+        'labels'       => $testimonial_labels,
+        'label'        => $testimonial_labels['name'],
         'public'       => true,
         'has_archive'  => false,
         'show_in_rest' => true,
@@ -86,8 +154,10 @@ add_action('init', function () {
         'assign_terms' => 'edit_posts',
     ];
 
+    $studio_brand_labels = fitness_skg_tax_labels('Studiozuordnung', 'Studiozuordnungen');
     register_taxonomy('studio_brand', ['studio', 'kurs', 'tarif', 'post', 'page', 'testimonial', 'team'], [
-        'label'        => 'Studio',
+        'labels'       => $studio_brand_labels,
+        'label'        => $studio_brand_labels['name'],
         'public'       => true,
         'show_in_rest' => true,
         'hierarchical' => false,
@@ -95,8 +165,10 @@ add_action('init', function () {
         'capabilities' => $capabilities,
     ]);
 
+    $ziel_topic_labels = fitness_skg_tax_labels('Ziel', 'Ziele');
     register_taxonomy('ziel_topic', ['post', 'page', 'kurs', 'tarif', 'testimonial'], [
-        'label'        => 'Ziel',
+        'labels'       => $ziel_topic_labels,
+        'label'        => $ziel_topic_labels['name'],
         'public'       => true,
         'show_in_rest' => true,
         'hierarchical' => true,
@@ -104,8 +176,10 @@ add_action('init', function () {
         'capabilities' => $capabilities,
     ]);
 
+    $standort_labels = fitness_skg_tax_labels('Standort', 'Standorte');
     register_taxonomy('standort', ['studio', 'kurs'], [
-        'label'        => 'Standort',
+        'labels'       => $standort_labels,
+        'label'        => $standort_labels['name'],
         'public'       => true,
         'show_in_rest' => true,
         'hierarchical' => true,
@@ -113,8 +187,10 @@ add_action('init', function () {
         'capabilities' => $capabilities,
     ]);
 
+    $raum_labels = fitness_skg_tax_labels('Raum', 'Raeume');
     register_taxonomy('raum', ['kurs', 'studio'], [
-        'label'        => 'Raum',
+        'labels'       => $raum_labels,
+        'label'        => $raum_labels['name'],
         'public'       => true,
         'show_in_rest' => true,
         'hierarchical' => true,
@@ -122,8 +198,10 @@ add_action('init', function () {
         'capabilities' => $capabilities,
     ]);
 
+    $ausstattung_labels = fitness_skg_tax_labels('Ausstattung', 'Ausstattungen');
     register_taxonomy('ausstattung', ['studio'], [
-        'label'        => 'Ausstattung',
+        'labels'       => $ausstattung_labels,
+        'label'        => $ausstattung_labels['name'],
         'public'       => true,
         'show_in_rest' => true,
         'hierarchical' => true,
@@ -131,8 +209,10 @@ add_action('init', function () {
         'capabilities' => $capabilities,
     ]);
 
+    $kurs_kategorie_labels = fitness_skg_tax_labels('Kurskategorie', 'Kurskategorien');
     register_taxonomy('kurs_kategorie', ['kurs'], [
-        'label'        => 'Kurs-Kategorie',
+        'labels'       => $kurs_kategorie_labels,
+        'label'        => $kurs_kategorie_labels['name'],
         'public'       => true,
         'show_in_rest' => true,
         'hierarchical' => true,
@@ -140,8 +220,10 @@ add_action('init', function () {
         'capabilities' => $capabilities,
     ]);
 
+    $level_labels = fitness_skg_tax_labels('Level', 'Level');
     register_taxonomy('level', ['kurs'], [
-        'label'        => 'Level',
+        'labels'       => $level_labels,
+        'label'        => $level_labels['name'],
         'public'       => true,
         'show_in_rest' => true,
         'hierarchical' => false,
@@ -149,8 +231,10 @@ add_action('init', function () {
         'capabilities' => $capabilities,
     ]);
 
+    $wochentag_labels = fitness_skg_tax_labels('Wochentag', 'Wochentage');
     register_taxonomy('wochentag', ['kurs'], [
-        'label'        => 'Wochentag',
+        'labels'       => $wochentag_labels,
+        'label'        => $wochentag_labels['name'],
         'public'       => true,
         'show_in_rest' => true,
         'hierarchical' => true,
@@ -158,8 +242,10 @@ add_action('init', function () {
         'capabilities' => $capabilities,
     ]);
 
+    $tageszeit_labels = fitness_skg_tax_labels('Tageszeit', 'Tageszeiten');
     register_taxonomy('tageszeit', ['kurs'], [
-        'label'        => 'Tageszeit',
+        'labels'       => $tageszeit_labels,
+        'label'        => $tageszeit_labels['name'],
         'public'       => true,
         'show_in_rest' => true,
         'hierarchical' => true,
