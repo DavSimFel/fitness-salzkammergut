@@ -8,6 +8,13 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
+== Development ==
+
+* Install dependencies: `npm install`
+* During pattern or template work run the watcher: `npm run dev:css`
+* For production builds (before committing) run: `npm run build:css`
+
+
 == Changelog ==
 
 = 1.0.0 =
@@ -28,4 +35,3 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
-
