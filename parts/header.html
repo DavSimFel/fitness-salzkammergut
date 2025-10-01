@@ -1,30 +1,43 @@
-<!-- wp:group {"layout":{"inherit":"true"}} -->
+<!-- wp:group {"layout":{"inherit":true}} -->
 <div class="wp-block-group">
-	<!-- wp:group {"align":"full","layout":{"type":"flex","justifyContent":"space-between"},"style":{"spacing":{"padding":{"bottom":"30px","top":"30px"}}}} -->
-	<div class="wp-block-group alignfull" style="padding-bottom:30px;padding-top:30px">
-	
-		<!-- wp:group {"layout":{"type":"flex"}} -->
+	<!-- wp:group {"align":"full","style":{"border":{"bottom":{"color":"var:preset|color|black-40","width":"1px"}},"spacing":{"padding":{"top":"24px","bottom":"24px","left":"24px","right":"24px"}}},"backgroundColor":"soft-white","layout":{"type":"flex","justifyContent":"space-between","flexWrap":"wrap","verticalAlignment":"center"}} -->
+	<div class="wp-block-group alignfull has-soft-white-background-color has-background" style="border-bottom-color:var(--wp--preset--color--black-40);border-bottom-width:1px;padding-top:24px;padding-right:24px;padding-bottom:24px;padding-left:24px">
+		<!-- wp:group {"style":{"spacing":{"blockGap":"16px"}},"layout":{"type":"flex","justifyContent":"flex-start","verticalAlignment":"center"}} -->
 		<div class="wp-block-group">
-			<!-- wp:site-logo {"width":64} /-->
-	
-			<!-- wp:group -->
+			<!-- wp:site-logo {"width":80} /-->
+
+			<!-- wp:group {"style":{"spacing":{"blockGap":"4px"}},"layout":{"type":"flex","orientation":"vertical"}} -->
 			<div class="wp-block-group">
-				<!-- wp:site-title /-->
-				<!-- wp:site-tagline /-->
+				<!-- wp:site-title {"level":0,"isLink":true,"style":{"typography":{"fontWeight":"600","fontSize":"22px"}}} /-->
+				<!-- wp:site-tagline {"textColor":"black-70","style":{"typography":{"fontSize":"14px","letterSpacing":"0.02em"}}} /-->
 			</div>
 			<!-- /wp:group -->
 		</div>
 		<!-- /wp:group -->
-	
-		<!-- wp:navigation {"layout":{"type":"flex","setCascadingProperties":true,"justifyContent":"right","orientation":"horizontal"},"style":{"spacing":{"margin":{"top":"0"}}}} /-->
-	
+
+		<!-- wp:group {"style":{"spacing":{"blockGap":"24px"}},"layout":{"type":"flex","justifyContent":"flex-end","flexWrap":"wrap","verticalAlignment":"center"}} -->
+		<div class="wp-block-group">
+			<!-- wp:navigation {"overlayMenu":"mobile","style":{"spacing":{"blockGap":"20px"}},"layout":{"type":"flex","justifyContent":"right","flexWrap":"wrap","orientation":"horizontal"},"ariaLabel":"Hauptnavigation"} -->
+				<!-- wp:navigation-link {"label":"Home","url":"/","kind":"custom"} /-->
+				<!-- wp:navigation-link {"label":"Standorte","url":"/studios/","kind":"custom"} /-->
+				<!-- wp:navigation-link {"label":"Training","url":"/training/","kind":"custom"} /-->
+				<!-- wp:navigation-link {"label":"Ziele","url":"/ziele/","kind":"custom"} /-->
+				<!-- wp:navigation-link {"label":"Kurse","url":"/kurse/","kind":"custom"} /-->
+				<!-- wp:navigation-link {"label":"Tarife","url":"/tarife/","kind":"custom"} /-->
+				<!-- wp:navigation-link {"label":"Über uns","url":"/ueber-uns/","kind":"custom"} /-->
+				<!-- wp:navigation-link {"label":"Kontakt","url":"/kontakt/","kind":"custom"} /-->
+			<!-- /wp:navigation -->
+
+			<!-- wp:buttons {"layout":{"type":"flex"},"style":{"spacing":{"blockGap":"0"}}} -->
+			<div class="wp-block-buttons">
+				<!-- wp:button {"backgroundColor":"lime","textColor":"almost-black","style":{"typography":{"fontWeight":"600"},"spacing":{"padding":{"top":"12px","bottom":"12px","left":"20px","right":"20px"}},"border":{"radius":"999px"}}} -->
+				<div class="wp-block-button"><a class="wp-block-button__link has-almost-black-color has-lime-background-color has-text-color has-background" href="/probetraining/" style="border-radius:999px;padding-top:12px;padding-right:20px;padding-bottom:12px;padding-left:20px;font-weight:600">Probetraining</a></div>
+				<!-- /wp:button -->
+			</div>
+			<!-- /wp:buttons -->
+		</div>
+		<!-- /wp:group -->
 	</div>
 	<!-- /wp:group -->
-
 </div>
 <!-- /wp:group -->
-
-<!-- wp:spacer {"height":50} -->
-<div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
-<!-- /wp:spacer -->
- 

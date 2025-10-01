@@ -512,9 +512,9 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 ### Milestone 0 — Boot & Editor-Ready (No code tools)
 
 - [x] Activate blank theme with provided `theme.json`
-- [ ] Site Editor → create **Header** template part (menu, logos, Home link)
+- [x] Site Editor → create **Header** template part (menu, logos, Home link)
 - [x] Site Editor → create **Footer** template part (Impressum, Datenschutz, AGB, Cookies)
-- [ ] Create Pages: Home, Training, 5× Ziel pages, Tarife, Über uns, Kontakt, Firmenfitness, Impressum, Datenschutz, AGB, Cookies
+- [x] Create Pages: Home, Training, 5× Ziel pages, Tarife, Über uns, Kontakt, Firmenfitness, Impressum, Datenschutz, AGB, Cookies
 - [ ] Build Patterns: **Button**, **Card**, **Review Row**, **CTA** (core blocks only)
 
 **DoD:** Editors can compose pages with header/footer + patterns; colors/fonts correct via `theme.json`.
