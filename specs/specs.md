@@ -345,17 +345,18 @@ Examples:
 
 ## TailwindCSS setup (theme + editor)
 
-> You don’t have local PHP — that’s fine. Tailwind also doesn’t require PHP locally. If you **can’t** run Node yet, start **without Tailwind** (theme.json + core blocks). Add Tailwind later.
+> Tailwind is part of the baseline build now. The compiled stylesheet ships in `build/tw.css`; always run the Tailwind build when you touch patterns or templates so classes stay in sync. If Node isn’t available temporarily, you may use the existing CSS but plan to recompile ASAP.
 
-**Phase A (no Tailwind yet)**
+**Phase A (Tailwind default)**
 
-- Rely on `theme.json` tokens for colors/typography.
-- Use core blocks + block styles; keep layout simple.
+- Keep `build/tw.css` committed and enqueued via `functions.php`.
+- Use `prefix:'tw-'` and `preflight:false` to avoid collisions.
+- Map utilities back to `theme.json` tokens (colors, spacing, fonts) for consistency.
 
-**Phase B (add Tailwind when possible)**
+**Phase B (fallback without build tooling)**
 
-- Add `build/tw.css` and the enqueue code already present in `functions.php`.
-- Use `prefix:'tw-'` and `preflight:false`.
+- Rely on current `build/tw.css` snapshot plus `theme.json` tokens.
+- Limit new pattern work if classes aren’t yet compiled; queue rebuild as a follow-up task.
 - Optional (temporary): Tailwind Play CDN for quick experiments only; remove before launch.
 
 _(The full CLI config remains in this guide for later use.)_
@@ -501,7 +502,7 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 6. Tarife (Mosaik + Tabelle; no singles)
 7. Probetraining (optional) / timetable modals
 
-> Keep everything block-based; introduce Tailwind only when you’re ready.
+> Keep everything block-based; Tailwind classes are available now—use them for layout and styling going forward.
 
 ---
 
@@ -515,7 +516,7 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 - [x] Site Editor → create **Header** template part (menu, logos, Home link)
 - [x] Site Editor → create **Footer** template part (Impressum, Datenschutz, AGB, Cookies)
 - [x] Create Pages: Home, Training, 5× Ziel pages, Tarife, Über uns, Kontakt, Firmenfitness, Impressum, Datenschutz, AGB, Cookies
-- [ ] Build Patterns: **Button**, **Card**, **Review Row**, **CTA** (core blocks only)
+- [x] Build Tailwind patterns: **Button**, **Card**, **Review Row**, **CTA** (core blocks only, Tailwind classes)
 
 **DoD:** Editors can compose pages with header/footer + patterns; colors/fonts correct via `theme.json`.
 
@@ -525,7 +526,7 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 - [ ] Verify taxonomies appear on **Posts & Pages**; editors can **assign** (not create) terms
 - [ ] Create **`archive-studio.html`**, **`single-studio.html`**, **`archive-kurs.html`**, **`single-kurs.html`**, **`page-ziel.html`** block templates
 
-**DoD:** Studios/Kurse structures exist; Ziel pages filter posts; no Tailwind yet.
+**DoD:** Studios/Kurse structures exist; Ziel pages filter posts; Tailwind utilities ready for use across templates.
 
 ### Milestone 2 — Home (top → bottom)
 
@@ -576,9 +577,9 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 
 - [ ] Map legacy `/standorte/` → `/studios/`; set **domain → studio** 301s (excitingfit.at → studio/exciting-fit, vivo.fit → studio/vivo)
 
-### Milestone 10 — Tailwind (optional)
+### Milestone 10 — Tailwind hygiene
 
-- [ ] Add compiled `build/tw.css` and enable utilities in editor/front
+- [ ] Keep `build/tw.css` compiled; verify utilities render in editor/front
 
 ---
 
@@ -588,7 +589,7 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 
 ### Blocks & Patterns
 
-- **“Make a block pattern: {name}. Sections: {list}. Blocks: core-only. Use theme.json colors/classes; no Tailwind yet.”**
+- **“Make a block pattern: {name}. Sections: {list}. Blocks: core-only. Use theme.json tokens + Tailwind `tw-` classes.”**
 - **“Create a dynamic block ‘Opening Hours’ (placeholder now); later wire Magicline API.”**
 - **“Build a Ziel page pattern (intro split + featured posts + filtered Query Loop) wired to `ziel_topic={slug}`.”**
 
@@ -607,9 +608,9 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 - **“Generate .htaccess rules to redirect `{domainA}` → `{target}` preserving path/query.”**
 - **“Create a CSV for the Redirection plugin from this mapping list: {old → new}.”**
 
-### Tailwind (later)
+### Tailwind (now)
 
-- **“Tailwind config + enqueue once Node is available; map to theme.json tokens.”**
+- **“Tailwind config + enqueue; map to theme.json tokens and keep classes editor-safe.”**
 
 ---
 
@@ -641,10 +642,10 @@ Requires PHP: 8.1
 3. Templates → add **Home**, **Page**, **Single**, **Index** as needed.
 4. Create Pages: Home, Training, 5× Ziel, Tarife, Über uns, Kontakt, Firmenfitness, Impressum, Datenschutz, AGB, Cookies.
 
-## A3) Patterns to create (core-only, no code)
+## A3) Patterns to create (core-only, Tailwind styling)
 
-- **Buttons** (primary/secondary) using theme.json colors.
-- **Card** (image top, text body, negative-radius style achieved via spacing/border presets).
+- **Buttons** (primary/secondary) using theme.json colors + Tailwind utility classes.
+- **Card** (image top, text body, negative-radius style achieved via spacing/border presets + Tailwind).
 - **Review Row** (3–5 testimonials; use Testimonial CPT later).
 - **CTA** (copy + button).
 - **Ziele Mosaic** (2/3 + 1/3 layout then 3-up grid).
