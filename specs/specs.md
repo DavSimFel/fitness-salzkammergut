@@ -559,10 +559,12 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 ### Milestone 1 — Minimal PHP drop‑in (via Theme Editor)
 
 - [x] Paste **single `functions.php`** from guide (CPTs, taxonomies, editor styles, PPC query vars)
-- [ ] Verify taxonomies appear on **Posts & Pages**; editors can **assign** (not create) terms
+- [x] Verify taxonomies appear on **Posts & Pages**; editors can **assign** (not create) terms
 - [x] Create **`archive-studio.html`**, **`single-studio.html`**, **`archive-kurs.html`**, **`single-kurs.html`**, **`page-ziel.html`** block templates
 - [ ] Register PHP-rendered blocks: `rating-badge`, `opening-hours`, `timetable-embed` (block.json + render callback stubs)
 - [ ] Implement default context for Place IDs / Studio mapping and document transient caching + manual fallbacks
+  - [ ] `rating-badge` block exposes Google My Business rating + count for Home & Studio usage
+  - [ ] Document GMB credential storage (env/option) and fallback copy when API offline
   - [x] Assign Tailwind presets within patterns/templates to match `theme.json`
   - [x] Add admin menu icons + localized labels for CPTs/taxonomies
   - [ ] Run final taxonomy verification in editor (mark complete once confirmed)
@@ -574,6 +576,8 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 - [ ] Hero (Cover with overlay presets), Review Row (Testimonials CPT), Ziele mosaic links
 - [ ] Kurs teaser (cards) and Tarife teaser (Basic + Young)
 - [ ] News grid (equal heights, focal points)
+  - [ ] Sticky local navigation (anchors: Standorte, Tarife, Kursprogramm, Ziele) with responsive behavior
+  - [ ] Rating highlight uses `rating-badge` block (fallback copy until API wired)
   - [ ] Dein Training intro + CTA copy block
   - [ ] Partnerlogos strip (light background)
   - [ ] Ensure hero uses new overlay gradients + typography presets
