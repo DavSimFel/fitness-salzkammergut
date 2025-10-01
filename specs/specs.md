@@ -292,6 +292,38 @@ function site_get_ziel_filters(){
 
 > **Option B** (cleaner): split into `inc/` files later. For now, one file keeps it simple.
 
+### Dynamic blocks (PHP-rendered, server-side)
+
+PHP-rendered (dynamic) blocks so you can paste code via the Theme Editor and avoid Node/Webpack. No editor React UI; attributes come from block context or simple attributes defined in `block.json`.
+
+#### Rating Badge (Google Places)
+
+- **What:** `★4.8 (N)` badge with “Google” attribution and optional `aggregateRating` schema output.
+- **Where:** Studio archive tiles and Studio hero sections.
+- **Why a block:** Centralizes the Places API call, attribution markup, fallback state, and schema output for safer maintenance.
+- **MVP UX:** On single Studio pages the block auto-reads the Place ID from the current Studio post meta; on other templates (home, archive) editors can set a simple `placeId` attribute.
+- **Caching:** Cache rating + review count in a transient for 10–15 minutes; never persist full review text.
+
+#### Opening Hours (Magicline Open API)
+
+- **What:** Today’s opening status plus weekly hours sourced from Magicline; falls back to manually entered hours if the API is down.
+- **Where:** Studio single pages, footer contact pattern, and `/kontakt/`.
+- **Why a block:** External data with “today” logic is safest in server-rendered PHP.
+- **MVP UX:** Auto-detect the Studio on single templates; allow an optional `studio` attribute elsewhere.
+- **Caching:** Short transient (≈10 minutes) per Studio response; gracefully degrade to manual hours when API errors occur.
+
+#### Timetable Embed (Phase 1)
+
+- **What:** Clean wrapper that inserts the Magicline widget/script with correct data attributes, consistent heading/ARIA, and optional Studio prefilter.
+- **Where:** `/kurse/` archive and Studio single templates (prefiltered).
+- **Why a block:** Editors drop in one block instead of copy/pasting embed snippets; we can swap internals in Phase 2 without editor changes.
+- **MVP UX:** Provide simple attributes for `studio` prefilter and optional heading; ensure aria-labels mirror the visible title.
+
+#### Later (if needed)
+
+- Booking Button / “Next available trial” (Connect API lead flow preview).
+- Ausstattungs-Navigator (background swap on hover/tabs) — stays a pattern with light JS until it grows.
+
 ---
 
 ## Google Reviews — display strategy (policy-safe)
@@ -525,8 +557,10 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 - [x] Paste **single `functions.php`** from guide (CPTs, taxonomies, editor styles, PPC query vars)
 - [ ] Verify taxonomies appear on **Posts & Pages**; editors can **assign** (not create) terms
 - [ ] Create **`archive-studio.html`**, **`single-studio.html`**, **`archive-kurs.html`**, **`single-kurs.html`**, **`page-ziel.html`** block templates
+- [ ] Register PHP-rendered blocks: `rating-badge`, `opening-hours`, `timetable-embed` (block.json + render callback stubs)
+- [ ] Implement default context for Place IDs / Studio mapping and document transient caching + manual fallbacks
 
-**DoD:** Studios/Kurse structures exist; Ziel pages filter posts; Tailwind utilities ready for use across templates.
+**DoD:** CPT templates exist, Tailwind utilities load everywhere, and the three dynamic blocks render placeholder markup with caching guards in place.
 
 ### Milestone 2 — Home (top → bottom)
 
@@ -538,17 +572,20 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 
 ### Milestone 3 — Studios
 
-- [ ] Archive grid with quick rating badge placeholder
-- [ ] Single: Ausstattung navigator, Team overlay cards, prefiltered timetable embed
+- [ ] Integrate `rating-badge` block in Studio archive cards with graceful fallback state
+- [ ] Use `rating-badge` + `opening-hours` blocks in Studio hero/contact sections; confirm manual fallback copy
+- [ ] Prefiltered timetable embed via `timetable-embed` block consuming Studio context
+- [ ] Wire Ausstattungs-Navigator pattern (JS enhancements can land later)
 
-**DoD:** Editors can publish studios.
+**DoD:** Publishing a Studio outputs live rating + hours + timetable blocks without editor-side configuration.
 
 ### Milestone 4 — Kursprogramm (MVP)
 
-- [ ] Phase 1: embed/widget for timetable
-- [ ] Phase 2: Connect API for sessions → modal details; sticky filters; „Jetzt“-marker
+- [ ] Deploy `timetable-embed` block (Phase 1 wrapper) on `/kurse/` with accessible heading/ARIA defaults
+- [ ] Prepare Phase 2 backend proxy for Magicline sessions + surface data via block attributes in modals
+- [ ] Sticky filters + „Jetzt“-marker JS align with block output and remain progressive-enhancement friendly
 
-**DoD:** Schedule browsable; editors don’t manage times.
+**DoD:** Schedule browsable via the dynamic block; editors avoid manual embeds and API keys stay server-side.
 
 ### Milestone 5 — Ziel pages (5×)
 
