@@ -549,6 +549,10 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 - [x] Site Editor → create **Footer** template part (Impressum, Datenschutz, AGB, Cookies)
 - [x] Create Pages: Home, Training, 5× Ziel pages, Tarife, Über uns, Kontakt, Firmenfitness, Impressum, Datenschutz, AGB, Cookies
 - [x] Build Tailwind patterns: **Button**, **Card**, **Review Row**, **CTA** (core blocks only, Tailwind classes)
+  - [x] `style.css` header stub present; theme activates cleanly
+  - [x] Confirm baseline `theme.json` in place and linked to Site Editor
+  - [x] Extend `theme.json` tokens (link colors, overlays, radius, typography scale)
+  - [x] Document npm workflow (`npm run dev:css` / `npm run build:css`) for Tailwind
 
 **DoD:** Editors can compose pages with header/footer + patterns; colors/fonts correct via `theme.json`.
 
@@ -559,6 +563,9 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 - [x] Create **`archive-studio.html`**, **`single-studio.html`**, **`archive-kurs.html`**, **`single-kurs.html`**, **`page-ziel.html`** block templates
 - [ ] Register PHP-rendered blocks: `rating-badge`, `opening-hours`, `timetable-embed` (block.json + render callback stubs)
 - [ ] Implement default context for Place IDs / Studio mapping and document transient caching + manual fallbacks
+  - [x] Assign Tailwind presets within patterns/templates to match `theme.json`
+  - [x] Add admin menu icons + localized labels for CPTs/taxonomies
+  - [ ] Run final taxonomy verification in editor (mark complete once confirmed)
 
 **DoD:** CPT templates exist, Tailwind utilities load everywhere, and the three dynamic blocks render placeholder markup with caching guards in place.
 
@@ -567,6 +574,9 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 - [ ] Hero (Cover with overlay presets), Review Row (Testimonials CPT), Ziele mosaic links
 - [ ] Kurs teaser (cards) and Tarife teaser (Basic + Young)
 - [ ] News grid (equal heights, focal points)
+  - [ ] Dein Training intro + CTA copy block
+  - [ ] Partnerlogos strip (light background)
+  - [ ] Ensure hero uses new overlay gradients + typography presets
 
 **DoD:** Home is fully editable.
 
@@ -576,6 +586,8 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 - [ ] Use `rating-badge` + `opening-hours` blocks in Studio hero/contact sections; confirm manual fallback copy
 - [ ] Prefiltered timetable embed via `timetable-embed` block consuming Studio context
 - [ ] Wire Ausstattungs-Navigator pattern (JS enhancements can land later)
+  - [ ] Studio archive Query Loop (cards) polished with taxonomy chips + CTA
+  - [ ] Studio single: hero media, Ausstattung list, team pattern, contact card complete
 
 **DoD:** Publishing a Studio outputs live rating + hours + timetable blocks without editor-side configuration.
 
@@ -584,6 +596,8 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 - [ ] Deploy `timetable-embed` block (Phase 1 wrapper) on `/kurse/` with accessible heading/ARIA defaults
 - [ ] Prepare Phase 2 backend proxy for Magicline sessions + surface data via block attributes in modals
 - [ ] Sticky filters + „Jetzt“-marker JS align with block output and remain progressive-enhancement friendly
+  - [ ] Course cards show taxonomy badges (Wochentag, Tageszeit, Kategorie, Level, Studio)
+  - [ ] CTA band for Probetraining appears under timetable
 
 **DoD:** Schedule browsable via the dynamic block; editors avoid manual embeds and API keys stay server-side.
 
@@ -591,32 +605,45 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 
 - [ ] Wire featured (2–6) + filtered loop (9/Seite) on each page
 - [ ] Implement PPC query filters (ziel/studio/level/testimonials/pinned)
+  - [ ] Ziel template uses hero overlay, quick-facts list, testimonials + CTA
+  - [ ] Query Loop pulls matching `ziel_topic` posts; fallback copy ready when empty
 
 **DoD:** Editors publish posts and they appear correctly; PPC links pre-filter.
 
 ### Milestone 6 — Tarife
 
 - [ ] `/tarife/` mosaic + cards table powered by `tarif` CPT (no singles)
+  - [ ] Card pattern covers Basic, Flex, Young variants; table for Kartenprodukte
+  - [ ] Confirm editors can manage pricing data without developer support
 
 **DoD:** Pricing editable without dev.
 
 ### Milestone 7 — Probetraining (optional)
 
 - [ ] Option A: landing with Magicline widget; Option B: timetable modal booking
+  - [ ] Validate lead capture flow (validate/create endpoints) via proxy
+  - [ ] Add CTA integration points on Studio & Kurs templates
 
 **DoD:** Booking path is clear and working.
 
 ### Milestone 8 — Perf, A11y, Schema
 
 - [ ] Lazy images/WebP, ARIA on carousels/modals, `LocalBusiness` + `Article` schema
+  - [ ] Carousel JS: focusable buttons, pause-on-hover, no layout shift
+  - [ ] Modal JS: focus trap, ESC close fallback, aria-hidden toggles
+  - [ ] Core Web Vitals checklist (LCP hero priorities, font-display)
 
 ### Milestone 9 — Redirects & Domains
 
 - [ ] Map legacy `/standorte/` → `/studios/`; set **domain → studio** 301s (excitingfit.at → studio/exciting-fit, vivo.fit → studio/vivo)
+  - [ ] Prepare Redirection CSV (source,target,match_type,group)
+  - [ ] Configure wildcard `/standorte/(.*)` → `/studios/$1`
 
 ### Milestone 10 — Tailwind hygiene
 
 - [ ] Keep `build/tw.css` compiled; verify utilities render in editor/front
+  - [ ] Document class naming conventions + purge paths
+  - [ ] Schedule periodic token review when new design requirements land
 
 ---
 
