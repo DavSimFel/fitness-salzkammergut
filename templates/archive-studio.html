@@ -1,0 +1,54 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","className":"tw-space-y-16 tw-pb-20"} -->
+<main class="wp-block-group tw-space-y-16 tw-pb-20">
+	<!-- wp:group {"className":"tw-bg-almost-black tw-text-soft-white"} -->
+	<div class="wp-block-group tw-bg-almost-black tw-text-soft-white">
+		<!-- wp:group {"className":"tw-container-gutter tw-flex tw-flex-col tw-items-center tw-gap-4 tw-py-16 tw-text-center"} -->
+		<div class="wp-block-group tw-container-gutter tw-flex tw-flex-col tw-items-center tw-gap-4 tw-py-16 tw-text-center">
+			<!-- wp:archive-title {"textAlign":"center","level":1,"className":"tw-text-4xl tw-font-semibold"} /-->
+			<!-- wp:archive-description {"textAlign":"center","className":"tw-max-w-3xl tw-text-base tw-leading-relaxed"} /-->
+		</div>
+		<!-- /wp:group -->
+	</div>
+	<!-- /wp:group -->
+
+	<!-- wp:group {"className":"tw-container-gutter tw-space-y-12"} -->
+	<div class="wp-block-group tw-container-gutter tw-space-y-12">
+		<!-- wp:query {"query":{"perPage":6,"pages":0,"offset":0,"postType":"studio","order":"asc","orderBy":"title","inherit":true},"displayLayout":{"type":"grid","columns":3}} -->
+		<div class="wp-block-query">
+			<!-- wp:post-template -->
+			<!-- wp:group {"className":"tw-card tw-h-full tw-flex tw-flex-col tw-gap-5"} -->
+			<div class="wp-block-group tw-card tw-h-full tw-flex tw-flex-col tw-gap-5">
+				<!-- wp:post-featured-image {"isLink":true,"className":"tw-card__media"} /-->
+				<!-- wp:group {"className":"tw-card__body tw-flex tw-flex-col tw-gap-3"} -->
+				<div class="wp-block-group tw-card__body tw-flex tw-flex-col tw-gap-3">
+					<!-- wp:post-title {"textAlign":"left","level":3,"isLink":true,"className":"tw-text-xl tw-font-semibold tw-leading-snug"} /-->
+					<!-- wp:post-excerpt {"moreText":"","className":"tw-text-base tw-leading-relaxed tw-text-grey"} /-->
+					<!-- wp:post-terms {"term":"standort","className":"tw-text-sm tw-font-medium tw-text-almost-black"} /-->
+					<!-- wp:read-more {"content":"Zum Studio","className":"tw-inline-flex tw-items-center tw-gap-2 tw-font-semibold tw-text-almost-black"} /-->
+				</div>
+				<!-- /wp:group -->
+			</div>
+			<!-- /wp:group -->
+			<!-- /wp:post-template -->
+
+			<!-- wp:group {"layout":{"type":"flex","justifyContent":"space-between","flexWrap":"wrap"},"className":"tw-items-center tw-gap-4"} -->
+			<div class="wp-block-group tw-items-center tw-gap-4">
+				<!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"space-between","flexWrap":"wrap"},"className":"tw-flex tw-flex-wrap tw-gap-4 tw-items-center"} -->
+				<!-- wp:query-pagination-previous {"label":"Vorherige","className":"tw-btn tw-btn--secondary"} /-->
+				<!-- wp:query-pagination-numbers {"className":"tw-flex tw-gap-2"} /-->
+				<!-- wp:query-pagination-next {"label":"Nächste","className":"tw-btn tw-btn--secondary"} /-->
+				<!-- /wp:query-pagination -->
+			</div>
+			<!-- /wp:group -->
+		</div>
+		<!-- /wp:query -->
+	</div>
+	<!-- /wp:group -->
+
+	<!-- wp:pattern {"slug":"fitness-salzkammergut/cta"} /-->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

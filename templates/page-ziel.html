@@ -1,0 +1,93 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","className":"tw-space-y-20 tw-pb-20"} -->
+<main class="wp-block-group tw-space-y-20 tw-pb-20">
+	<!-- wp:cover {"useFeaturedImage":true,"dimRatio":30,"overlayColor":"almost-black","minHeight":420,"isDark":true,"className":"tw-flex tw-items-end"} -->
+	<div class="wp-block-cover is-dark tw-flex tw-items-end" style="min-height:420px"><span aria-hidden="true" class="wp-block-cover__background has-almost-black-background-color has-background-dim-30 has-background-dim"></span><div class="wp-block-cover__inner-container">
+		<!-- wp:group {"className":"tw-container-gutter tw-flex tw-flex-col tw-gap-6 tw-py-16 tw-text-soft-white"} -->
+		<div class="wp-block-group tw-container-gutter tw-flex tw-flex-col tw-gap-6 tw-py-16 tw-text-soft-white">
+			<!-- wp:post-title {"level":1,"className":"tw-text-4xl tw-font-semibold"} /-->
+			<!-- wp:post-excerpt {"className":"tw-max-w-3xl tw-text-lg tw-leading-relaxed"} /-->
+			<!-- wp:buttons {"className":"tw-flex tw-flex-wrap tw-gap-4"} -->
+			<div class="wp-block-buttons tw-flex tw-flex-wrap tw-gap-4">
+				<!-- wp:button {"className":"tw-btn tw-btn--primary"} -->
+				<div class="wp-block-button tw-btn tw-btn--primary"><a class="wp-block-button__link" href="/probetraining/">Beratung anfragen</a></div>
+				<!-- /wp:button -->
+				<!-- wp:button {"className":"tw-btn tw-btn--secondary"} -->
+				<div class="wp-block-button tw-btn tw-btn--secondary"><a class="wp-block-button__link" href="#angebote">Angebote entdecken</a></div>
+				<!-- /wp:button -->
+			</div>
+			<!-- /wp:buttons -->
+		</div>
+		<!-- /wp:group -->
+	</div></div>
+	<!-- /wp:cover -->
+
+	<!-- wp:group {"className":"tw-container-gutter tw-space-y-16"} -->
+	<div class="wp-block-group tw-container-gutter tw-space-y-16">
+		<!-- wp:columns {"className":"tw-gap-12"} -->
+		<div class="wp-block-columns tw-gap-12">
+			<!-- wp:column {"width":"66.66%","className":"tw-space-y-8"} -->
+			<div class="wp-block-column tw-space-y-8" style="flex-basis:66.66%">
+				<!-- wp:post-content {"layout":{"inherit":false},"className":"tw-space-y-6"} /-->
+			</div>
+			<!-- /wp:column -->
+
+			<!-- wp:column {"width":"33.33%","className":"tw-space-y-8"} -->
+			<div class="wp-block-column tw-space-y-8" style="flex-basis:33.33%">
+				<!-- wp:heading {"level":3,"className":"tw-text-xl tw-font-semibold"} -->
+				<h3 class="tw-text-xl tw-font-semibold">Schnelle Fakten</h3>
+				<!-- /wp:heading -->
+				<!-- wp:list {"className":"tw-space-y-2 tw-text-sm tw-leading-relaxed"} -->
+				<ul class="tw-space-y-2 tw-text-sm tw-leading-relaxed"><li>Empfohlene Trainingsfrequenz.</li><li>Passender Einstiegskurs.</li><li>Wichtige Kontaktwege.</li></ul>
+				<!-- /wp:list -->
+			</div>
+			<!-- /wp:column -->
+		</div>
+		<!-- /wp:columns -->
+
+		<!-- wp:pattern {"slug":"fitness-salzkammergut/review-row"} /-->
+
+		<!-- wp:group {"className":"tw-space-y-6","anchor":"angebote"} -->
+		<div class="wp-block-group tw-space-y-6" id="angebote">
+			<!-- wp:heading {"level":2,"className":"tw-text-3xl tw-font-semibold"} -->
+			<h2 class="tw-text-3xl tw-font-semibold">Aktionen &amp; Beiträge zum Thema</h2>
+			<!-- /wp:heading -->
+			<!-- wp:paragraph {"className":"tw-text-base tw-leading-relaxed tw-text-grey"} -->
+			<p class="tw-text-base tw-leading-relaxed tw-text-grey">Dieser Bereich zeigt Beiträge, Kurse und weitere Inhalte, die dem passenden Ziel-Thema zugeordnet sind.</p>
+			<!-- /wp:paragraph -->
+
+			<!-- wp:query {"query":{"perPage":6,"postType":"post","order":"desc","orderBy":"date","taxQuery":[{"taxonomy":"ziel_topic","field":"slug","terms":["ziel-slug"],"includeChildren":true}]},"displayLayout":{"type":"grid","columns":3}} -->
+			<div class="wp-block-query">
+				<!-- wp:post-template -->
+				<!-- wp:group {"className":"tw-card tw-h-full tw-flex tw-flex-col tw-gap-4"} -->
+				<div class="wp-block-group tw-card tw-h-full tw-flex tw-flex-col tw-gap-4">
+					<!-- wp:post-featured-image {"isLink":true,"className":"tw-card__media"} /-->
+					<!-- wp:group {"className":"tw-card__body tw-flex tw-flex-col tw-gap-3"} -->
+					<div class="wp-block-group tw-card__body tw-flex tw-flex-col tw-gap-3">
+						<!-- wp:post-title {"level":3,"isLink":true,"className":"tw-text-xl tw-font-semibold tw-leading-snug"} /-->
+						<!-- wp:post-excerpt {"moreText":"","className":"tw-text-base tw-leading-relaxed tw-text-grey"} /-->
+					</div>
+					<!-- /wp:group -->
+					<!-- wp:read-more {"content":"Weiterlesen","className":"tw-inline-flex tw-items-center tw-gap-2 tw-font-semibold tw-text-almost-black"} /-->
+				</div>
+				<!-- /wp:group -->
+				<!-- /wp:post-template -->
+
+				<!-- wp:query-no-results -->
+				<!-- wp:paragraph {"className":"tw-text-base tw-leading-relaxed tw-text-grey"} -->
+				<p class="tw-text-base tw-leading-relaxed tw-text-grey">Noch keine passenden Beiträge veröffentlicht. Ergänze Inhalte oder passe den Filter an.</p>
+				<!-- /wp:paragraph -->
+				<!-- /wp:query-no-results -->
+			</div>
+			<!-- /wp:query -->
+		</div>
+		<!-- /wp:group -->
+	</div>
+	<!-- /wp:group -->
+
+	<!-- wp:pattern {"slug":"fitness-salzkammergut/cta"} /-->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

@@ -556,7 +556,7 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 
 - [x] Paste **single `functions.php`** from guide (CPTs, taxonomies, editor styles, PPC query vars)
 - [ ] Verify taxonomies appear on **Posts & Pages**; editors can **assign** (not create) terms
-- [ ] Create **`archive-studio.html`**, **`single-studio.html`**, **`archive-kurs.html`**, **`single-kurs.html`**, **`page-ziel.html`** block templates
+- [x] Create **`archive-studio.html`**, **`single-studio.html`**, **`archive-kurs.html`**, **`single-kurs.html`**, **`page-ziel.html`** block templates
 - [ ] Register PHP-rendered blocks: `rating-badge`, `opening-hours`, `timetable-embed` (block.json + render callback stubs)
 - [ ] Implement default context for Place IDs / Studio mapping and document transient caching + manual fallbacks
 
