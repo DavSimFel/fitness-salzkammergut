@@ -160,8 +160,9 @@ add_action('init', function () {
         'label'        => $studio_brand_labels['name'],
         'public'       => true,
         'show_in_rest' => true,
-        'hierarchical' => false,
+        'hierarchical' => true,
         'rewrite'      => ['slug' => 'studio'],
+        'meta_box_cb'  => 'post_categories_meta_box',
         'capabilities' => $capabilities,
     ]);
 
@@ -173,17 +174,6 @@ add_action('init', function () {
         'show_in_rest' => true,
         'hierarchical' => true,
         'rewrite'      => ['slug' => 'ziel-topic'],
-        'capabilities' => $capabilities,
-    ]);
-
-    $standort_labels = fitness_skg_tax_labels('Standort', 'Standorte');
-    register_taxonomy('standort', ['studio', 'kurs'], [
-        'labels'       => $standort_labels,
-        'label'        => $standort_labels['name'],
-        'public'       => true,
-        'show_in_rest' => true,
-        'hierarchical' => true,
-        'rewrite'      => ['slug' => 'standort'],
         'capabilities' => $capabilities,
     ]);
 
