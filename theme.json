@@ -117,6 +117,11 @@
 					"color": "#A2D0D9",
 					"name": "Fitness & Gesundheit",
 					"slug": "fitness-gesundheit"
+				},
+				{
+					"color": "#00000000",
+					"name": "Transparent",
+					"slug": "custom-transparent"
 				}
 			]
 		},
@@ -212,8 +217,28 @@
 		"useRootPaddingAwareAlignments": true
 	},
 	"styles": {
+		"blocks": {
+			"core/button": {
+				"border": {
+					"radius": "100px"
+				},
+				"shadow": "var(--wp--preset--shadow--natural)",
+				"spacing": {
+					"padding": {
+						"bottom": "var(--wp--preset--spacing--40)",
+						"left": "var(--wp--preset--spacing--50)",
+						"right": "var(--wp--preset--spacing--50)",
+						"top": "var(--wp--preset--spacing--40)"
+					}
+				}
+			}
+		},
 		"elements": {
 			"button": {
+				"color": {
+					"background": "var(--wp--preset--color--soft-white)",
+					"text": "var(--wp--preset--color--black-80)"
+				},
 				"typography": {
 					"fontFamily": "var(--wp--preset--font-family--work-sans)"
 				}
@@ -243,10 +268,11 @@
 			}
 		},
 		"spacing": {
+			"blockGap": "24px",
 			"padding": {
-				"bottom": "var(--wp--preset--spacing--xl)",
-				"left": "var(--wp--preset--spacing--md)",
-				"right": "var(--wp--preset--spacing--md)",
+				"bottom": "0px",
+				"left": "0px",
+				"right": "0px",
 				"top": "0"
 			}
 		},
