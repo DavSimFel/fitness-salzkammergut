@@ -61,17 +61,8 @@ if (! function_exists('fitness_skg_tax_labels')) {
     }
 }
 
-add_action('after_setup_theme', function () {
-    add_theme_support('editor-styles');
-
-    $tailwind = get_stylesheet_directory() . '/build/tw.css';
-    if (file_exists($tailwind)) {
-        add_editor_style('build/tw.css');
-    }
-});
-
-add_action('wp_enqueue_scripts', function () {
-    $tailwind_path = get_stylesheet_directory() . '/build/tw.css';
+function tailwind($hook) {
+     $tailwind_path = get_stylesheet_directory() . '/build/tw.css';
     if (! file_exists($tailwind_path)) {
         return;
     }
@@ -81,7 +72,9 @@ add_action('wp_enqueue_scripts', function () {
     $tailwind = get_stylesheet_directory_uri() . '/build/tw.css';
 
     wp_enqueue_style('fitness-skg-tailwind', $tailwind, [], $version);
-});
+}
+add_action( 'admin_enqueue_scripts', 'tailwind' );
+add_action('wp_enqueue_scripts', 'tailwind');
 
 add_action('init', function () {
     $supports = ['title', 'editor', 'thumbnail', 'excerpt', 'revisions'];
