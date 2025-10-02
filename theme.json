@@ -237,10 +237,10 @@
     },
     "spacing": {
       "padding": {
-        "bottom": "24px",
-        "left": "24px",
-        "right": "24px",
-        "top": "24px"
+        "top": "0",
+        "right": "var(--wp--preset--spacing--md)",
+        "bottom": "var(--wp--preset--spacing--xl)",
+        "left": "var(--wp--preset--spacing--md)"
       }
     },
     "typography": {
