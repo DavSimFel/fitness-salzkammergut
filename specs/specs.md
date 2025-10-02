@@ -19,35 +19,34 @@
 
 > Start from a **blank theme** (only `theme.json`). No overview pages you didn’t ask for.
 
-**Site map (MVP — updated, `/ziele/` landing, no `/tarif/{slug}`)**
+**Site map (MVP — updated, no `/ziele/`, no `/tarif/{slug}`)**
 
-| Section             | URL                                                                                                                                            | Type       | Source                | Template/Block                      | Notes                                                                      |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | --------------------- | ----------------------------------- | -------------------------------------------------------------------------- |
-| Home                | `/`                                                                                                                                            | Page       | Page                  | `home.html` (block template)        | Full-bleed hero, review-row, Ziele mosaic, Kurs & Tarif teasers, News      |
-| Studios (archive)   | `/studios/`                                                                                                                                    | Archive    | `studio` CPT          | `archive-studio.html`               | Menu label **„Standorte“** points here; no `/standorte/` page              |
-| Studio detail       | `/studio/{slug}/`                                                                                                                              | Single     | `studio` CPT          | `single-studio.html`                | Hero + Ausstattung navigator + Team + prefiltered timetable                |
-| Training (Services) | `/training/`                                                                                                                                   | Page       | Page                  | `page.html` + patterns              | Copy-first                                                                 |
-| Ziele landing       | `/ziele/`                                                                                                                                      | Page       | Page                  | `page-ziele.html`                   | Hero + intro + links to 5 Ziel subpages + featured stories                 |
-| Ziel pages (5×)     | `/ziel-abnehmen-wohlfuehlen/`, `/ziel-fitness-gesundheit/`, `/ziel-sport-performance/`, `/ziel-kraft-muskelaufbau/`, `/ziel-reha-praevention/` | Pages      | **Pages**             | `page-ziel.html`                    | Each subpage filters by its `ziel_topic` term and surfaces related content |
-| Kursprogramm        | `/kurse/`                                                                                                                                      | Archive    | `kurs` CPT            | `archive-kurs.html`                 | Timetable (week columns), sticky filters; modal details                    |
-| Kurs detail         | `/kurs/{slug}/`                                                                                                                                | Single     | `kurs` CPT            | `single-kurs.html`                  | Only for selected formats (Yoga, Rückenfit, Kampfsport)                    |
-| Tarife              | `/tarife/`                                                                                                                                     | Page       | Page (+ `tarif` data) | `page.html` + mosaic/table patterns | **No tariff singles**; CPT is data-only                                    |
-| News (blog)         | `/news/`                                                                                                                                       | Posts page | `post`                | Posts index                         | Standard cards, focal point                                                |
-| Post detail         | `/news/{slug}/`                                                                                                                                | Single     | `post`                | `single.html`                       | Article schema                                                             |
-| Über uns            | `/ueber-uns/`                                                                                                                                  | Page       | Page                  | `page.html`                         | Team + mission                                                             |
-| Kontakt             | `/kontakt/`                                                                                                                                    | Page       | Page                  | `page.html`                         | Form + maps                                                                |
-| Firmenfitness       | `/firmenfitness/`                                                                                                                              | Page       | Page                  | `page.html`                         | As planned                                                                 |
-| Impressum           | `/impressum/`                                                                                                                                  | Page       | Page                  | `page.html`                         | Legal                                                                      |
-| Datenschutz         | `/datenschutz/`                                                                                                                                | Page       | Page                  | `page.html`                         | Legal                                                                      |
-| AGB                 | `/agb/`                                                                                                                                        | Page       | Page                  | `page.html`                         | Optional                                                                   |
-| Cookies             | `/cookies/`                                                                                                                                    | Page       | Page                  | `page.html`                         | Link from consent tool                                                     |
+| Section             | URL                                                                                                                                            | Type       | Source                | Template/Block                      | Notes                                                                   |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | --------------------- | ----------------------------------- | ----------------------------------------------------------------------- |
+| Home                | `/`                                                                                                                                            | Page       | Page                  | `home.html` (block template)        | Full-bleed hero, review-row, Ziele mosaic, Kurs & Tarif teasers, News   |
+| Studios (archive)   | `/studios/`                                                                                                                                    | Archive    | `studio` CPT          | `archive-studio.html`               | Menu label **„Standorte“** points here; no `/standorte/` page           |
+| Studio detail       | `/studio/{slug}/`                                                                                                                              | Single     | `studio` CPT          | `single-studio.html`                | Hero + Ausstattung navigator + Team + prefiltered timetable             |
+| Training (Services) | `/training/`                                                                                                                                   | Page       | Page                  | `page.html` + patterns              | Copy-first                                                              |
+| Ziel pages (5×)     | `/ziel-abnehmen-wohlfuehlen/`, `/ziel-fitness-gesundheit/`, `/ziel-sport-performance/`, `/ziel-kraft-muskelaufbau/`, `/ziel-reha-praevention/` | Pages      | **Pages**             | `page-ziel.html`                    | Each page acts as its **own archive** filtered by its `ziel_topic` term |
+| Kursprogramm        | `/kurse/`                                                                                                                                      | Archive    | `kurs` CPT            | `archive-kurs.html`                 | Timetable (week columns), sticky filters; modal details                 |
+| Kurs detail         | `/kurs/{slug}/`                                                                                                                                | Single     | `kurs` CPT            | `single-kurs.html`                  | Only for selected formats (Yoga, Rückenfit, Kampfsport)                 |
+| Tarife              | `/tarife/`                                                                                                                                     | Page       | Page (+ `tarif` data) | `page.html` + mosaic/table patterns | **No tariff singles**; CPT is data-only                                 |
+| News (blog)         | `/news/`                                                                                                                                       | Posts page | `post`                | Posts index                         | Standard cards, focal point                                             |
+| Post detail         | `/news/{slug}/`                                                                                                                                | Single     | `post`                | `single.html`                       | Article schema                                                          |
+| Über uns            | `/ueber-uns/`                                                                                                                                  | Page       | Page                  | `page.html`                         | Team + mission                                                          |
+| Kontakt             | `/kontakt/`                                                                                                                                    | Page       | Page                  | `page.html`                         | Form + maps                                                             |
+| Firmenfitness       | `/firmenfitness/`                                                                                                                              | Page       | Page                  | `page.html`                         | As planned                                                              |
+| Impressum           | `/impressum/`                                                                                                                                  | Page       | Page                  | `page.html`                         | Legal                                                                   |
+| Datenschutz         | `/datenschutz/`                                                                                                                                | Page       | Page                  | `page.html`                         | Legal                                                                   |
+| AGB                 | `/agb/`                                                                                                                                        | Page       | Page                  | `page.html`                         | Optional                                                                |
+| Cookies             | `/cookies/`                                                                                                                                    | Page       | Page                  | `page.html`                         | Link from consent tool                                                  |
 
 **Primary navigation**
 
 - **Home** → `/`
 - **Standorte** → `/studios/` (logos link to VIVO/Exciting Fit pages)
 - **Training** → `/training/`
-- **Ziele** → `/ziele/` landing (hero + quick links to the 5 Ziel pages)
+- **Ziele** → dropdown to the **5 Ziel pages** (no `/ziele/`)
 - **Kurse** → `/kurse/`
 - **Tarife** → `/tarife/`
 - **Über uns** → `/ueber-uns/`
@@ -57,6 +56,43 @@
 - No `/standorte/` page → map legacy links to `/studios/` (via server/Redirection plugin)
 - `www.excitingfit.at` → `/studio/exciting-fit/`; `vivo.fit` → `/studio/vivo/`
 - No human HTML sitemap page; rely on WP XML sitemap
+
+------------------- | ----------------- | -------------- | --------------------- | ----------------------------------- | --------------------------------------------------------------------------- |
+| Home | `/` | Page | `home` | `home.html` (block template) | Full-bleed hero, review-row, Ziele mosaic, Kurs & Tarif teasers, News cards |
+| Studios (archive) | `/studios/` | Archive | `studio` CPT | `archive-studio.html` | Grid of studios with rating badges |
+| Studio detail | `/studio/{slug}/` | Single | `studio` CPT | `single-studio.html` | Hero + Ausstattung navigator + Team + prefiltered schedule embed |
+| Training (Services) | `/training/` | Page | Page | `page.html` + patterns | Copy-first; CTA to Probetraining |
+| Ziele (overview) | `/ziele/` | Archive | `ziel` CPT | `archive-ziel.html` | 5 main Ziel pages highlighted |
+| Ziel detail | `/ziel/{slug}/` | Single | `ziel` CPT | `single-ziel.html` | Left copy / right testimonial; filtered posts list + pagination |
+| Kursprogramm | `/kurse/` | Archive | `kurs` CPT | `archive-kurs.html` | Timetable (week columns), sticky filters; modal details |
+| Kurs detail | `/kurs/{slug}/` | Single | `kurs` CPT | `single-kurs.html` | Only for selected formats (Yoga, Rückenfit, Kampfsport) |
+| Tarife (landing) | `/tarife/` | Page | Page (+ `tarif` data) | `page.html` + mosaic/table patterns | Combines tariff mosaic + table for Kartenprodukte |
+| Tarif detail | `/tarif/{slug}/` | Single | `tarif` CPT | `single-tarif.html` | Optional; SEO-visible |
+| News (blog) | `/news/` | Posts page | `post` | `index.html` or `home` posts | Standard cards, focal point |
+| Post detail | `/news/{slug}/` | Single | `post` | `single.html` | Article schema |
+| Probetraining | `/probetraining/` | Page | Page (+ Connect API) | `page.html` + booking block | Phase 1: embed; Phase 2: custom flow |
+| Über uns | `/ueber-uns/` | Page | Page | `page.html` | Team + mission |
+| Standort-Übersicht | `/standorte/` | Redirect/alias | Page → `/studios/` | Pattern link | Extra menu item per feedback |
+| Kontakt | `/kontakt/` | Page | Page | `page.html` | Form + maps |
+| Firmenfitness | `/firmenfitness/` | Page | Page | `page.html` | Logos section on light background |
+| Impressum | `/impressum/` | Page | Page | `page.html` | Legal |
+| Datenschutz | `/datenschutz/` | Page | Page | `page.html` | Legal |
+| AGB | `/agb/` | Page | Page | `page.html` | Optional if needed |
+| Cookies | `/cookies/` | Page | Page | `page.html` | Link from consent tool |
+| Sitemap | `/sitemap/` | Page | Page | `page.html` | Human-readable list of links |
+
+**Primary navigation**
+
+- **Home** → `/`
+- **Studios (Standorte)** → `/studios/` (logos link to VIVO/Exciting Fit studio pages)
+- **Training** → `/training/`
+- **Ziele** → `/ziele/`
+- **Kurse** → `/kurse/`
+- **Tarife** → `/tarife/`
+- **Über uns** → `/ueber-uns/`
+- **Probetraining** → `/probetraining/`
+
+Notes: Keep page slugs lowercase, use `ue/ae/oe`. Header/Footer as Synced Patterns.
 
 ---
 
@@ -83,6 +119,7 @@
 | `studio` | Studio pages (VIVO, Exciting Fit) | `/studios/`, `/studio/{slug}/`, teasers on Home | Blog articles, generic pages | `standort`, `studio_brand`, `ausstattung` |
 | `kurs` | Courses & timetable items | `/kurse/`, `/kurs/{slug}/`, studio pages (prefiltered embed) | News, static pages | `ziel_topic`, `kurs_kategorie`, `level`, `wochentag`, `tageszeit`, `studio_brand`, `raum` |
 | `tarif` | Memberships & cards | Data source for `/tarife/`, optional `/tarif/{slug}/` | Blog | `tarif_typ`, (`ziel_topic` optional) |
+| `ziel` | Ziel landing pages | `/ziele/`, `/ziel/{slug}/` | News | `ziel_topic` (self-tag for hierarchy) |
 | `team` (opt.) | Trainers/Staff | Studio pages, About | Blog, Tarife | `studio_brand`, `rolle` |
 | `testimonial` | Editor-curated testimonials (photos, text) | Ziel pages (right column), Home/Studio cards | Replacing Google review text | `ziel_topic`, `studio_brand` |
 
@@ -239,7 +276,7 @@ add_action('init', function(){
   ]);
 });
 
-// 4) PPC filters for Ziel subpages (query vars)
+// 4) PPC filters for Ziel pages (query vars)
 add_filter('query_vars', function($vars){
   foreach(['ziel','studio','level','testimonials','pinned'] as $v) $vars[]=$v; return $vars;
 });
@@ -299,20 +336,19 @@ Implementation notes: Store Place IDs on each `studio` (or `standort` term). Pro
 
 ---
 
-## Ziele content model (`/ziele/` landing + 5 subpages)
+## Ziele content model (5 Pages; no overview page)
 
-- Create `/ziele/` landing page with **`page-ziele.html`**: hero + intro copy, highlight cards for the five Ziel subpages, teaser tiles for success stories/testimonials.
-- Create **5 Ziel subpages** with the slugs listed in the sitemap. Each subpage is assigned **one** `ziel_topic` term.
-- **Template idea for subpages (`page-ziel.html`)**:
+- Create **5 Pages** with the slugs listed in the sitemap. Each page is assigned **one** `ziel_topic` term.
+- **Template idea (`page-ziel.html`)**:
 
   1. Intro two-column (copy left, testimonial right — `testimonial` CPT, auto-rotate ~10s)
   2. Featured posts (2–6) — editor selects specific posts
   3. Query Loop filtered by the page’s `ziel_topic` with pagination (9/Seite)
-  4. Cross-navigation „Weitere Ziele“ pattern (links back to `/ziele/` + adjacent subpages)
+  4. Cross-navigation „Weitere Ziele“ pattern
 
 - **Editorial rule:** Each post must select **exactly one** `ziel_topic`.
 
-### PPC query filters (pre-filter Ziel subpages)
+### PPC query filters (pre-filter Ziel pages)
 
 Params: `ziel` (term slug or list), `studio` (`studio_brand`), `level`, `testimonials` (1/0), `pinned` (2/4/6).
 Examples:
@@ -490,11 +526,11 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 
 ## Next step: page-by-page build order
 
-1. **Blank → Editor-ready**: activate theme (with your `theme.json`), create Header/Footer **template parts** in Site Editor; create legal pages, `/ziele/` landing, & 5 Ziel subpages
+1. **Blank → Editor-ready**: activate theme (with your `theme.json`), create Header/Footer **template parts** in Site Editor; create legal pages & 5 Ziel pages
 2. Home (Hero, Review-Row, Ziele-Mosaik, Kurs-Teaser, Tarife-Teaser, News)
 3. Studios (Archive + Single)
 4. Kursprogramm (Archive grid + Modals)
-5. Ziele landing + subpages (landing hero + links, subpage filters + featured)
+5. Ziel pages (wire filters + featured)
 6. Tarife (Mosaik + Tabelle; no singles)
 7. Probetraining (optional) / timetable modals
 
@@ -511,7 +547,7 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 - [x] Activate blank theme with provided `theme.json`
 - [x] Site Editor → create **Header** template part (menu, logos, Home link)
 - [x] Site Editor → create **Footer** template part (Impressum, Datenschutz, AGB, Cookies)
-- [x] Create Pages: Home, Training, Ziele landing, 5× Ziel subpages, Tarife, Über uns, Kontakt, Firmenfitness, Impressum, Datenschutz, AGB, Cookies
+- [x] Create Pages: Home, Training, 5× Ziel pages, Tarife, Über uns, Kontakt, Firmenfitness, Impressum, Datenschutz, AGB, Cookies
 - [x] Build Tailwind patterns: **Button**, **Card**, **Review Row**, **CTA** (core blocks only, Tailwind classes)
   - [x] `style.css` header stub present; theme activates cleanly
   - [x] Confirm baseline `theme.json` in place and linked to Site Editor
@@ -537,7 +573,7 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 
 ### Milestone 2 — Home (top → bottom)
 
-- [ ] Hero (Cover with overlay presets), Review Row (Testimonials CPT), Ziele mosaic linking to `/ziele/` + spotlighting the 5 subpages
+- [ ] Hero (Cover with overlay presets), Review Row (Testimonials CPT), Ziele mosaic links
 - [ ] Kurs teaser (cards) and Tarife teaser (Basic + Young)
 - [ ] News grid (equal heights, focal points)
   - [ ] Sticky local navigation (anchors: Standorte, Tarife, Kursprogramm, Ziele) with responsive behavior
@@ -569,14 +605,12 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 
 **DoD:** Schedule browsable via the dynamic block; editors avoid manual embeds and API keys stay server-side.
 
-### Milestone 5 — Ziele landing + subpages
+### Milestone 5 — Ziel pages (5×)
 
-- [ ] `/ziele/` landing hero, intro, and cards linking to the five subpages (patternized)
-- [ ] Subpages: wire featured (2–6) + filtered loop (9/Seite)
-- [ ] Implement PPC query filters (ziel/studio/level/testimonials/pinned) on subpages
+- [ ] Wire featured (2–6) + filtered loop (9/Seite) on each page
+- [ ] Implement PPC query filters (ziel/studio/level/testimonials/pinned)
   - [ ] Ziel template uses hero overlay, quick-facts list, testimonials + CTA
   - [ ] Query Loop pulls matching `ziel_topic` posts; fallback copy ready when empty
-  - [ ] Cross-navigation pattern points back to `/ziele/`
 
 **DoD:** Editors publish posts and they appear correctly; PPC links pre-filter.
 
@@ -674,7 +708,7 @@ Requires PHP: 8.1
 1. Appearance → Editor → **Template Parts** → create **Header** (navigation block, logos, Home link).
 2. Create **Footer** (legal links).
 3. Templates → add **Home**, **Page**, **Single**, **Index** as needed.
-4. Create Pages: Home, Training, Ziele landing, 5× Ziel subpages, Tarife, Über uns, Kontakt, Firmenfitness, Impressum, Datenschutz, AGB, Cookies.
+4. Create Pages: Home, Training, 5× Ziel, Tarife, Über uns, Kontakt, Firmenfitness, Impressum, Datenschutz, AGB, Cookies.
 
 ## A3) Patterns to create (core-only, Tailwind styling)
 
@@ -696,7 +730,7 @@ Requires PHP: 8.1
 - [ ] Hero Cover with overlay preset (desktop side→center, mobile bottom→top)
 - [ ] Review Row pattern (static for now)
 - [ ] Dein Training intro + CTA
-- [ ] Ziele mosaic (links to `/ziele/` landing + highlights the 5 Ziel subpages)
+- [ ] Ziele mosaic (links to 5 Ziel pages)
 - [ ] Kurs teaser cards
 - [ ] Tarife teaser (Basic + Young prominent)
 - [ ] News grid (equal heights, focal point)
@@ -721,13 +755,12 @@ Requires PHP: 8.1
 - [ ] Sticky filters (studio/ziel/level; week/day toggle)
 - [ ] „Jetzt“-marker (JS later)
 
-### Ziele landing + subpages
+### Ziel pages (5×)
 
-- [ ] Landing `page-ziele.html`: hero + intro, highlight cards linking to the five Ziel subpages, testimonial/CTA band
-- [ ] Subpage template `page-ziel.html`: intro split + testimonial column
+- [ ] Template `page-ziel.html`: intro split + testimonial column
 - [ ] Featured posts (2–6 manually selected)
 - [ ] Filtered Query Loop by `ziel_topic` + pagination (9/Seite)
-- [ ] PPC query filters respected (`ziel, studio, level, testimonials, pinned`) on subpages
+- [ ] PPC query filters respected (`ziel, studio, level, testimonials, pinned`)
 
 ### Tarife
 
