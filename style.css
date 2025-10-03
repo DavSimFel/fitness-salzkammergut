@@ -16,21 +16,29 @@ Tags:
 
 /* Force Navigation block to switch at 768px instead of the default 600px */
 @media (max-width: 767px) {
-    .wp-block-navigation__responsive-container-open {
-        display: flex !important;
-    }
+  /* Show burger icon */
+  .wp-block-navigation__responsive-container-open {
+    display: flex !important;
+  }
 
-    .wp-block-navigation__container {
-        display: none !important;
-    }
+  /* Hide only the immediate container in the inline layout */
+  .wp-block-navigation:not(.wp-block-navigation__responsive-container) > .wp-block-navigation__container {
+    display: none !important;
+  }
+
+  /* Show links inside the responsive drawer */
+  .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__container {
+    display: flex !important;
+    flex-direction: column;
+  }
 }
 
 @media (min-width: 768px) {
-    .wp-block-navigation__responsive-container-open {
-        display: none !important;
-    }
+  .wp-block-navigation__responsive-container-open {
+    display: none !important;
+  }
 
-    .wp-block-navigation__container {
-        display: flex !important;
-    }
+  .wp-block-navigation .wp-block-navigation__container {
+    display: flex !important;
+  }
 }
