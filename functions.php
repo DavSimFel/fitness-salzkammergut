@@ -82,6 +82,27 @@ function fitness_skg_enqueue_tailwind(): void
 add_action('wp_enqueue_scripts', 'fitness_skg_enqueue_tailwind');
 add_action('enqueue_block_assets', 'fitness_skg_enqueue_tailwind');
 
+function fitness_skg_enqueue_theme_styles(): void
+{
+    $style_path = get_stylesheet_directory() . '/style.css';
+    if (! file_exists($style_path)) {
+        return;
+    }
+
+    $theme        = wp_get_theme();
+    $style_uri    = get_stylesheet_uri();
+    $style_version = $theme->get('Version') ?: filemtime($style_path);
+
+    wp_enqueue_style(
+        'fitness-skg-style',
+        $style_uri,
+        ['fitness-skg-tailwind'],
+        $style_version
+    );
+}
+add_action('wp_enqueue_scripts', 'fitness_skg_enqueue_theme_styles');
+add_action('enqueue_block_assets', 'fitness_skg_enqueue_theme_styles');
+
 add_action('enqueue_block_editor_assets', function (): void {
     $theme_version = wp_get_theme()->get('Version') ?: '1.0.0';
 
