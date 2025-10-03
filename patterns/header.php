@@ -5,176 +5,34 @@
  * Inserter: no
  */
 ?>
-<!-- wp:group {"tagName":"header","className":"tw-site-hero js-site-hero"} -->
-<header class="wp-block-group tw-site-hero js-site-hero">
-	<!-- wp:group {"className":"tw-site-nav js-site-nav"} -->
-	<div class="wp-block-group tw-site-nav js-site-nav">
-		<!-- wp:group {"className":"tw-site-nav__inner tw-container-gutter tw-flex tw-items-center tw-justify-between tw-gap-4","layout":{"type":"flex","justifyContent":"space-between","flexWrap":"wrap","verticalAlignment":"center"},"style":{"spacing":{"padding":{"top":"1.25rem","bottom":"1.25rem"}}}} -->
-		<div class="wp-block-group tw-site-nav__inner tw-container-gutter tw-flex tw-items-center tw-justify-between tw-gap-4" style="padding-top:1.25rem;padding-bottom:1.25rem">
-			<!-- wp:group {"className":"tw-site-nav__brands tw-flex tw-items-center tw-gap-4","layout":{"type":"flex","flexWrap":"wrap","verticalAlignment":"center"}} -->
-			<div class="wp-block-group tw-site-nav__brands tw-flex tw-items-center tw-gap-4">
-				<!-- wp:image {"lightbox":{"enabled":false},"width":"auto","height":"24px","sizeSlug":"full","linkDestination":"custom"} -->
-				<figure class="wp-block-image size-full is-resized"><a href="https://fitness-salzkammergut.at/studio/vivo-bad-goisern/"><img src="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/images/Dachmarke_OnLight_vivo.svg" alt="VIVO Fitness" style="width:auto;height:24px"/></a></figure>
-				<!-- /wp:image -->
+<!-- wp:cover {"url":"\u003c?php echo esc_url( get_template_directory_uri() ); ?\u003e/assets/videos/Hailuo_Video_426508776459534337.mp4","dimRatio":10,"isUserOverlayColor":true,"backgroundType":"video","minHeight":100,"minHeightUnit":"vh","contentPosition":"center center","isDark":false,"sizeSlug":"full","align":"center","style":{"color":[]},"layout":{"type":"constrained"}} -->
+<div class="wp-block-cover aligncenter is-light" style="min-height:100vh"><video class="wp-block-cover__video-background intrinsic-ignore" autoplay muted loop playsinline src="<?php echo esc_url( get_template_directory_uri() ); ?>;/assets/videos/Hailuo_Video_426508776459534337.mp4" data-object-fit="cover"></video><span aria-hidden="true" class="wp-block-cover__background has-background-dim-10 has-background-dim"></span><div class="wp-block-cover__inner-container"><!-- wp:group {"style":{"dimensions":{"minHeight":"100vh"},"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50"},"margin":{"top":"0","bottom":"0"},"blockGap":"0"}},"layout":{"type":"flex","orientation":"vertical","justifyContent":"center","flexWrap":"nowrap","verticalAlignment":"top"}} -->
+<div class="wp-block-group" style="min-height:100vh;margin-top:0;margin-bottom:0;padding-top:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50)"><!-- wp:group {"className":"style=\u0022position:sticky;top:0;z-index:1000\u0022","style":{"spacing":{"blockGap":"var:preset|spacing|60","padding":{"top":"0","bottom":"0","left":"0","right":"0"}}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"center","verticalAlignment":"center"}} -->
+<div class="wp-block-group style=&quot;position:sticky;top:0;z-index:1000&quot;" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><!-- wp:group {"style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"var:preset|spacing|70","right":"var:preset|spacing|70"}},"border":{"radius":"100px"}},"backgroundColor":"black-20","layout":{"type":"flex","flexWrap":"nowrap"}} -->
+<div class="wp-block-group has-black-20-background-color has-background" style="border-radius:100px;padding-top:0;padding-right:var(--wp--preset--spacing--70);padding-bottom:0;padding-left:var(--wp--preset--spacing--70)"><!-- wp:navigation {"ref":430,"overlayMenu":"never","layout":{"type":"flex","flexWrap":"nowrap"},"blockVisibility":{"controlSets":[{"id":1,"enable":true,"controls":{"screenSize":{"hideOnScreenSize":{"small":true,"medium":true}}}}]}} /-->
 
-				<!-- wp:image {"width":"auto","height":"36px","sizeSlug":"full","linkDestination":"none"} -->
-				<figure class="wp-block-image size-full is-resized"><img src="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/images/Dachmarke_OnLight_dot.svg" alt="Fitness Salzkammergut" style="width:auto;height:36px"/></figure>
-				<!-- /wp:image -->
+<!-- wp:group {"style":{"layout":{"selfStretch":"fit","flexSize":null},"dimensions":{"minHeight":"48px"},"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"},"margin":{"top":"0","bottom":"0"},"blockGap":"var:preset|spacing|20"}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
+<div class="wp-block-group" style="min-height:48px;margin-top:0;margin-bottom:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><!-- wp:image {"lightbox":{"enabled":false},"width":"auto","height":"24px","sizeSlug":"full","linkDestination":"custom","style":{"spacing":{"margin":{"top":"0","bottom":"0"}},"layout":{"selfStretch":"fill","flexSize":null}}} -->
+<figure class="wp-block-image size-full is-resized" style="margin-top:0;margin-bottom:0"><a href="https://fitness-salzkammergut.at/studio/vivo-bad-goisern/"><img src="https://fitness-salzkammergut.at/wp-content/uploads/2025/10/Dachmarke_OnLight_vivo.svg" alt="" style="width:auto;height:24px"/></a></figure>
+<!-- /wp:image -->
 
-				<!-- wp:image {"lightbox":{"enabled":false},"width":"auto","height":"24px","sizeSlug":"full","linkDestination":"custom"} -->
-				<figure class="wp-block-image size-full is-resized"><a href="https://fitness-salzkammergut.at/studio/excitingfit-bad-ischl/"><img src="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/images/Dachmarke_OnLight_excitingfit.svg" alt="Exciting Fit" style="width:auto;height:24px"/></a></figure>
-				<!-- /wp:image -->
-			</div>
-			<!-- /wp:group -->
+<!-- wp:image {"width":"auto","height":"32px","sizeSlug":"full","linkDestination":"none","style":{"spacing":{"margin":{"top":"0","bottom":"0","left":"0","right":"0"}},"layout":{"selfStretch":"fit","flexSize":null}}} -->
+<figure class="wp-block-image size-full is-resized" style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0"><img src="https://fitness-salzkammergut.at/wp-content/uploads/2025/10/Dachmarke_OnLight_dot.svg" alt="" style="width:auto;height:32px"/></figure>
+<!-- /wp:image -->
 
-			<!-- wp:navigation {"overlayMenu":"mobile","layout":{"type":"flex","justifyContent":"center","flexWrap":"wrap"}} /-->
-		</div>
-		<!-- /wp:group -->
-	</div>
-	<!-- /wp:group -->
-
-	<!-- wp:cover {"useFeaturedImage":true,"dimRatio":30,"overlayColor":"almost-black","focalPoint":{"x":0.5,"y":0.5},"minHeight":100,"minHeightUnit":"vh","isDark":true,"className":"tw-site-hero__cover"} -->
-	<div class="wp-block-cover tw-site-hero__cover is-dark" style="min-height:100vh"><span aria-hidden="true" class="wp-block-cover__background has-almost-black-background-color has-background-dim-30 has-background-dim"></span><div class="wp-block-cover__inner-container">
-		<!-- wp:group {"className":"tw-site-hero__content tw-container-gutter tw-flex tw-flex-col tw-gap-6","layout":{"type":"flex","orientation":"vertical","justifyContent":"center"},"style":{"spacing":{"padding":{"top":"9rem","bottom":"6rem"}}}} -->
-		<div class="wp-block-group tw-site-hero__content tw-container-gutter tw-flex tw-flex-col tw-gap-6" style="padding-top:9rem;padding-bottom:6rem">
-			<!-- wp:group {"className":"tw-flex tw-flex-col tw-gap-5 tw-max-w-3xl"} -->
-			<div class="wp-block-group tw-flex tw-flex-col tw-gap-5 tw-max-w-3xl">
-				<!-- wp:heading {"level":1,"className":"tw-font-semibold","textColor":"soft-white","fontSize":"4xl"} -->
-				<h1 class="tw-font-semibold has-soft-white-color has-text-color has-4xl-font-size">Dein Training im Salzkammergut</h1>
-				<!-- /wp:heading -->
-
-				<!-- wp:paragraph {"className":"tw-leading-relaxed","textColor":"soft-white","fontSize":"lg"} -->
-				<p class="tw-leading-relaxed has-soft-white-color has-text-color has-lg-font-size">Passe Headline, Text und Buttons an, um aktuelle Kampagnen oder Standort-Highlights zu kommunizieren.</p>
-				<!-- /wp:paragraph -->
-
-				<!-- wp:buttons {"className":"tw-flex tw-flex-wrap tw-gap-4"} -->
-				<div class="wp-block-buttons tw-flex tw-flex-wrap tw-gap-4">
-					<!-- wp:button {"className":"tw-btn tw-btn--primary"} -->
-					<div class="wp-block-button tw-btn tw-btn--primary"><a class="wp-block-button__link" href="/probetraining/">Probetraining buchen</a></div>
-					<!-- /wp:button -->
-
-					<!-- wp:button {"className":"tw-btn tw-btn--secondary"} -->
-					<div class="wp-block-button tw-btn tw-btn--secondary"><a class="wp-block-button__link" href="/studios/">Standorte entdecken</a></div>
-					<!-- /wp:button -->
-				</div>
-				<!-- /wp:buttons -->
-			</div>
-			<!-- /wp:group -->
-		</div>
-		<!-- /wp:group -->
-	</div></div>
-	<!-- /wp:cover -->
-</header>
+<!-- wp:image {"lightbox":{"enabled":false},"width":"auto","height":"24px","sizeSlug":"full","linkDestination":"custom","style":{"spacing":{"margin":{"top":"0","bottom":"0","left":"0","right":"0"}},"layout":{"selfStretch":"fit","flexSize":null}}} -->
+<figure class="wp-block-image size-full is-resized" style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0"><a href="https://fitness-salzkammergut.at/studio/excitingfit-bad-ischl/"><img src="https://fitness-salzkammergut.at/wp-content/uploads/2025/10/Dachmarke_OnLight_excitingfit.svg" alt="" style="width:auto;height:24px"/></a></figure>
+<!-- /wp:image --></div>
 <!-- /wp:group -->
 
-<!-- wp:html -->
-<style>
-.tw-site-hero {
-	position: relative;
-}
+<!-- wp:navigation {"ref":430} /--></div>
+<!-- /wp:group -->
 
-.tw-site-nav {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	z-index: 1000;
-	background-color: transparent;
-	transition: background-color 0.35s ease, box-shadow 0.35s ease;
-}
-
-.tw-site-nav.is-scrolled {
-	background-color: var(--wp--preset--color--almost-black, #1b1a18);
-	box-shadow: 0 16px 42px -18px rgba(0, 0, 0, 0.5);
-	backdrop-filter: blur(12px);
-}
-
-.tw-site-nav__inner {
-	max-width: 1280px;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.tw-site-hero__cover {
-	min-height: 100vh;
-}
-
-.tw-site-hero__cover .wp-block-cover__inner-container {
-	min-height: inherit;
-	display: flex;
-	align-items: flex-end;
-}
-
-.tw-site-hero__cover .wp-block-cover__video-background,
-.tw-site-hero__cover .wp-block-cover__image-background {
-	object-fit: cover;
-}
-
-body.has-fixed-header {
-	padding-top: var(--fitness-skg-header-offset, 0px);
-}
-
-@media (max-width: 782px) {
-	.tw-site-nav__inner {
-		padding-left: 1.25rem !important;
-		padding-right: 1.25rem !important;
-		gap: 1rem;
-	}
-}
-</style>
-<script>
-(function () {
-	if (window.fitnessSkgHeaderInit) {
-		return;
-	}
-
-	window.fitnessSkgHeaderInit = true;
-
-	const nav = document.querySelector('.js-site-nav');
-	const hero = document.querySelector('.tw-site-hero__cover');
-
-	if (!nav || !hero) {
-		return;
-	}
-
-	const getThreshold = () => {
-		const heroHeight = hero.offsetHeight || 0;
-		const navHeight = nav.offsetHeight || 0;
-		return Math.max(heroHeight - navHeight, 0);
-	};
-
-	let threshold = getThreshold();
-
-	const setBodyOffset = (active) => {
-		if (!document.body) {
-			return;
-		}
-
-		if (active) {
-			document.body.classList.add('has-fixed-header');
-			document.body.style.setProperty('--fitness-skg-header-offset', `${nav.offsetHeight || 0}px`);
-		} else {
-			document.body.classList.remove('has-fixed-header');
-			document.body.style.removeProperty('--fitness-skg-header-offset');
-		}
-	};
-
-	const updateNavState = () => {
-		const shouldStick = window.scrollY >= threshold;
-		nav.classList.toggle('is-scrolled', shouldStick);
-		setBodyOffset(shouldStick);
-	};
-
-	const recalc = () => {
-		threshold = getThreshold();
-		updateNavState();
-	};
-
-	window.addEventListener('scroll', updateNavState, { passive: true });
-	window.addEventListener('resize', recalc);
-	window.addEventListener('load', recalc);
-	document.addEventListener('DOMContentLoaded', recalc);
-	recalc();
-})();
-</script>
-<!-- /wp:html -->
+<!-- wp:buttons {"layout":{"type":"flex","orientation":"horizontal","justifyContent":"center"}} -->
+<div class="wp-block-buttons"><!-- wp:button {"className":"is-style-fill"} -->
+<div class="wp-block-button is-style-fill"><a class="wp-block-button__link wp-element-button">Probetraining buchen</a></div>
+<!-- /wp:button --></div>
+<!-- /wp:buttons --></div>
+<!-- /wp:group --></div>
+<!-- /wp:group --></div></div>
+<!-- /wp:cover -->

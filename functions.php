@@ -81,6 +81,16 @@ function tailwind($hook) {
 add_action( 'admin_enqueue_scripts', 'tailwind' );
 add_action('wp_enqueue_scripts', 'tailwind');
 
+add_action('enqueue_block_editor_assets', function (): void {
+    wp_enqueue_script(
+        'fitness-skg-extend-nav-allowed-blocks',
+        get_stylesheet_directory_uri() . '/extend-nav-allowed-blocks.js',
+        ['wp-hooks', 'wp-blocks'],
+        wp_get_theme()->get('Version') ?: '1.0.0',
+        true
+    );
+});
+
 add_action('init', function () {
     $supports = ['title', 'editor', 'thumbnail', 'excerpt', 'revisions'];
 
