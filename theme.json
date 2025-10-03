@@ -366,11 +366,14 @@
 				}
 			}
 		},
+		"color": {
+			"text": "var(--wp--preset--color--black-90)"
+		},
 		"elements": {
 			"button": {
 				"color": {
-					"background": "var(--wp--preset--color--soft-white)",
-					"text": "var(--wp--preset--color--black-80)"
+					"background": "var(--wp--preset--color--lime)",
+					"text": "var(--wp--preset--color--black-90)"
 				},
 				"typography": {
 					"fontFamily": "var(--wp--preset--font-family--work-sans)"
