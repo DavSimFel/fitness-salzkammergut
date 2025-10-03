@@ -515,11 +515,11 @@ add_filter('render_block', function ($block_content, $block) {
         return '<video ' . implode(' ', $parts) . '></video>';
     };
 
-    $replacements = 0;
+    $image_replaced = false;
 
     $replaced_content = preg_replace_callback(
         '#<img[^>]*wp-block-cover__image-background[^>]*>#',
-        static function (array $matches) use ($create_video_markup) {
+        static function (array $matches) use ($create_video_markup, &$image_replaced) {
             $img_tag = $matches[0];
             $style_attr = null;
             $object_fit = null;
@@ -532,30 +532,32 @@ add_filter('render_block', function ($block_content, $block) {
                 $object_fit = $fit_match[1];
             }
 
+            $image_replaced = true;
+
             return $create_video_markup($style_attr, $object_fit);
         },
         $block_content,
-        1,
-        $replacements
+        1
     );
 
-    if ($replacements) {
+    if ($image_replaced) {
         return $replaced_content;
     }
 
-    $span_replacements = 0;
+    $background_replaced = false;
 
     $fallback_content = preg_replace_callback(
         '#(<span[^>]*wp-block-cover__background[^>]*></span>)#',
-        static function (array $matches) use ($create_video_markup) {
+        static function (array $matches) use ($create_video_markup, &$background_replaced) {
+            $background_replaced = true;
+
             return $matches[0] . $create_video_markup(null, null);
         },
         $block_content,
-        1,
-        $span_replacements
+        1
     );
 
-    if ($span_replacements) {
+    if ($background_replaced) {
         return $fallback_content;
     }
 

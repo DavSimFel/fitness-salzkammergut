@@ -24,11 +24,35 @@
 		});
 	}
 
-	function getBlockElement(clientId) {
-		return document.querySelector(`[data-block="${clientId}"]`);
+	function getCanvasDocument() {
+		const selectors = [
+			'iframe[name="editor-canvas"]',
+			'.editor-canvas__iframe',
+			'.edit-site-visual-editor__editor-canvas iframe',
+			'.block-editor-writing-flow iframe',
+		];
+
+		for (const selector of selectors) {
+			const iframe = document.querySelector(selector);
+			if (iframe && iframe.contentDocument) {
+				return iframe.contentDocument;
+			}
+		}
+
+		return document;
 	}
 
-	function ensureVideoForBlock(clientId, posterUrl, videoUrl) {
+	function getBlockElement(clientId) {
+		const doc = getCanvasDocument();
+		return doc ? doc.querySelector(`[data-block="${clientId}"]`) : null;
+	}
+
+	function ensureVideoForBlock(clientId, attrs, posterUrl, videoUrl) {
+		const doc = getCanvasDocument();
+		if (!doc) {
+			return;
+		}
+
 		const blockElement = getBlockElement(clientId);
 		if (!blockElement) {
 			return;
@@ -44,7 +68,7 @@
 		let videoElement = videoEntry ? videoEntry.video : null;
 
 		if (!videoElement || !videoElement.isConnected) {
-			videoElement = document.createElement('video');
+			videoElement = doc.createElement('video');
 			videoElement.dataset.fitnessSkgFeaturedVideo = '1';
 			videoElement.className = 'wp-block-cover__video-background intrinsic-ignore';
 			videoElement.autoplay = true;
@@ -72,6 +96,23 @@
 		if (videoElement.getAttribute('src') !== videoUrl) {
 			videoElement.setAttribute('src', videoUrl);
 			videoElement.load();
+		}
+
+		if (attrs && typeof attrs === 'object') {
+			if (attrs.focalPoint && typeof attrs.focalPoint === 'object') {
+				const { x, y } = attrs.focalPoint;
+				if (typeof x === 'number' && typeof y === 'number') {
+					const formatPercent = (value) => {
+						const clamped = Math.min(1, Math.max(0, value));
+						return `${(clamped * 100).toFixed(2).replace(/\.00$/, '')}%`;
+					};
+					videoElement.style.objectPosition = `${formatPercent(x)} ${formatPercent(y)}`;
+				}
+			}
+
+			if (attrs.dimRatio !== undefined) {
+				videoElement.dataset.dimRatio = attrs.dimRatio;
+			}
 		}
 
 		if (imageElement) {
@@ -185,15 +226,15 @@
 					return;
 				}
 
-				const attrs = block.attributes || {};
-				const usesFeatured = !!attrs.useFeaturedImage;
-				const clientId = block.clientId;
+		const attrs = block.attributes || {};
+			const usesFeatured = !!attrs.useFeaturedImage;
+			const clientId = block.clientId;
 
-				if (usesFeatured && videoUrl) {
-					ensureVideoForBlock(clientId, posterUrl, videoUrl);
-					activeClientIds.add(clientId);
-				} else {
-					resetBlock(clientId);
+			if (usesFeatured && videoUrl) {
+				ensureVideoForBlock(clientId, attrs, posterUrl, videoUrl);
+				activeClientIds.add(clientId);
+			} else {
+				resetBlock(clientId);
 				}
 			});
 
