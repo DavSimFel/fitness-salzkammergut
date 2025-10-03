@@ -278,3 +278,152 @@ function site_get_ziel_filters(): stdClass
 
     return $query;
 }
+
+if (! defined('FITNESS_SKG_FEATURED_VIDEO_META_KEY')) {
+    define('FITNESS_SKG_FEATURED_VIDEO_META_KEY', '_featured_video_id');
+}
+
+add_action('init', function (): void {
+    register_post_meta('', FITNESS_SKG_FEATURED_VIDEO_META_KEY, [
+        'type'          => 'integer',
+        'single'        => true,
+        'show_in_rest'  => true,
+        'auth_callback' => static function () {
+            return current_user_can('edit_posts');
+        },
+    ]);
+});
+
+add_action('add_meta_boxes', function (): void {
+    add_meta_box(
+        'fitness_skg_featured_video',
+        __('Featured Video', 'fitness-skg'),
+        'fitness_skg_render_featured_video_metabox',
+        ['post', 'page'],
+        'side',
+        'low'
+    );
+});
+
+function fitness_skg_render_featured_video_metabox(WP_Post $post): void
+{
+    $video_id  = (int) get_post_meta($post->ID, FITNESS_SKG_FEATURED_VIDEO_META_KEY, true);
+    $thumb_id  = get_post_thumbnail_id($post);
+    $video_url = $video_id ? wp_get_attachment_url($video_id) : '';
+    $poster    = $thumb_id ? wp_get_attachment_image_url($thumb_id, 'large') : '';
+
+    wp_nonce_field('fitness_skg_save_featured_video', 'fitness_skg_featured_video_nonce');
+    ?>
+    <div id="fitness-skg-featured-video-box" class="fitness-skg-featured-video-box">
+        <p>
+            <input type="hidden" id="fitness_skg_featured_video_id" name="fitness_skg_featured_video_id" value="<?php echo esc_attr($video_id); ?>">
+            <button type="button" class="button button-secondary" id="fitness_skg_featured_video_set">
+                <?php echo $video_id ? esc_html__('Replace featured video', 'fitness-skg') : esc_html__('Set featured video', 'fitness-skg'); ?>
+            </button>
+            <button type="button" class="button link-button" id="fitness_skg_featured_video_remove" <?php if (! $video_id) { echo 'style="display:none"'; } ?>>
+                <?php esc_html_e('Remove', 'fitness-skg'); ?>
+            </button>
+        </p>
+
+        <div id="fitness_skg_featured_video_preview" style="display:<?php echo $video_id ? 'block' : 'none'; ?>;">
+            <video style="max-width:100%;height:auto;" controls playsinline <?php echo $poster ? 'poster="' . esc_url($poster) . '"' : ''; ?>>
+                <source src="<?php echo esc_url($video_url); ?>" type="<?php echo esc_attr(get_post_mime_type($video_id) ?: 'video/mp4'); ?>">
+            </video>
+            <?php if ($video_id) : ?>
+                <p style="margin-top:6px;"><a href="<?php echo esc_url(get_edit_post_link($video_id)); ?>"><?php esc_html_e('Edit video', 'fitness-skg'); ?></a></p>
+            <?php endif; ?>
+        </div>
+
+        <p class="description">
+            <?php esc_html_e('Tip: If you also set a Featured Image, it will be used as the video poster automatically.', 'fitness-skg'); ?>
+        </p>
+    </div>
+    <?php
+}
+
+add_action('save_post', function (int $post_id): void {
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    if (! isset($_POST['fitness_skg_featured_video_nonce']) || ! wp_verify_nonce($_POST['fitness_skg_featured_video_nonce'], 'fitness_skg_save_featured_video')) {
+        return;
+    }
+
+    if (! current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    $new_id = isset($_POST['fitness_skg_featured_video_id']) ? (int) $_POST['fitness_skg_featured_video_id'] : 0;
+
+    if ($new_id) {
+        $mime = get_post_mime_type($new_id);
+        if (strpos((string) $mime, 'video/') !== 0) {
+            $new_id = 0;
+        }
+    }
+
+    if ($new_id) {
+        update_post_meta($post_id, FITNESS_SKG_FEATURED_VIDEO_META_KEY, $new_id);
+    } else {
+        delete_post_meta($post_id, FITNESS_SKG_FEATURED_VIDEO_META_KEY);
+    }
+});
+
+add_action('admin_enqueue_scripts', function (string $hook): void {
+    if ($hook !== 'post.php' && $hook !== 'post-new.php') {
+        return;
+    }
+
+    wp_enqueue_media();
+
+    $script_path = get_stylesheet_directory() . '/assets/admin/featured-video.js';
+    $script_url  = get_stylesheet_directory_uri() . '/assets/admin/featured-video.js';
+    $version     = file_exists($script_path) ? filemtime($script_path) : wp_get_theme()->get('Version');
+
+    wp_enqueue_script(
+        'fitness-skg-featured-video',
+        $script_url,
+        ['jquery'],
+        $version ?: '1.0.0',
+        true
+    );
+});
+
+function fitness_skg_get_featured_media_html(?int $post_id = null, $size = 'post-thumbnail', array $attrs = []): string
+{
+    $post_id = $post_id ?: get_the_ID();
+    $video_id = (int) get_post_meta($post_id, FITNESS_SKG_FEATURED_VIDEO_META_KEY, true);
+
+    if ($video_id) {
+        $src        = wp_get_attachment_url($video_id);
+        $mime       = get_post_mime_type($video_id) ?: 'video/mp4';
+        $thumb_id   = get_post_thumbnail_id($post_id);
+        $poster_url = $thumb_id ? wp_get_attachment_image_url($thumb_id, $size) : '';
+
+        $attr_html = '';
+        foreach ($attrs as $key => $value) {
+            $attr_html .= ' ' . esc_attr($key) . '="' . esc_attr($value) . '"';
+        }
+
+        return sprintf(
+            '<video class="featured-video" controls playsinline preload="metadata"%s%s><source src="%s" type="%s"></video>',
+            $poster_url ? ' poster="' . esc_url($poster_url) . '"' : '',
+            $attr_html,
+            esc_url($src),
+            esc_attr($mime)
+        );
+    }
+
+    return get_the_post_thumbnail($post_id, $size, $attrs);
+}
+
+add_filter('post_thumbnail_html', function ($html, $post_id, $thumb_id, $size, $attr) {
+    $video_id = (int) get_post_meta($post_id, FITNESS_SKG_FEATURED_VIDEO_META_KEY, true);
+    if ($video_id) {
+        $attrs = is_array($attr) ? $attr : [];
+        return fitness_skg_get_featured_media_html($post_id, $size, $attrs);
+    }
+
+    return $html;
+}, 10, 5);
