@@ -21,12 +21,12 @@ Tags:
     display: flex !important;
   }
 
-  /* Hide only the immediate container in the inline layout */
-  .wp-block-navigation:not(.wp-block-navigation__responsive-container) > .wp-block-navigation__container {
+  /* Hide the responsive container’s content while closed */
+  .wp-block-navigation__responsive-container:not(.is-menu-open) .wp-block-navigation__container {
     display: none !important;
   }
 
-  /* Show links inside the responsive drawer */
+  /* Reveal links when the drawer opens */
   .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__container {
     display: flex !important;
     flex-direction: column;
@@ -38,7 +38,8 @@ Tags:
     display: none !important;
   }
 
-  .wp-block-navigation .wp-block-navigation__container {
+  .wp-block-navigation__responsive-container .wp-block-navigation__container {
     display: flex !important;
+    flex-direction: row;
   }
 }
