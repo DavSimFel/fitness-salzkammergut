@@ -61,6 +61,11 @@ if (! function_exists('fitness_skg_tax_labels')) {
     }
 }
 
+add_action('after_setup_theme', function (): void {
+    add_theme_support('editor-styles');
+    add_editor_style('build/tw.css');
+});
+
 function tailwind($hook) {
      $tailwind_path = get_stylesheet_directory() . '/build/tw.css';
     if (! file_exists($tailwind_path)) {
@@ -153,7 +158,7 @@ add_action('init', function () {
         'label'        => $studio_brand_labels['name'],
         'public'       => true,
         'show_in_rest' => true,
-        'hierarchical' => true,
+        'hierarchical' => false,
         'rewrite'      => ['slug' => 'studio'],
         'meta_box_cb'  => 'post_categories_meta_box',
         'capabilities' => $capabilities,
