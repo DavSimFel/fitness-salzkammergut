@@ -2,7 +2,7 @@
 /**
  * Title: Linked Logo Row
  * Slug: fitness-salzkammergut/linked-logo-row
- * Categories: 
+ * Categories: columns
  */
 ?>
 <!-- wp:group {"style":{"layout":{"selfStretch":"fit","flexSize":null},"dimensions":{"minHeight":"48px"},"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"0"},"margin":{"top":"0","bottom":"0"},"blockGap":"var:preset|spacing|20"}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
