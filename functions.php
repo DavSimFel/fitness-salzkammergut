@@ -465,15 +465,75 @@ add_filter('render_block', function ($block_content, $block) {
     $poster_id = get_post_thumbnail_id($post_id);
     $poster_url = $poster_id ? wp_get_attachment_image_url($poster_id, 'full') : '';
 
-    $video_markup = sprintf(
-        '<video class="wp-block-cover__video-background intrinsic-ignore" autoplay muted loop playsinline preload="metadata" src="%s" data-object-fit="cover"%s></video>',
-        esc_url($video_url),
-        $poster_url ? ' poster="' . esc_url($poster_url) . '"' : ''
-    );
+    $create_video_markup = static function (?string $style_attr, ?string $object_fit) use ($video_url, $poster_url, $attrs): string {
+        $boolean_attrs = ['autoplay', 'muted', 'loop', 'playsinline'];
+        $attributes = [
+            'class'         => 'wp-block-cover__video-background intrinsic-ignore',
+            'autoplay'      => true,
+            'muted'         => true,
+            'loop'          => true,
+            'playsinline'   => true,
+            'preload'       => 'metadata',
+            'src'           => esc_url($video_url),
+            'data-object-fit' => $object_fit ?: 'cover',
+        ];
 
-    $replaced_content = preg_replace(
+        if ($poster_url) {
+            $attributes['poster'] = esc_url($poster_url);
+        }
+
+        if ($style_attr) {
+            $attributes['style'] = $style_attr;
+        } elseif (isset($attrs['focalPoint']['x'], $attrs['focalPoint']['y'])) {
+            $format_percent = static function (float $value): string {
+                $value = max(0, min(100, $value));
+                $formatted = rtrim(rtrim(number_format($value, 2, '.', ''), '0'), '.');
+                return $formatted === '' ? '0' : $formatted;
+            };
+
+            $x = $format_percent((float) $attrs['focalPoint']['x'] * 100);
+            $y = $format_percent((float) $attrs['focalPoint']['y'] * 100);
+            $attributes['style'] = sprintf('object-position:%s%% %s%%;', $x, $y);
+        }
+
+        $parts = [];
+        foreach ($attributes as $name => $value) {
+            if (in_array($name, $boolean_attrs, true)) {
+                if ($value) {
+                    $parts[] = $name;
+                }
+                continue;
+            }
+
+            if ($value === null || $value === '') {
+                continue;
+            }
+
+            $parts[] = sprintf('%s="%s"', $name, esc_attr($value));
+        }
+
+        return '<video ' . implode(' ', $parts) . '></video>';
+    };
+
+    $replacements = 0;
+
+    $replaced_content = preg_replace_callback(
         '#<img[^>]*wp-block-cover__image-background[^>]*>#',
-        $video_markup,
+        static function (array $matches) use ($create_video_markup) {
+            $img_tag = $matches[0];
+            $style_attr = null;
+            $object_fit = null;
+
+            if (preg_match('/style="([^"]*)"/i', $img_tag, $style_match)) {
+                $style_attr = $style_match[1];
+            }
+
+            if (preg_match('/data-object-fit="([^"]*)"/i', $img_tag, $fit_match)) {
+                $object_fit = $fit_match[1];
+            }
+
+            return $create_video_markup($style_attr, $object_fit);
+        },
         $block_content,
         1,
         $replacements
@@ -483,9 +543,13 @@ add_filter('render_block', function ($block_content, $block) {
         return $replaced_content;
     }
 
-    $fallback_content = preg_replace(
+    $span_replacements = 0;
+
+    $fallback_content = preg_replace_callback(
         '#(<span[^>]*wp-block-cover__background[^>]*></span>)#',
-        '$1' . $video_markup,
+        static function (array $matches) use ($create_video_markup) {
+            return $matches[0] . $create_video_markup(null, null);
+        },
         $block_content,
         1,
         $span_replacements
@@ -495,5 +559,5 @@ add_filter('render_block', function ($block_content, $block) {
         return $fallback_content;
     }
 
-    return $block_content . $video_markup;
+    return $block_content . $create_video_markup(null, null);
 }, 10, 2);

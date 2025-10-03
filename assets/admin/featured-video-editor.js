@@ -24,6 +24,101 @@
 		});
 	}
 
+	function getBlockElement(clientId) {
+		return document.querySelector(`[data-block="${clientId}"]`);
+	}
+
+	function ensureVideoForBlock(clientId, posterUrl, videoUrl) {
+		const blockElement = getBlockElement(clientId);
+		if (!blockElement) {
+			return;
+		}
+
+		const coverElement = blockElement.querySelector('.wp-block-cover');
+		if (!coverElement) {
+			return;
+		}
+
+		const imageElement = coverElement.querySelector('.wp-block-cover__image-background');
+		let videoEntry = managedBlocks.get(clientId);
+		let videoElement = videoEntry ? videoEntry.video : null;
+
+		if (!videoElement || !videoElement.isConnected) {
+			videoElement = document.createElement('video');
+			videoElement.dataset.fitnessSkgFeaturedVideo = '1';
+			videoElement.className = 'wp-block-cover__video-background intrinsic-ignore';
+			videoElement.autoplay = true;
+			videoElement.muted = true;
+			videoElement.loop = true;
+			videoElement.playsInline = true;
+			videoElement.preload = 'metadata';
+
+			const backgroundSpan = coverElement.querySelector('.wp-block-cover__background');
+			if (backgroundSpan) {
+				backgroundSpan.insertAdjacentElement('afterend', videoElement);
+			} else {
+				coverElement.insertBefore(videoElement, coverElement.firstChild);
+			}
+		}
+
+		if (videoElement.getAttribute('poster') !== (posterUrl || null)) {
+			if (posterUrl) {
+				videoElement.setAttribute('poster', posterUrl);
+			} else {
+				videoElement.removeAttribute('poster');
+			}
+		}
+
+		if (videoElement.getAttribute('src') !== videoUrl) {
+			videoElement.setAttribute('src', videoUrl);
+			videoElement.load();
+		}
+
+		if (imageElement) {
+			if (!('fitnessSkgOriginalDisplay' in imageElement.dataset)) {
+				imageElement.dataset.fitnessSkgOriginalDisplay = imageElement.style.display || '';
+			}
+			imageElement.style.display = 'none';
+
+			const objectFit = imageElement.getAttribute('data-object-fit');
+			if (objectFit) {
+				videoElement.setAttribute('data-object-fit', objectFit);
+				videoElement.style.objectFit = objectFit;
+			} else {
+				videoElement.removeAttribute('data-object-fit');
+				videoElement.style.removeProperty('object-fit');
+			}
+
+			const objectPosition = imageElement.style.objectPosition;
+			if (objectPosition) {
+				videoElement.style.objectPosition = objectPosition;
+				videoElement.style.setProperty('object-position', objectPosition, '');
+			} else {
+				videoElement.style.removeProperty('object-position');
+			}
+		}
+
+		managedBlocks.set(clientId, { video: videoElement, image: imageElement || null });
+	}
+
+	function resetBlock(clientId) {
+		const entry = managedBlocks.get(clientId);
+		if (!entry) {
+			return;
+		}
+
+		if (entry.video && entry.video.isConnected) {
+			entry.video.remove();
+		}
+
+		if (entry.image) {
+			const originalDisplay = entry.image.dataset.fitnessSkgOriginalDisplay || '';
+			entry.image.style.display = originalDisplay;
+		}
+
+		managedBlocks.delete(clientId);
+	}
+
 	const FeaturedVideoCoverPreview = () => {
 		const meta = useSelect(
 			(select) => select('core/editor').getEditedPostAttribute('meta') || {},
@@ -83,20 +178,7 @@
 		}, [videoId]);
 
 		useEffect(() => {
-			const blockEditorDispatch = wp.data.dispatch('core/block-editor');
-			if (!blockEditorDispatch) {
-				return;
-			}
-
-			const applyUpdate = (clientId, attrs) => {
-				const markNonPersistent = blockEditorDispatch.__unstableMarkNextChangeAsNotPersistent;
-				if (typeof markNonPersistent === 'function') {
-					markNonPersistent(() => blockEditorDispatch.updateBlockAttributes(clientId, attrs));
-					return;
-				}
-
-				blockEditorDispatch.updateBlockAttributes(clientId, attrs);
-			};
+			const activeClientIds = new Set();
 
 			walkBlocks(blocks, (block) => {
 				if (!block || block.name !== 'core/cover') {
@@ -104,74 +186,41 @@
 				}
 
 				const attrs = block.attributes || {};
+				const usesFeatured = !!attrs.useFeaturedImage;
 				const clientId = block.clientId;
-				const wasManaged = managedBlocks.has(clientId);
-				const initiallyUsesFeatured = !!attrs.useFeaturedImage;
-				const shouldHandle = initiallyUsesFeatured || wasManaged;
 
-				if (!shouldHandle) {
-					return;
-				}
-
-				if (initiallyUsesFeatured) {
-					managedBlocks.set(clientId, true);
-				}
-
-				if (videoId && videoUrl) {
-					const needsUpdate =
-						attrs.backgroundType !== 'video' ||
-						attrs.videoID !== videoId ||
-						attrs.videoURL !== videoUrl ||
-						attrs.useFeaturedImage !== false ||
-						(posterUrl && attrs.url !== posterUrl) ||
-						(!posterUrl && attrs.url) ||
-						(featuredImageId && attrs.id !== featuredImageId) ||
-						(!featuredImageId && attrs.id);
-
-					if (needsUpdate) {
-						const nextAttrs = {
-							backgroundType: 'video',
-							videoID: videoId,
-							videoURL: videoUrl,
-							useFeaturedImage: false,
-						};
-
-						if (posterUrl) {
-							nextAttrs.url = posterUrl;
-						} else if (attrs.url) {
-							nextAttrs.url = undefined;
-						}
-
-						if (featuredImageId) {
-							nextAttrs.id = featuredImageId;
-						} else if (attrs.id) {
-							nextAttrs.id = undefined;
-						}
-
-						applyUpdate(clientId, nextAttrs);
-					}
+				if (usesFeatured && videoUrl) {
+					ensureVideoForBlock(clientId, posterUrl, videoUrl);
+					activeClientIds.add(clientId);
 				} else {
-					const needsReset =
-						attrs.useFeaturedImage !== true ||
-						attrs.backgroundType === 'video' ||
-						attrs.videoID ||
-						attrs.videoURL;
-
-					if (needsReset) {
-						applyUpdate(clientId, {
-							backgroundType: 'image',
-							useFeaturedImage: true,
-							videoID: undefined,
-							videoURL: undefined,
-							url: undefined,
-							id: undefined,
-						});
-					}
-
-					managedBlocks.delete(clientId);
+					resetBlock(clientId);
 				}
 			});
-		}, [blocks, videoId, videoUrl, featuredImageId, posterUrl]);
+
+			Array.from(managedBlocks.keys()).forEach((clientId) => {
+				if (!activeClientIds.has(clientId)) {
+					resetBlock(clientId);
+				}
+			});
+		}, [blocks, videoUrl, posterUrl]);
+
+		useEffect(() => {
+			if (!featuredImageId) {
+				return undefined;
+			}
+
+			const fetchImage = async () => {
+				try {
+					await wp.data.resolveSelect('core').getMedia(featuredImageId);
+				} catch (error) {
+					// ignore; poster will remain null
+				}
+			};
+
+			fetchImage();
+
+			return undefined;
+		}, [featuredImageId]);
 
 		return null;
 	};
