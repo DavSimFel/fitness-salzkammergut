@@ -14,3 +14,23 @@ Text Domain: fitness-salzkammergut
 Tags: 
 */
 
+/* Force Navigation block to switch at 768px instead of the default 600px */
+@media (max-width: 767px) {
+    .wp-block-navigation__responsive-container-open {
+        display: flex !important;
+    }
+
+    .wp-block-navigation__container {
+        display: none !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .wp-block-navigation__responsive-container-open {
+        display: none !important;
+    }
+
+    .wp-block-navigation__container {
+        display: flex !important;
+    }
+}
