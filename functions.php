@@ -66,8 +66,9 @@ add_action('after_setup_theme', function (): void {
     add_editor_style('build/tw.css');
 });
 
-function tailwind($hook) {
-     $tailwind_path = get_stylesheet_directory() . '/build/tw.css';
+function fitness_skg_enqueue_tailwind(): void
+{
+    $tailwind_path = get_stylesheet_directory() . '/build/tw.css';
     if (! file_exists($tailwind_path)) {
         return;
     }
@@ -78,8 +79,8 @@ function tailwind($hook) {
 
     wp_enqueue_style('fitness-skg-tailwind', $tailwind, [], $version);
 }
-add_action( 'admin_enqueue_scripts', 'tailwind' );
-add_action('wp_enqueue_scripts', 'tailwind');
+add_action('wp_enqueue_scripts', 'fitness_skg_enqueue_tailwind');
+add_action('enqueue_block_assets', 'fitness_skg_enqueue_tailwind');
 
 add_action('enqueue_block_editor_assets', function (): void {
     $theme_version = wp_get_theme()->get('Version') ?: '1.0.0';
