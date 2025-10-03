@@ -272,6 +272,24 @@
 						"top": "var(--wp--preset--spacing--40)"
 					}
 				}
+			},
+			"core/group": {
+				"dimensions": {
+					"minHeight": "48px"
+				},
+				"spacing": {
+					"blockGap": "var(--wp--preset--spacing--20)",
+					"margin": {
+						"bottom": "0",
+						"top": "0"
+					},
+					"padding": {
+						"bottom": "0",
+						"left": "0",
+						"right": "0",
+						"top": "0"
+					}
+				}
 			}
 		},
 		"elements": {
