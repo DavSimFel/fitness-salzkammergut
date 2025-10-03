@@ -12,6 +12,10 @@
 			return settings;
 		}
 
+		if (!Array.isArray(settings.allowedBlocks)) {
+			return settings;
+		}
+
 		const extraBlocks = ['core/group', 'core/row', 'core/columns'];
 		const allowed = new Set([...(settings.allowedBlocks || []), ...extraBlocks]);
 
