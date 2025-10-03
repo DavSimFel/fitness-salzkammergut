@@ -183,7 +183,56 @@
 		"typography": {
 			"fontFamilies": [
 				{
-					"fontFace": [],
+					"fontFace": [
+						{
+							"fontFamily": "\"Work Sans\"",
+							"fontStyle": "normal",
+							"fontWeight": "500",
+							"src": [
+								"file:./assets/fonts/work-sans/work-sans-500-normal.woff2"
+							]
+						},
+						{
+							"fontFamily": "\"Work Sans\"",
+							"fontStyle": "normal",
+							"fontWeight": "800",
+							"src": [
+								"file:./assets/fonts/work-sans/work-sans-800-normal.woff2"
+							]
+						},
+						{
+							"fontFamily": "\"Work Sans\"",
+							"fontStyle": "normal",
+							"fontWeight": "200",
+							"src": [
+								"file:./assets/fonts/work-sans/work-sans-200-normal.woff2"
+							]
+						},
+						{
+							"fontFamily": "\"Work Sans\"",
+							"fontStyle": "italic",
+							"fontWeight": "200",
+							"src": [
+								"file:./assets/fonts/work-sans/work-sans-200-italic.woff2"
+							]
+						},
+						{
+							"fontFamily": "\"Work Sans\"",
+							"fontStyle": "italic",
+							"fontWeight": "500",
+							"src": [
+								"file:./assets/fonts/work-sans/work-sans-500-italic.woff2"
+							]
+						},
+						{
+							"fontFamily": "\"Work Sans\"",
+							"fontStyle": "italic",
+							"fontWeight": "800",
+							"src": [
+								"file:./assets/fonts/work-sans/work-sans-800-italic.woff2"
+							]
+						}
+					],
 					"fontFamily": "\"Work Sans\", sans-serif",
 					"name": "Work Sans",
 					"slug": "work-sans"
@@ -289,6 +338,31 @@
 						"right": "0",
 						"top": "0"
 					}
+				}
+			},
+			"core/heading": {
+				"typography": {
+					"fontFamily": "var(--wp--preset--font-family--work-sans)",
+					"fontSize": "var(--wp--preset--font-size--4xl)",
+					"fontStyle": "normal",
+					"fontWeight": "500"
+				}
+			},
+			"core/paragraph": {
+				"color": {
+					"text": "var(--wp--preset--color--soft-white)"
+				},
+				"elements": {
+					"link": {
+						"color": {
+							"text": "var(--wp--preset--color--soft-white)"
+						}
+					}
+				},
+				"typography": {
+					"fontFamily": "var(--wp--preset--font-family--work-sans)",
+					"fontStyle": "normal",
+					"fontWeight": "500"
 				}
 			}
 		},
