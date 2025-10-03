@@ -320,16 +320,12 @@
   align-items: center
 }
 
-.tw-justify-end {
-  justify-content: flex-end
-}
-
 .tw-justify-between {
   justify-content: space-between
 }
 
-.tw-gap-1 {
-  gap: 0.25rem
+.tw-gap-12 {
+  gap: 3rem
 }
 
 .tw-gap-2 {
@@ -356,8 +352,10 @@
   gap: 2rem
 }
 
-.tw-gap-12 {
-  gap: 3rem
+.tw-space-y-10 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2.5rem * var(--tw-space-y-reverse))
 }
 
 .tw-space-y-12 > :not([hidden]) ~ :not([hidden]) {
@@ -372,10 +370,10 @@
   margin-bottom: calc(4rem * var(--tw-space-y-reverse))
 }
 
-.tw-space-y-10 > :not([hidden]) ~ :not([hidden]) {
+.tw-space-y-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
-  margin-top: calc(2.5rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(2.5rem * var(--tw-space-y-reverse))
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse))
 }
 
 .tw-space-y-20 > :not([hidden]) ~ :not([hidden]) {
@@ -396,20 +394,10 @@
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse))
 }
 
-.tw-space-y-2 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0;
-  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse))
-}
-
 .tw-space-y-8 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(2rem * var(--tw-space-y-reverse))
-}
-
-.tw-self-start {
-  align-self: flex-start
 }
 
 .tw-overflow-x-auto {
@@ -434,6 +422,10 @@
 
 .tw-border-\[var\(--wp--preset--color--black-50\)\] {
   border-color: var(--wp--preset--color--black-50)
+}
+
+.tw-border-\[var\(\\u002d\\u002dwp\\u002d\\u002dpreset\\u002d\\u002dcolor\\u002d\\u002dblack-50\)\] {
+  border-color: var(\u002d\u002dwp\u002d\u002dpreset\u002d\u002dcolor\u002d\u002dblack-50)
 }
 
 .tw-bg-almost-black {
@@ -461,11 +453,6 @@
   padding: 1.5rem
 }
 
-.tw-px-6 {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem
-}
-
 .tw-px-8 {
   padding-left: 2rem;
   padding-right: 2rem
@@ -474,11 +461,6 @@
 .tw-py-10 {
   padding-top: 2.5rem;
   padding-bottom: 2.5rem
-}
-
-.tw-py-6 {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem
 }
 
 .tw-py-16 {
@@ -499,55 +481,16 @@
   padding-bottom: 0.5rem
 }
 
-.tw-pr-6 {
-  padding-right: 1.5rem
-}
-
 .tw-pb-20 {
   padding-bottom: 5rem
 }
 
+.tw-pr-6 {
+  padding-right: 1.5rem
+}
+
 .tw-text-center {
   text-align: center
-}
-
-.tw-text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem
-}
-
-.tw-text-\[22px\] {
-  font-size: 22px
-}
-
-.tw-text-base {
-  font-size: 1rem;
-  line-height: 1.5rem
-}
-
-.tw-text-sm {
-  font-size: 0.875rem;
-  line-height: 1.25rem
-}
-
-.tw-text-xl {
-  font-size: 1.25rem;
-  line-height: 1.75rem
-}
-
-.tw-text-4xl {
-  font-size: 2.25rem;
-  line-height: 2.5rem
-}
-
-.tw-text-lg {
-  font-size: 1.125rem;
-  line-height: 1.75rem
-}
-
-.tw-text-xs {
-  font-size: 0.75rem;
-  line-height: 1rem
 }
 
 .tw-font-medium {
@@ -562,14 +505,6 @@
   text-transform: uppercase
 }
 
-.tw-leading-\[1\.3\] {
-  line-height: 1.3
-}
-
-.tw-leading-\[1\.4\] {
-  line-height: 1.4
-}
-
 .tw-leading-relaxed {
   line-height: 1.625
 }
@@ -582,32 +517,12 @@
   line-height: 1.25
 }
 
-.tw-tracking-\[0\.02em\] {
-  letter-spacing: 0.02em
-}
-
 .tw-tracking-\[0\.08em\] {
   letter-spacing: 0.08em
 }
 
 .tw-tracking-\[0\.12em\] {
   letter-spacing: 0.12em
-}
-
-.tw-text-\[var\(--wp--preset--color--almost-black\)\] {
-  color: var(--wp--preset--color--almost-black)
-}
-
-.tw-text-almost-black {
-  color: var(--wp--preset--color--almost-black)
-}
-
-.tw-text-grey {
-  color: var(--wp--preset--color--grey)
-}
-
-.tw-text-soft-white {
-  color: var(--wp--preset--color--soft-white)
 }
 
 .tw-shadow-card {
