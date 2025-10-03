@@ -271,6 +271,10 @@
   max-width: 48rem
 }
 
+.tw-flex-none {
+  flex: none
+}
+
 .tw-shrink-0 {
   flex-shrink: 0
 }
