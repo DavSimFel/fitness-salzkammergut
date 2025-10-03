@@ -125,6 +125,20 @@
 				}
 			]
 		},
+		"shadow": {
+			"presets": [
+				{
+					"slug": "natural",
+					"name": "Natural",
+					"shadow": "0 16px 42px -18px rgba(0, 0, 0, 0.45)"
+				},
+				{
+					"slug": "card",
+					"name": "Card",
+					"shadow": "0 14px 50px -20px rgba(0, 0, 0, 0.25)"
+				}
+			]
+		},
 		"layout": {
 			"contentSize": "1280px",
 			"wideSize": "1600px"
@@ -137,6 +151,33 @@
 				"rem",
 				"vh",
 				"vw"
+			],
+			"spacingSizes": [
+				{
+					"slug": "30",
+					"size": "1rem",
+					"name": "Spacing 30"
+				},
+				{
+					"slug": "40",
+					"size": "1.25rem",
+					"name": "Spacing 40"
+				},
+				{
+					"slug": "50",
+					"size": "1.5rem",
+					"name": "Spacing 50"
+				},
+				{
+					"slug": "60",
+					"size": "2rem",
+					"name": "Spacing 60"
+				},
+				{
+					"slug": "70",
+					"size": "2.5rem",
+					"name": "Spacing 70"
+				}
 			]
 		},
 		"typography": {
