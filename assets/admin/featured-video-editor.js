@@ -1,5 +1,6 @@
 (function (wp) {
 	const META_KEY = '_featured_video_id';
+	const managedBlocks = new Map();
 
 	const { registerPlugin } = wp.plugins || {};
 	const { useEffect, useState } = wp.element || {};
@@ -32,6 +33,20 @@
 			(select) => select('core/block-editor').getBlocks(),
 			[]
 		);
+		const featuredImageId = useSelect(
+			(select) => select('core/editor').getEditedPostAttribute('featured_media') || 0,
+			[]
+		);
+		const featuredImage = useSelect(
+			(select) => {
+				if (!featuredImageId) {
+					return null;
+				}
+				return select('core').getMedia(featuredImageId);
+			},
+			[featuredImageId]
+		);
+		const posterUrl = featuredImage && featuredImage.source_url ? featuredImage.source_url : null;
 
 		const rawMetaValue = meta[META_KEY];
 		const parsedId = rawMetaValue ? parseInt(rawMetaValue, 10) : 0;
@@ -89,35 +104,74 @@
 				}
 
 				const attrs = block.attributes || {};
-				if (!attrs.useFeaturedImage) {
+				const clientId = block.clientId;
+				const wasManaged = managedBlocks.has(clientId);
+				const initiallyUsesFeatured = !!attrs.useFeaturedImage;
+				const shouldHandle = initiallyUsesFeatured || wasManaged;
+
+				if (!shouldHandle) {
 					return;
 				}
 
+				if (initiallyUsesFeatured) {
+					managedBlocks.set(clientId, true);
+				}
+
 				if (videoId && videoUrl) {
-					if (
+					const needsUpdate =
 						attrs.backgroundType !== 'video' ||
 						attrs.videoID !== videoId ||
-						attrs.videoURL !== videoUrl
-					) {
-						applyUpdate(block.clientId, {
+						attrs.videoURL !== videoUrl ||
+						attrs.useFeaturedImage !== false ||
+						(posterUrl && attrs.url !== posterUrl) ||
+						(!posterUrl && attrs.url) ||
+						(featuredImageId && attrs.id !== featuredImageId) ||
+						(!featuredImageId && attrs.id);
+
+					if (needsUpdate) {
+						const nextAttrs = {
 							backgroundType: 'video',
 							videoID: videoId,
 							videoURL: videoUrl,
-						});
+							useFeaturedImage: false,
+						};
+
+						if (posterUrl) {
+							nextAttrs.url = posterUrl;
+						} else if (attrs.url) {
+							nextAttrs.url = undefined;
+						}
+
+						if (featuredImageId) {
+							nextAttrs.id = featuredImageId;
+						} else if (attrs.id) {
+							nextAttrs.id = undefined;
+						}
+
+						applyUpdate(clientId, nextAttrs);
 					}
-				} else if (!videoId) {
-					const hasPreview =
-						attrs.backgroundType === 'video' || attrs.videoID || attrs.videoURL;
-					if (hasPreview) {
-						applyUpdate(block.clientId, {
+				} else {
+					const needsReset =
+						attrs.useFeaturedImage !== true ||
+						attrs.backgroundType === 'video' ||
+						attrs.videoID ||
+						attrs.videoURL;
+
+					if (needsReset) {
+						applyUpdate(clientId, {
 							backgroundType: 'image',
+							useFeaturedImage: true,
 							videoID: undefined,
 							videoURL: undefined,
+							url: undefined,
+							id: undefined,
 						});
 					}
+
+					managedBlocks.delete(clientId);
 				}
 			});
-		}, [blocks, videoId, videoUrl]);
+		}, [blocks, videoId, videoUrl, featuredImageId, posterUrl]);
 
 		return null;
 	};

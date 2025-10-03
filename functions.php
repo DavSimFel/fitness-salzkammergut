@@ -432,12 +432,68 @@ function fitness_skg_get_featured_media_html(?int $post_id = null, $size = 'post
     return get_the_post_thumbnail($post_id, $size, $attrs);
 }
 
-add_filter('post_thumbnail_html', function ($html, $post_id, $thumb_id, $size, $attr) {
-    $video_id = (int) get_post_meta($post_id, FITNESS_SKG_FEATURED_VIDEO_META_KEY, true);
-    if ($video_id) {
-        $attrs = is_array($attr) ? $attr : [];
-        return fitness_skg_get_featured_media_html($post_id, $size, $attrs);
+add_filter('render_block', function ($block_content, $block) {
+    if (($block['blockName'] ?? null) !== 'core/cover') {
+        return $block_content;
     }
 
-    return $html;
-}, 10, 5);
+    $attrs = $block['attrs'] ?? [];
+    if (empty($attrs['useFeaturedImage'])) {
+        return $block_content;
+    }
+
+    $post_id = $block['context']['postId'] ?? get_the_ID();
+    if (! $post_id) {
+        return $block_content;
+    }
+
+    $video_id = (int) get_post_meta($post_id, FITNESS_SKG_FEATURED_VIDEO_META_KEY, true);
+    if (! $video_id) {
+        return $block_content;
+    }
+
+    // If the block already has a video background (manually set), leave it untouched.
+    if (strpos($block_content, 'wp-block-cover__video-background') !== false) {
+        return $block_content;
+    }
+
+    $video_url = wp_get_attachment_url($video_id);
+    if (! $video_url) {
+        return $block_content;
+    }
+
+    $poster_id = get_post_thumbnail_id($post_id);
+    $poster_url = $poster_id ? wp_get_attachment_image_url($poster_id, 'full') : '';
+
+    $video_markup = sprintf(
+        '<video class="wp-block-cover__video-background intrinsic-ignore" autoplay muted loop playsinline preload="metadata" src="%s" data-object-fit="cover"%s></video>',
+        esc_url($video_url),
+        $poster_url ? ' poster="' . esc_url($poster_url) . '"' : ''
+    );
+
+    $replaced_content = preg_replace(
+        '#<img[^>]*wp-block-cover__image-background[^>]*>#',
+        $video_markup,
+        $block_content,
+        1,
+        $replacements
+    );
+
+    if ($replacements) {
+        return $replaced_content;
+    }
+
+    $fallback_content = preg_replace(
+        '#(<span[^>]*wp-block-cover__background[^>]*></span>)#',
+        '$1' . $video_markup,
+        $block_content,
+        1,
+        $span_replacements
+    );
+
+    if ($span_replacements) {
+        return $fallback_content;
+    }
+
+    return $block_content . $video_markup;
+}, 10, 2);
