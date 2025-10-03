@@ -82,13 +82,26 @@ add_action( 'admin_enqueue_scripts', 'tailwind' );
 add_action('wp_enqueue_scripts', 'tailwind');
 
 add_action('enqueue_block_editor_assets', function (): void {
+    $theme_version = wp_get_theme()->get('Version') ?: '1.0.0';
+
     wp_enqueue_script(
         'fitness-skg-extend-nav-allowed-blocks',
         get_stylesheet_directory_uri() . '/extend-nav-allowed-blocks.js',
         ['wp-hooks', 'wp-blocks'],
-        wp_get_theme()->get('Version') ?: '1.0.0',
+        $theme_version,
         true
     );
+
+    $editor_script_path = get_stylesheet_directory() . '/assets/admin/featured-video-editor.js';
+    if (file_exists($editor_script_path)) {
+        wp_enqueue_script(
+            'fitness-skg-featured-video-editor',
+            get_stylesheet_directory_uri() . '/assets/admin/featured-video-editor.js',
+            ['wp-data', 'wp-element', 'wp-plugins', 'wp-block-editor'],
+            filemtime($editor_script_path) ?: $theme_version,
+            true
+        );
+    }
 });
 
 add_action('init', function () {
