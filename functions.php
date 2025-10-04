@@ -66,6 +66,8 @@ add_action('after_setup_theme', function (): void {
     add_editor_style('build/tw.css');
 });
 
+require_once __DIR__ . '/inc/reviews.php';
+
 function fitness_skg_enqueue_tailwind(): void
 {
     $tailwind_path = get_stylesheet_directory() . '/build/tw.css';

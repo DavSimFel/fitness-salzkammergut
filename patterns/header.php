@@ -65,10 +65,7 @@
 <!-- /wp:image -->
 
 <!-- wp:group {"style":{"layout":{"selfStretch":"fit","flexSize":null},"spacing":{"blockGap":"var:preset|spacing|20","padding":{"top":"0","bottom":"0","left":"0","right":"var:preset|spacing|60"}},"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90","layout":{"type":"flex","orientation":"vertical","flexWrap":"nowrap"}} -->
-<div class="wp-block-group has-black-90-color has-text-color has-link-color" style="padding-top:0;padding-right:var(--wp--preset--spacing--60);padding-bottom:0;padding-left:0"><!-- wp:paragraph {"style":{"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90","fontSize":"xs"} -->
-<p class="has-black-90-color has-text-color has-link-color has-xs-font-size"><?php /* Translators: 1. is the start of a 'code' HTML element, 2. is the end of a 'code' HTML element */ 
-echo sprintf( esc_html__( '★★★★★ %1$s4,8 (2k)%2$s', 'fitness-salzkammergut' ), '<code>', '</code>' ); ?></p>
-<!-- /wp:paragraph -->
+<div class="wp-block-group has-black-90-color has-text-color has-link-color" style="padding-top:0;padding-right:var(--wp--preset--spacing--60);padding-bottom:0;padding-left:0"><!-- wp:fitness/rating-badge {"size":"small","showLogo":true} /-->
 
 <!-- wp:paragraph {"style":{"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90"} -->
 <p class="has-black-90-color has-text-color has-link-color"><?php /* Translators: 1. is a 'br' HTML element */ 
@@ -91,10 +88,7 @@ echo sprintf( esc_html__( 'Dein VIVO in%1$sBad Goisern', 'fitness-salzkammergut'
 <!-- /wp:image -->
 
 <!-- wp:group {"style":{"layout":{"selfStretch":"fit","flexSize":null},"spacing":{"blockGap":"var:preset|spacing|20","padding":{"top":"0","bottom":"0","left":"0","right":"0"}},"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90","layout":{"type":"flex","orientation":"vertical","flexWrap":"nowrap"}} -->
-<div class="wp-block-group has-black-90-color has-text-color has-link-color" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><!-- wp:paragraph {"style":{"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90","fontSize":"xs"} -->
-<p class="has-black-90-color has-text-color has-link-color has-xs-font-size"><?php /* Translators: 1. is the start of a 'code' HTML element, 2. is the end of a 'code' HTML element */ 
-echo sprintf( esc_html__( '★★★★★ %1$s4,8 (2k)%2$s', 'fitness-salzkammergut' ), '<code>', '</code>' ); ?></p>
-<!-- /wp:paragraph -->
+<div class="wp-block-group has-black-90-color has-text-color has-link-color" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><!-- wp:fitness/rating-badge {"size":"small","showLogo":true} /-->
 
 <!-- wp:paragraph {"style":{"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90"} -->
 <p class="has-black-90-color has-text-color has-link-color"><?php /* Translators: 1. is a 'br' HTML element */ 

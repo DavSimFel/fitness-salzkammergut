@@ -39,4 +39,129 @@
   .tw-review {
     @apply tw-flex tw-h-full tw-flex-col tw-gap-4 tw-rounded-card tw-bg-black-30 tw-p-6 tw-text-almost-black;
   }
+
+  .fitness-rating-badge {
+    @apply tw-inline-flex tw-items-center tw-gap-2 tw-rounded-full tw-bg-soft-white tw-px-3 tw-py-1 tw-text-sm tw-font-semibold tw-text-almost-black tw-shadow-sm;
+  }
+
+  .fitness-rating-badge--small {
+    @apply tw-gap-1 tw-px-2 tw-py-1 tw-text-xs;
+  }
+
+  .fitness-rating-badge--large {
+    @apply tw-gap-3 tw-px-4 tw-py-2 tw-text-base;
+  }
+
+  .fitness-rating-badge.is-empty {
+    @apply tw-bg-black-30 tw-text-black-60 tw-shadow-none;
+  }
+
+  .fitness-rating-badge__stars {
+    @apply tw-inline-flex tw-items-center tw-gap-1 tw-leading-none;
+  }
+
+  .fitness-rating-badge--small .fitness-rating-badge__stars {
+    @apply tw-gap-0.5;
+  }
+
+  .fitness-rating-badge__values {
+    @apply tw-inline-flex tw-items-baseline tw-gap-1;
+  }
+
+  .fitness-rating-badge__rating {
+    @apply tw-text-base tw-font-semibold;
+  }
+
+  .fitness-rating-badge--small .fitness-rating-badge__rating {
+    @apply tw-text-sm;
+  }
+
+  .fitness-rating-badge--large .fitness-rating-badge__rating {
+    @apply tw-text-lg;
+  }
+
+  .fitness-rating-badge__count {
+    @apply tw-text-xs tw-font-medium tw-text-black-60;
+  }
+
+  .fitness-rating-badge__logo {
+    @apply tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wider tw-text-black-60;
+  }
+
+  .fitness-rating-badge__star {
+    position: relative;
+    display: inline-block;
+    font-size: 1.125em;
+    line-height: 1;
+    color: var(--wp--preset--color--lime);
+  }
+
+  .fitness-rating-badge--small .fitness-rating-badge__star {
+    font-size: 0.95em;
+  }
+
+  .fitness-rating-badge--large .fitness-rating-badge__star {
+    font-size: 1.35em;
+  }
+
+  .fitness-rating-badge__star.is-empty {
+    color: var(--wp--preset--color--black-40);
+  }
+
+  .fitness-rating-badge__star.is-half {
+    color: var(--wp--preset--color--black-40);
+  }
+
+  .fitness-rating-badge__star.is-half::before {
+    content: '★';
+    position: absolute;
+    inset: 0;
+    width: 50%;
+    overflow: hidden;
+    color: var(--wp--preset--color--lime);
+  }
+
+  .fitness-review-card {
+    @apply tw-flex tw-h-full tw-flex-col tw-gap-4 tw-rounded-card tw-bg-soft-white tw-p-6 tw-text-almost-black tw-shadow-card;
+  }
+
+  .fitness-review-card.is-empty {
+    @apply tw-rounded-card tw-border tw-border-dashed tw-border-black-40 tw-p-6 tw-text-center tw-text-sm tw-text-black-60;
+  }
+
+  .fitness-review-card__stars {
+    @apply tw-flex tw-gap-1 tw-text-lime;
+  }
+
+  .fitness-review-card__stars.is-empty {
+    @apply tw-text-black-40;
+  }
+
+  .fitness-review-card__quote {
+    @apply tw-text-lg tw-font-medium tw-leading-relaxed;
+  }
+
+  .fitness-review-card__footer {
+    @apply tw-flex tw-items-center tw-gap-4;
+  }
+
+  .fitness-review-card__photo {
+    @apply tw-flex tw-shrink-0;
+  }
+
+  .fitness-review-card__photo img {
+    @apply tw-h-12 tw-w-12 tw-rounded-full tw-object-cover;
+  }
+
+  .fitness-review-card__meta {
+    @apply tw-flex tw-flex-col tw-gap-1;
+  }
+
+  .fitness-review-card__name {
+    @apply tw-text-base tw-font-semibold;
+  }
+
+  .fitness-review-card__date {
+    @apply tw-text-sm tw-text-black-60;
+  }
 }

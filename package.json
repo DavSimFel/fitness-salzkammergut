@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "build:css": "tailwindcss -c tailwind.config.js -i ./src/tw.css -o ./build/tw.css --minify",
-    "dev:css": "tailwindcss -c tailwind.config.js -i ./src/tw.css -o ./build/tw.css --watch"
+    "dev:css": "tailwindcss -c tailwind.config.js -i ./src/tw.css -o ./build/tw.css --watch",
+    "dev:css:full": "TAILWIND_FULL=1 tailwindcss -c tailwind.config.js -i ./src/tw.css -o ./build/tw.css --watch"
   },
   "keywords": [],
   "author": "",
