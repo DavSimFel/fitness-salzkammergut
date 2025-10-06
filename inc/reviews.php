@@ -155,12 +155,19 @@ function fitness_skg_fetch_place_rating(string $place_id)
     $encoded_id = rawurlencode($place_id);
     $endpoint   = sprintf('https://places.googleapis.com/v1/places/%s', $encoded_id);
 
+    $region_code = substr(get_locale(), -2);
+    $headers = [
+        'X-Goog-Api-Key'   => $api_key,
+        'X-Goog-FieldMask' => 'rating,userRatingCount',
+    ];
+
+    if ($region_code) {
+        $headers['X-Goog-User-Region'] = strtoupper($region_code);
+    }
+
     $response = wp_remote_get($endpoint, [
         'timeout' => 8,
-        'headers' => [
-            'X-Goog-Api-Key'    => $api_key,
-            'X-Goog-FieldMask'  => 'rating,userRatingCount',
-        ],
+        'headers' => $headers,
     ]);
 
     if (is_wp_error($response)) {
