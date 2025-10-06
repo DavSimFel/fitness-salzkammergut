@@ -202,17 +202,6 @@
     @apply tw-text-sm tw-opacity-70;
   }
 
-  .wp-block-fitness-review-feed {
-    @apply tw-grid tw-w-full tw-gap-3;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  }
-
-  @screen 2xl {
-    .wp-block-fitness-review-feed {
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-    }
-  }
-
   .wp-block-fitness-review-feed .fitness-review-feed__item {
     @apply tw-flex tw-flex-col tw-gap-3 tw-h-full;
   }
@@ -234,7 +223,7 @@
   }
 
   .wp-block-fitness-review-feed .fitness-review-feed__place {
-    @apply tw-hidden
+    @apply tw-hidden;
   }
 
   .wp-block-fitness-review-feed .fitness-review-feed__text {
@@ -298,5 +287,30 @@
 
   .tw-gym-card:hover .tw-gym-card__arrow {
     @apply tw-text-lime tw-translate-x-1.5;
+  }
+}
+
+.wp-block-fitness-review-feed {
+  display: grid;
+  width: 100%;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+@media (min-width: 1536px) {
+  .wp-block-fitness-review-feed {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+@layer components {
+  .wp-block-fitness-review-feed {
+    @apply tw-grid tw-w-full tw-gap-3;
+  }
+
+  @screen 2xl {
+    .wp-block-fitness-review-feed {
+      @apply tw-grid-cols-6;
+    }
   }
 }
