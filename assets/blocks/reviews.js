@@ -6,7 +6,10 @@
     const { createElement: el, Fragment } = wp.element;
     const { __ } = wp.i18n || { __: (str) => str };
     const {
+        registerBlockType,
         updateBlockType,
+        unregisterBlockType,
+        getBlockType,
     } = wp.blocks || {};
     const {
         useBlockProps,
@@ -23,9 +26,34 @@
     } = wp.components || {};
     const ServerSideRender = wp.serverSideRender;
 
-    if (!updateBlockType || !useBlockProps || !InspectorControls || !ServerSideRender) {
+    if ((!registerBlockType && !updateBlockType) || !useBlockProps || !InspectorControls || !ServerSideRender) {
         return;
     }
+
+    const ensureBlockType = (name, settings) => {
+        const existing = getBlockType ? getBlockType(name) : null;
+
+        if (existing) {
+            if (typeof updateBlockType === 'function') {
+                updateBlockType(name, settings);
+                return;
+            }
+
+            if (typeof unregisterBlockType === 'function' && typeof registerBlockType === 'function') {
+                unregisterBlockType(name);
+                const mergedSettings = Object.assign({}, existing, settings);
+                if (typeof mergedSettings.save !== 'function') {
+                    mergedSettings.save = () => null;
+                }
+                registerBlockType(name, mergedSettings);
+                return;
+            }
+        }
+
+        if (typeof registerBlockType === 'function') {
+            registerBlockType(name, Object.assign({ save: () => null }, settings));
+        }
+    };
 
     const wrapWithBlockProps = (content) => {
         const blockProps = useBlockProps({ __experimentalSkipSerialization: true });
@@ -188,15 +216,15 @@
     };
 
     wp.domReady(() => {
-        updateBlockType('fitness/rating-badge', {
+        ensureBlockType('fitness/rating-badge', {
             edit: RatingBadgeEdit,
         });
 
-        updateBlockType('fitness/review-card', {
+        ensureBlockType('fitness/review-card', {
             edit: ReviewCardEdit,
         });
 
-        updateBlockType('fitness/review-feed', {
+        ensureBlockType('fitness/review-feed', {
             edit: ReviewFeedEdit,
         });
     });
