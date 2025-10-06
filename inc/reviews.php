@@ -476,7 +476,7 @@ function fitness_skg_register_review_blocks(): void
         wp_register_script(
             $handle,
             get_stylesheet_directory_uri() . $relative_path,
-            ['wp-blocks', 'wp-element', 'wp-components', 'wp-i18n', 'wp-block-editor', 'wp-data', 'wp-server-side-render', 'wp-dom-ready'],
+            ['wp-blocks', 'wp-element', 'wp-components', 'wp-i18n', 'wp-block-editor', 'wp-data', 'wp-core-data', 'wp-dom-ready'],
             filemtime($script_path) ?: wp_get_theme()->get('Version'),
             true
         );

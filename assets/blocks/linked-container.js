@@ -3,18 +3,39 @@
         return;
     }
 
-    const { createElement: el, Fragment, useState } = wp.element || {};
+    const {
+        createElement: el,
+        Fragment,
+        useState,
+        useMemo,
+        useCallback,
+    } = wp.element || {};
     const { __ } = wp.i18n || { __: (str) => str };
     const { registerBlockType, unregisterBlockType, getBlockType } = wp.blocks || {};
-    const { useBlockProps, InspectorControls, InnerBlocks, BlockControls, LinkControl, __experimentalLinkControl } = wp.blockEditor || wp.editor || {};
-    const { TextControl, ToggleControl, Notice, ToolbarButton, ToolbarGroup, Popover } = wp.components || {};
+    const {
+        useBlockProps,
+        InspectorControls,
+        InnerBlocks,
+        BlockControls,
+        LinkControl,
+        __experimentalLinkControl,
+    } = wp.blockEditor || wp.editor || {};
+    const {
+        PanelBody,
+        TextControl,
+        ToggleControl,
+        Notice,
+        ToolbarButton,
+        ToolbarGroup,
+        Popover,
+    } = wp.components || {};
     const { link: linkIcon, linkOff } = wp.icons || {};
 
     if (!el || !Fragment || !useBlockProps || !InnerBlocks || !registerBlockType) {
         return;
     }
 
-    const EffectiveLinkControl = LinkControl || __experimentalLinkControl;
+    const LinkControlComponent = LinkControl || __experimentalLinkControl;
 
     const LinkedContainerEdit = (props) => {
         const { attributes, setAttributes } = props;
@@ -26,100 +47,113 @@
             'data-has-link': url ? 'true' : 'false',
         });
 
-        const linkObject = {
-            url: url || '',
-            opensInNewTab: !!opensInNewTab,
-            rel: rel || '',
-        };
+        const linkValue = useMemo(
+            () => ({
+                url: url || '',
+                opensInNewTab: !!opensInNewTab,
+                rel: rel || '',
+            }),
+            [url, opensInNewTab, rel]
+        );
 
-        const applyLink = (nextValue) => {
-            if (!nextValue) {
-                setAttributes({ url: '', opensInNewTab: false, rel: '' });
-                return;
-            }
-
-            setAttributes({
-                url: nextValue.url || '',
-                opensInNewTab: !!nextValue.opensInNewTab,
-                rel: nextValue.rel || '',
-            });
-        };
-
-        const removeLink = () => {
-            setAttributes({ url: '', opensInNewTab: false, rel: '' });
+        const closeLinkUI = useCallback(() => {
             setIsLinkUIVisible(false);
-        };
+        }, []);
+
+        const applyLink = useCallback(
+            (nextValue) => {
+                if (!nextValue) {
+                    setAttributes({ url: '', opensInNewTab: false, rel: '' });
+                    return;
+                }
+
+                setAttributes({
+                    url: nextValue.url || '',
+                    opensInNewTab: !!nextValue.opensInNewTab,
+                    rel: nextValue.rel || '',
+                });
+            },
+            [setAttributes]
+        );
+
+        const removeLink = useCallback(() => {
+            setAttributes({ url: '', opensInNewTab: false, rel: '' });
+            closeLinkUI();
+        }, [closeLinkUI, setAttributes]);
 
         const toolbar = ToolbarGroup && ToolbarButton && BlockControls
             ? el(
-                BlockControls,
-                { group: 'block' },
-                el(
-                    ToolbarGroup,
-                    null,
-                    el(ToolbarButton, {
-                        icon: linkIcon,
-                        label: url ? __('Link bearbeiten', 'fitness-skg') : __('Link hinzufügen', 'fitness-skg'),
-                        onClick: () => setIsLinkUIVisible(true),
-                        isPressed: isLinkUIVisible,
-                    }),
-                    url
-                        ? el(ToolbarButton, {
-                            icon: linkOff,
-                            label: __('Link entfernen', 'fitness-skg'),
-                            onClick: removeLink,
-                        })
-                        : null
-                )
-            )
+                  BlockControls,
+                  { group: 'block' },
+                  el(
+                      ToolbarGroup,
+                      null,
+                      el(ToolbarButton, {
+                          icon: linkIcon,
+                          label: url
+                              ? __('Link bearbeiten', 'fitness-skg')
+                              : __('Link hinzufügen', 'fitness-skg'),
+                          onClick: () => setIsLinkUIVisible(true),
+                          isPressed: isLinkUIVisible,
+                      }),
+                      url
+                          ? el(ToolbarButton, {
+                                icon: linkOff,
+                                label: __('Link entfernen', 'fitness-skg'),
+                                onClick: removeLink,
+                            })
+                          : null
+                  )
+              )
             : null;
 
-        const linkPopover = isLinkUIVisible && EffectiveLinkControl && Popover
-            ? el(
-                Popover,
-                {
-                    position: 'bottom center',
-                    onClose: () => setIsLinkUIVisible(false),
-                    className: 'fitness-linked-container__link-popover',
-                },
-                el(EffectiveLinkControl, {
-                    value: linkObject,
-                    onChange: (nextValue) => {
-                        applyLink(nextValue);
-                        if (!nextValue || !nextValue.url) {
-                            setIsLinkUIVisible(false);
-                        }
-                    },
-                    onRemove: removeLink,
-                    forceIsEditingLink: true,
-                    showInitialSuggestions: true,
-                })
-            )
-            : null;
+        const linkPopover =
+            isLinkUIVisible && LinkControlComponent && Popover
+                ? el(
+                      Popover,
+                      {
+                          position: 'bottom center',
+                          onClose: closeLinkUI,
+                          className: 'fitness-linked-container__link-popover',
+                      },
+                      el(LinkControlComponent, {
+                          key: `fitness-linked-container-link-${linkValue.url}-${linkValue.opensInNewTab}-${linkValue.rel}`,
+                          value: linkValue,
+                          onChange: (nextValue) => {
+                              applyLink(nextValue);
+                              if (nextValue?.url) {
+                                  closeLinkUI();
+                              }
+                          },
+                          onRemove: removeLink,
+                      })
+                  )
+                : null;
 
-        const fallbackLinkControls = !EffectiveLinkControl
-            ? el(
-                Fragment,
-                null,
-                el(TextControl, {
-                    label: __('URL', 'fitness-skg'),
-                    value: url || '',
-                    onChange: (value) => setAttributes({ url: value }),
-                    placeholder: __('https://beispiel.com', 'fitness-skg'),
-                }),
-                el(ToggleControl, {
-                    label: __('In neuem Tab öffnen', 'fitness-skg'),
-                    checked: !!opensInNewTab,
-                    onChange: (value) => setAttributes({ opensInNewTab: value }),
-                }),
-                el(TextControl, {
-                    label: __('Rel-Attribute', 'fitness-skg'),
-                    value: rel || '',
-                    onChange: (value) => setAttributes({ rel: value }),
-                    help: __('Leer lassen, um Standardwerte zu verwenden.', 'fitness-skg'),
-                })
-            )
-            : null;
+        const fallbackLinkControls =
+            !LinkControlComponent && PanelBody
+                ? el(
+                      PanelBody,
+                      { title: __('Link', 'fitness-skg'), initialOpen: true },
+                      el(TextControl, {
+                          label: __('URL', 'fitness-skg'),
+                          value: url || '',
+                          onChange: (value) => setAttributes({ url: value }),
+                          placeholder: __('https://beispiel.com', 'fitness-skg'),
+                      }),
+                      el(ToggleControl, {
+                          label: __('In neuem Tab öffnen', 'fitness-skg'),
+                          checked: !!opensInNewTab,
+                          onChange: (value) => setAttributes({ opensInNewTab: value }),
+                      }),
+                      el(TextControl, {
+                          label: __('Rel-Attribute', 'fitness-skg'),
+                          value: rel || '',
+                          onChange: (value) => setAttributes({ rel: value }),
+                          help: __('Leer lassen, um Standardwerte zu verwenden.', 'fitness-skg'),
+                      })
+                  )
+                : null;
 
         const inspector = el(
             InspectorControls,
@@ -128,7 +162,8 @@
             el(Notice, {
                 status: 'info',
                 isDismissible: false,
-            }, url
+            },
+            url
                 ? __('Die gesamte Box wird auf die gewählte URL verlinkt.', 'fitness-skg')
                 : __('Ohne URL bleibt der Container statisch.', 'fitness-skg'))
         );
@@ -139,11 +174,7 @@
             toolbar,
             inspector,
             linkPopover,
-            el(
-                'div',
-                blockProps,
-                el(InnerBlocks, null)
-            )
+            el('div', blockProps, el(InnerBlocks, null))
         );
     };
 
@@ -177,7 +208,11 @@
     };
 
     wp.domReady(() => {
-        if (typeof unregisterBlockType === 'function' && typeof getBlockType === 'function' && getBlockType('fitness/linked-container')) {
+        if (
+            typeof unregisterBlockType === 'function' &&
+            typeof getBlockType === 'function' &&
+            getBlockType('fitness/linked-container')
+        ) {
             unregisterBlockType('fitness/linked-container');
         }
 
