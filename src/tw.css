@@ -232,11 +232,11 @@
   }
 
   .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item {
-    @apply tw-w-full tw-my-2;
+    @apply tw-w-full tw-my-3;
   }
 
   .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content {
-    @apply tw-my-[0.35rem];
+    @apply tw-my-[0.35rem] tw-text-lg;
   }
 
   .tw-gym-card {
