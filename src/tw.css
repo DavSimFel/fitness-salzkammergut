@@ -223,7 +223,7 @@
   }
 
   .wp-block-fitness-review-feed .fitness-review-feed__place {
-    @apply tw-text-xs tw-tracking-[0.05em] tw-uppercase tw-opacity-70;
+    @apply tw-hidden
   }
 
   .wp-block-fitness-review-feed .fitness-review-feed__text {
