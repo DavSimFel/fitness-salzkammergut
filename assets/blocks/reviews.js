@@ -7,7 +7,7 @@
     const Fragment = wp.element.Fragment;
     const { registerBlockType } = wp.blocks;
     const { __ } = wp.i18n;
-    const { PanelBody, TextControl, ToggleControl, SelectControl, Notice } = wp.components;
+    const { PanelBody, TextControl, ToggleControl, SelectControl, Notice, RangeControl, TextareaControl } = wp.components;
     const { InspectorControls } = wp.blockEditor;
     const ServerSideRender = wp.serverSideRender;
 
@@ -134,6 +134,87 @@
         },
         supports: { html: false },
         edit: renderReviewCardEdit,
+        save: function () {
+            return null;
+        }
+    });
+
+    function renderReviewFeedEdit(props) {
+        const attributes = props.attributes;
+
+        const onPlaceIdsChange = function (value) {
+            props.setAttributes({ placeIds: value });
+        };
+
+        return el(
+            Fragment,
+            null,
+            el(
+                InspectorControls,
+                null,
+                el(
+                    PanelBody,
+                    { title: __('Google Rezensionen', 'fitness-skg') },
+                    el(TextareaControl, {
+                        label: __('Place IDs', 'fitness-skg'),
+                        value: attributes.placeIds || '',
+                        onChange: onPlaceIdsChange,
+                        help: __('Mehrere IDs mit Komma oder Zeilenumbruch trennen. Leer lassen, um die Place ID des aktuellen Beitrags zu verwenden.', 'fitness-skg')
+                    }),
+                    el(RangeControl, {
+                        label: __('Anzahl der Rezensionen', 'fitness-skg'),
+                        min: 1,
+                        max: 10,
+                        value: attributes.limit || 3,
+                        onChange: function (value) {
+                            props.setAttributes({ limit: value });
+                        }
+                    }),
+                    el(RangeControl, {
+                        label: __('Mindestbewertung', 'fitness-skg'),
+                        min: 0,
+                        max: 5,
+                        step: 0.5,
+                        value: attributes.minRating !== undefined ? attributes.minRating : 4,
+                        onChange: function (value) {
+                            props.setAttributes({ minRating: value });
+                        }
+                    }),
+                    el(TextControl, {
+                        label: __('Max. Textlänge (Zeichen, 0 = Volltext)', 'fitness-skg'),
+                        type: 'number',
+                        min: 0,
+                        value: attributes.maxLength !== undefined ? attributes.maxLength : 180,
+                        onChange: function (value) {
+                            const parsed = value === '' ? 0 : parseInt(value, 10);
+                            props.setAttributes({ maxLength: isNaN(parsed) ? 0 : parsed });
+                        }
+                    }),
+                    el(Notice, {
+                        status: 'info',
+                        isDismissible: false
+                    }, __('Die Daten werden aus der Google Places API (New) gelesen und kurzzeitig gecached.', 'fitness-skg'))
+                )
+            ),
+            ServerSideRender
+                ? el(ServerSideRender, { block: 'fitness/review-feed', attributes: attributes })
+                : el('p', {}, __('Server-Side Render nicht verfügbar.', 'fitness-skg'))
+        );
+    }
+
+    registerBlockType('fitness/review-feed', {
+        title: __('Google Rezensionen Liste', 'fitness-skg'),
+        description: __('Zeigt die neuesten Google-Bewertungen über mehrere Standorte hinweg.', 'fitness-skg'),
+        icon: 'list-view',
+        category: 'widgets',
+        attributes: {
+            placeIds: { type: 'string', default: '' },
+            limit: { type: 'number', default: 3 },
+            minRating: { type: 'number', default: 4 },
+            maxLength: { type: 'number', default: 180 }
+        },
+        supports: { html: false },
+        edit: renderReviewFeedEdit,
         save: function () {
             return null;
         }

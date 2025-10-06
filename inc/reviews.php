@@ -215,6 +215,163 @@ function fitness_skg_fetch_place_rating(string $place_id)
     ];
 }
 
+function fitness_skg_get_place_reviews(string $place_id): array
+{
+    if ($place_id === '') {
+        return [];
+    }
+
+    $cache_key = 'fitness_skg_reviews_' . md5($place_id);
+    $cached = get_transient($cache_key);
+    if (is_array($cached)) {
+        return $cached;
+    }
+
+    $fetched = fitness_skg_fetch_place_reviews($place_id);
+    if (is_wp_error($fetched)) {
+        $fallback = get_option('fitness_skg_reviews_fallback_' . $cache_key);
+        if (is_array($fallback)) {
+            return $fallback;
+        }
+
+        return [];
+    }
+
+    set_transient($cache_key, $fetched, 15 * MINUTE_IN_SECONDS);
+    update_option('fitness_skg_reviews_fallback_' . $cache_key, $fetched, false);
+
+    return $fetched;
+}
+
+function fitness_skg_fetch_place_reviews(string $place_id)
+{
+    $api_key = trim((string) get_option(FITNESS_SKG_REVIEWS_API_OPTION));
+    if ($api_key === '') {
+        return new WP_Error('fitness_skg_missing_api_key', __('Google Places API key not configured.', 'fitness-skg'));
+    }
+
+    $encoded_id = rawurlencode($place_id);
+    $endpoint   = sprintf('https://places.googleapis.com/v1/places/%s', $encoded_id);
+
+    $query_args = [
+        'fields'             => 'displayName,rating,userRatingCount,reviews.rating,reviews.text,reviews.publishTime,reviews.relativePublishTimeDescription,reviews.authorAttribution.displayName,reviews.authorAttribution.photoUri',
+        'key'                => $api_key,
+        'reviews.pageSize'   => 10,
+        'reviews.sortOrder'  => 'NEWEST',
+    ];
+
+    $region_code = substr(get_locale(), -2);
+    if ($region_code) {
+        $query_args['regionCode'] = strtoupper($region_code);
+    }
+
+    $endpoint = add_query_arg($query_args, $endpoint);
+
+    $response = wp_remote_get($endpoint, [
+        'timeout' => 8,
+        'headers' => [
+            'Accept' => 'application/json',
+        ],
+    ]);
+
+    if (is_wp_error($response)) {
+        return $response;
+    }
+
+    $code = wp_remote_retrieve_response_code($response);
+    if ($code !== 200) {
+        $body = wp_remote_retrieve_body($response);
+        return new WP_Error(
+            'fitness_skg_bad_status',
+            sprintf(__('Unexpected HTTP status: %1$d — %2$s', 'fitness-skg'), $code, $body ?: __('Empty response', 'fitness-skg'))
+        );
+    }
+
+    $body = wp_remote_retrieve_body($response);
+    if (! $body) {
+        return new WP_Error('fitness_skg_empty_body', __('Empty response from Places API.', 'fitness-skg'));
+    }
+
+    $data = json_decode($body, true);
+    if (! is_array($data)) {
+        return new WP_Error('fitness_skg_json_error', __('Invalid JSON in Places API response.', 'fitness-skg'));
+    }
+
+    if (isset($data['error'])) {
+        $status         = $data['error']['status'] ?? 'UNKNOWN';
+        $error_message  = $data['error']['message'] ?? '';
+        $details        = $error_message ? sprintf('%s — %s', (string) $status, $error_message) : (string) $status;
+
+        return new WP_Error('fitness_skg_api_error', sprintf(__('Places API error: %s', 'fitness-skg'), $details));
+    }
+
+    $place_name = '';
+    if (! empty($data['displayName']['text'])) {
+        $place_name = (string) $data['displayName']['text'];
+    }
+
+    $reviews = [];
+    foreach ($data['reviews'] ?? [] as $review) {
+        $text = $review['text']['text'] ?? '';
+        $rating = isset($review['rating']) ? (float) $review['rating'] : null;
+
+        $publish_time_raw = $review['publishTime'] ?? '';
+        $publish_timestamp = $publish_time_raw ? strtotime($publish_time_raw) : 0;
+
+        $reviews[] = [
+            'rating'       => $rating,
+            'text'         => $text,
+            'publish_raw'  => $publish_time_raw,
+            'publish_ts'   => $publish_timestamp ?: 0,
+            'relative'     => $review['relativePublishTimeDescription'] ?? '',
+            'author'       => $review['authorAttribution']['displayName'] ?? '',
+            'photo'        => $review['authorAttribution']['photoUri'] ?? '',
+        ];
+    }
+
+    return [
+        'place_id'   => $place_id,
+        'place_name' => $place_name,
+        'reviews'    => $reviews,
+        'fetched_at' => time(),
+    ];
+}
+
+function fitness_skg_truncate_review_text(string $text, int $max_length): string
+{
+    $text = trim($text);
+    if ($max_length <= 0 || mb_strlen($text, 'UTF-8') <= $max_length) {
+        return $text;
+    }
+
+    $truncated = mb_substr($text, 0, $max_length, 'UTF-8');
+    return rtrim($truncated) . '…';
+}
+
+function fitness_skg_parse_place_ids(string $raw_place_ids, $block_context = []): array
+{
+    $ids = [];
+
+    if ($raw_place_ids !== '') {
+        $segments = preg_split('/[\s,]+/', $raw_place_ids);
+        foreach ($segments as $segment) {
+            $sanitized = fitness_skg_sanitize_place_id((string) $segment);
+            if ($sanitized !== '') {
+                $ids[] = $sanitized;
+            }
+        }
+    }
+
+    if (! $ids) {
+        $context_place_id = fitness_skg_get_current_context_place_id(is_array($block_context) ? $block_context : []);
+        if ($context_place_id) {
+            $ids[] = $context_place_id;
+        }
+    }
+
+    return array_values(array_unique($ids));
+}
+
 function fitness_skg_get_current_context_place_id(array $block_context = []): ?string
 {
     if (! empty($block_context['placeId'])) {
@@ -307,6 +464,40 @@ function fitness_skg_register_review_blocks(): void
     }
 
     register_block_type('fitness/review-card', $review_args);
+
+    $feed_args = [
+        'api_version'     => 2,
+        'category'        => 'widgets',
+        'icon'            => 'list-view',
+        'render_callback' => 'fitness_skg_render_review_feed_block',
+        'attributes'      => [
+            'placeIds' => [
+                'type'    => 'string',
+                'default' => '',
+            ],
+            'limit' => [
+                'type'    => 'number',
+                'default' => 3,
+            ],
+            'minRating' => [
+                'type'    => 'number',
+                'default' => 4,
+            ],
+            'maxLength' => [
+                'type'    => 'number',
+                'default' => 180,
+            ],
+        ],
+        'supports' => [
+            'html' => false,
+        ],
+    ];
+
+    if ($editor_handle) {
+        $feed_args['editor_script'] = $editor_handle;
+    }
+
+    register_block_type('fitness/review-feed', $feed_args);
 }
 
 function fitness_skg_render_rating_badge_block(array $attributes, string $content, $block): string
@@ -349,6 +540,108 @@ function fitness_skg_render_rating_badge_block(array $attributes, string $conten
     }
 
     return $output;
+}
+
+function fitness_skg_render_review_feed_block(array $attributes, string $content, $block): string
+{
+    $place_ids = fitness_skg_parse_place_ids($attributes['placeIds'] ?? '', $block->context ?? []);
+    if (! $place_ids) {
+        return '<div class="fitness-review-feed is-empty">' . esc_html__('Keine Google-Rezensionen gefunden.', 'fitness-skg') . '</div>';
+    }
+
+    $limit      = max(1, (int) ($attributes['limit'] ?? 3));
+    $min_rating = isset($attributes['minRating']) ? (float) $attributes['minRating'] : 0;
+    $min_rating = max(0, min(5, $min_rating));
+    $max_length = max(0, (int) ($attributes['maxLength'] ?? 0));
+
+    $collected = [];
+
+    foreach ($place_ids as $place_id) {
+        $bundle = fitness_skg_get_place_reviews($place_id);
+        if (empty($bundle['reviews']) || ! is_array($bundle['reviews'])) {
+            continue;
+        }
+
+        $place_name = isset($bundle['place_name']) ? (string) $bundle['place_name'] : '';
+
+        foreach ($bundle['reviews'] as $review) {
+            $rating = isset($review['rating']) ? (float) $review['rating'] : null;
+            if ($rating !== null && $rating < $min_rating) {
+                continue;
+            }
+
+            $text_raw = (string) ($review['text'] ?? '');
+            if ($text_raw === '') {
+                continue;
+            }
+
+            $timestamp = isset($review['publish_ts']) ? (int) $review['publish_ts'] : 0;
+
+            $collected[] = [
+                'place_id'   => $place_id,
+                'place_name' => $place_name,
+                'rating'     => $rating,
+                'text'       => $text_raw,
+                'timestamp'  => $timestamp,
+                'date_raw'   => $review['publish_raw'] ?? '',
+                'relative'   => $review['relative'] ?? '',
+                'author'     => $review['author'] ?? '',
+            ];
+        }
+    }
+
+    if (! $collected) {
+        return '<div class="fitness-review-feed is-empty">' . esc_html__('Keine Google-Rezensionen im gewünschten Bereich.', 'fitness-skg') . '</div>';
+    }
+
+    usort($collected, static function (array $a, array $b) {
+        return ($b['timestamp'] ?? 0) <=> ($a['timestamp'] ?? 0);
+    });
+
+    $collected = array_slice($collected, 0, $limit);
+
+    $items_html = '';
+
+    foreach ($collected as $entry) {
+        $rating     = $entry['rating'];
+        $stars_html = fitness_skg_render_star_icons($rating);
+        $label      = $rating !== null
+            ? sprintf(__('Bewertung %.1f von 5 Sternen', 'fitness-skg'), (float) $rating)
+            : __('Bewertung ohne Sterne', 'fitness-skg');
+
+        $display_text = $max_length > 0
+            ? fitness_skg_truncate_review_text($entry['text'], $max_length)
+            : $entry['text'];
+
+        $author_name = $entry['author'] !== '' ? $entry['author'] : __('Google Nutzer:in', 'fitness-skg');
+
+        $date_display = '';
+        $datetime_attr = '';
+        if (! empty($entry['timestamp'])) {
+            $datetime_attr = gmdate('c', (int) $entry['timestamp']);
+            $date_display  = date_i18n(get_option('date_format'), (int) $entry['timestamp']);
+        }
+
+        $place_badge = $entry['place_name'] !== '' ? '<span class="fitness-review-feed__place">' . esc_html($entry['place_name']) . '</span>' : '';
+
+        $items_html .= '<article class="fitness-review-feed__item">';
+        $items_html .= '<div class="fitness-review-feed__header">';
+        $items_html .= '<span class="fitness-review-feed__stars" aria-label="' . esc_attr($label) . '">' . $stars_html . '</span>';
+        $items_html .= '<div class="fitness-review-feed__meta">';
+        $items_html .= '<span class="fitness-review-feed__author">' . esc_html($author_name) . '</span>';
+        if ($date_display) {
+            $items_html .= '<time class="fitness-review-feed__date" datetime="' . esc_attr($datetime_attr) . '">' . esc_html($date_display) . '</time>';
+        } elseif (! empty($entry['relative'])) {
+            $items_html .= '<span class="fitness-review-feed__date">' . esc_html($entry['relative']) . '</span>';
+        }
+        $items_html .= $place_badge;
+        $items_html .= '</div>';
+        $items_html .= '</div>';
+        $items_html .= '<p class="fitness-review-feed__text">' . esc_html($display_text) . '</p>';
+        $items_html .= '</article>';
+    }
+
+    return '<div class="fitness-review-feed">' . $items_html . '</div>';
 }
 
 function fitness_skg_render_star_icons(?float $rating): string
@@ -505,14 +798,25 @@ function fitness_skg_cli_refresh_single(string $place_id): void
 
     $data = fitness_skg_fetch_place_rating($place_id);
     if (is_wp_error($data)) {
-        WP_CLI::warning(sprintf('Failed to refresh %1$s: %2$s', $place_id, $data->get_error_message()));
-        return;
+        WP_CLI::warning(sprintf('Failed to refresh %1$s rating: %2$s', $place_id, $data->get_error_message()));
+    } else {
+        set_transient($cache_key, $data, 15 * MINUTE_IN_SECONDS);
+        update_option('fitness_skg_fallback_' . $cache_key, $data, false);
+        WP_CLI::success(sprintf('Rating %s: %.1f (%d)', $place_id, $data['rating'], $data['count']));
     }
 
-    set_transient($cache_key, $data, 15 * MINUTE_IN_SECONDS);
-    update_option('fitness_skg_fallback_' . $cache_key, $data, false);
+    $reviews_cache_key = 'fitness_skg_reviews_' . md5($place_id);
+    delete_transient($reviews_cache_key);
 
-    WP_CLI::success(sprintf('Refreshed %s: %.1f (%d)', $place_id, $data['rating'], $data['count']));
+    $reviews = fitness_skg_fetch_place_reviews($place_id);
+    if (is_wp_error($reviews)) {
+        WP_CLI::warning(sprintf('Failed to refresh %1$s reviews: %2$s', $place_id, $reviews->get_error_message()));
+    } else {
+        set_transient($reviews_cache_key, $reviews, 15 * MINUTE_IN_SECONDS);
+        update_option('fitness_skg_reviews_fallback_' . $reviews_cache_key, $reviews, false);
+        $count_reviews = isset($reviews['reviews']) && is_array($reviews['reviews']) ? count($reviews['reviews']) : 0;
+        WP_CLI::success(sprintf('Reviews %s: %d entries cached', $place_id, $count_reviews));
+    }
 }
 
 function fitness_skg_get_all_place_ids(): array

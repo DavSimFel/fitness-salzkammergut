@@ -164,4 +164,40 @@
   .fitness-review-card__date {
     @apply tw-text-sm tw-text-black-60;
   }
+
+  .fitness-review-feed {
+    @apply tw-flex tw-flex-col tw-gap-4;
+  }
+
+  .fitness-review-feed.is-empty {
+    @apply tw-rounded-card tw-border tw-border-dashed tw-border-black-40 tw-bg-black-20 tw-p-6 tw-text-center tw-text-sm tw-text-black-60;
+  }
+
+  .fitness-review-feed__item {
+    @apply tw-flex tw-flex-col tw-gap-3 tw-rounded-card tw-border tw-border-black-30 tw-bg-soft-white tw-p-5 tw-text-almost-black tw-shadow-sm;
+  }
+
+  .fitness-review-feed__header {
+    @apply tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-3;
+  }
+
+  .fitness-review-feed__stars {
+    @apply tw-inline-flex tw-items-center tw-gap-1 tw-text-lime;
+  }
+
+  .fitness-review-feed__meta {
+    @apply tw-flex tw-flex-wrap tw-items-center tw-gap-2 tw-text-sm tw-text-black-60;
+  }
+
+  .fitness-review-feed__author {
+    @apply tw-font-semibold tw-text-almost-black;
+  }
+
+  .fitness-review-feed__place {
+    @apply tw-rounded-full tw-bg-black-20 tw-px-2 tw-py-0.5 tw-text-xs tw-font-medium tw-uppercase tw-tracking-wide tw-text-black-60;
+  }
+
+  .fitness-review-feed__text {
+    @apply tw-text-base tw-leading-relaxed;
+  }
 }
