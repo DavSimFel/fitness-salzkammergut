@@ -236,7 +236,19 @@
   }
 
   .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content {
-    @apply tw-my-[0.35rem] tw-text-lg tw-block tw-text-center;
+    @apply tw-my-[0.35rem] tw-text-lg tw-block tw-text-center tw-w-full;
+  }
+
+  .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__submenu-container {
+    @apply tw-w-full tw-text-center;
+  }
+
+  .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__submenu-container .wp-block-navigation-item {
+    @apply tw-w-full tw-my-2 tw-text-center;
+  }
+
+  .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__submenu-container .wp-block-navigation-item__content {
+    @apply tw-w-full tw-block tw-text-center;
   }
 
   .tw-gym-card {
