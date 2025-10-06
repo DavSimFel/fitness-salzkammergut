@@ -207,11 +207,11 @@
   }
 
   .wp-block-fitness-review-feed .fitness-review-feed__item {
-    @apply tw-flex tw-flex-col tw-gap-3;
+    @apply tw-flex tw-flex-col tw-gap-3 tw-text-soft-white;
   }
 
   .wp-block-fitness-review-feed .fitness-review-feed__header {
-    @apply tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-3;
+    @apply tw-flex tw-flex-wrap tw-flex-col tw-items-center tw-justify-between tw-gap-3;
   }
 
   .wp-block-fitness-review-feed .fitness-review-feed__stars {
