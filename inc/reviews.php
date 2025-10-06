@@ -155,19 +155,23 @@ function fitness_skg_fetch_place_rating(string $place_id)
     $encoded_id = rawurlencode($place_id);
     $endpoint   = sprintf('https://places.googleapis.com/v1/places/%s', $encoded_id);
 
-    $region_code = substr(get_locale(), -2);
-    $headers = [
-        'X-Goog-Api-Key'   => $api_key,
-        'X-Goog-FieldMask' => 'rating,userRatingCount',
+    $query_args = [
+        'fields' => 'rating,userRatingCount',
+        'key'    => $api_key,
     ];
 
+    $region_code = substr(get_locale(), -2);
     if ($region_code) {
-        $headers['X-Goog-User-Region'] = strtoupper($region_code);
+        $query_args['regionCode'] = strtoupper($region_code);
     }
+
+    $endpoint = add_query_arg($query_args, $endpoint);
 
     $response = wp_remote_get($endpoint, [
         'timeout' => 8,
-        'headers' => $headers,
+        'headers' => [
+            'Accept' => 'application/json',
+        ],
     ]);
 
     if (is_wp_error($response)) {
@@ -176,7 +180,11 @@ function fitness_skg_fetch_place_rating(string $place_id)
 
     $code = wp_remote_retrieve_response_code($response);
     if ($code !== 200) {
-        return new WP_Error('fitness_skg_bad_status', sprintf(__('Unexpected HTTP status: %d', 'fitness-skg'), $code));
+        $body = wp_remote_retrieve_body($response);
+        return new WP_Error(
+            'fitness_skg_bad_status',
+            sprintf(__('Unexpected HTTP status: %1$d — %2$s', 'fitness-skg'), $code, $body ?: __('Empty response', 'fitness-skg'))
+        );
     }
 
     $body = wp_remote_retrieve_body($response);
