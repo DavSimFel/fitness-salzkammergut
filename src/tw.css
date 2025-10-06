@@ -4,14 +4,14 @@
 
 @layer base {
   a {
+    @apply hover:tw-decoration-solid;
     text-decoration: underline;
     text-decoration-thickness: 0.08em;
     text-underline-offset: 0.2em;
     transition: color 200ms ease, text-decoration-color 200ms ease, background-color 200ms ease;
   }
 
-  a:hover {
-    @apply tw-decoration-solid;
+  a:hover {    
     text-decoration-color: currentColor;
   }
 
