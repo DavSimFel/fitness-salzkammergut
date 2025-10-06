@@ -254,10 +254,8 @@ function fitness_skg_fetch_place_reviews(string $place_id)
     $endpoint   = sprintf('https://places.googleapis.com/v1/places/%s', $encoded_id);
 
     $query_args = [
-        'fields'             => 'displayName,rating,userRatingCount,reviews.rating,reviews.text,reviews.publishTime,reviews.relativePublishTimeDescription,reviews.authorAttribution.displayName,reviews.authorAttribution.photoUri',
-        'key'                => $api_key,
-        'reviews.pageSize'   => 10,
-        'reviews.sortOrder'  => 'NEWEST',
+        'fields' => 'displayName,rating,userRatingCount,reviews.rating,reviews.text,reviews.publishTime,reviews.relativePublishTimeDescription,reviews.authorAttribution.displayName,reviews.authorAttribution.photoUri',
+        'key'    => $api_key,
     ];
 
     $region_code = substr(get_locale(), -2);
