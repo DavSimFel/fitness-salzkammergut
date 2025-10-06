@@ -11,7 +11,7 @@
   }
 
   a:hover {
-    text-decoration: underline;
+    @apply tw-decoration-solid;
     text-decoration-color: currentColor;
   }
 
