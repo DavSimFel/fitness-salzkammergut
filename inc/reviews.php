@@ -566,7 +566,13 @@ function fitness_skg_render_rating_badge_block(array $attributes, string $conten
         ? sprintf(__('Google-Bewertung %.1f von 5 Sternen, %s Rezensionen', 'fitness-skg'), (float) $rating, number_format_i18n((int) $count))
         : __('Google-Bewertung derzeit nicht verfügbar', 'fitness-skg');
 
-    $output  = '<div class="' . esc_attr(implode(' ', array_filter($classes))) . '" role="img" aria-label="' . esc_attr($label) . '">';
+    $wrapper_attributes = get_block_wrapper_attributes([
+        'class'      => implode(' ', array_filter($classes)),
+        'role'       => 'img',
+        'aria-label' => $label,
+    ]);
+
+    $output  = sprintf('<div %s>', $wrapper_attributes);
     $output .= '<span class="fitness-rating-badge__stars" aria-hidden="true">' . $stars_html . '</span>';
     $output .= '<span class="fitness-rating-badge__values"><span class="fitness-rating-badge__rating">' . esc_html($rating_text) . '</span> <span class="fitness-rating-badge__count">' . esc_html($count_text) . '</span></span>';
     $output .= $logo_html;
@@ -754,12 +760,20 @@ function fitness_skg_render_review_card_block(array $attributes, string $content
 {
     $testimonial_id = isset($attributes['testimonialId']) ? (int) $attributes['testimonialId'] : 0;
     if (! $testimonial_id) {
-        return '<div class="fitness-review-card is-empty">' . esc_html__('Bitte wähle einen Erfahrungsbericht aus.', 'fitness-skg') . '</div>';
+        $wrapper = get_block_wrapper_attributes([
+            'class' => 'fitness-review-card is-empty',
+        ]);
+
+        return sprintf('<div %s>%s</div>', $wrapper, esc_html__('Bitte wähle einen Erfahrungsbericht aus.', 'fitness-skg'));
     }
 
     $post = get_post($testimonial_id);
     if (! $post || $post->post_type !== 'testimonial') {
-        return '<div class="fitness-review-card is-empty">' . esc_html__('Erfahrungsbericht nicht gefunden.', 'fitness-skg') . '</div>';
+        $wrapper = get_block_wrapper_attributes([
+            'class' => 'fitness-review-card is-empty',
+        ]);
+
+        return sprintf('<div %s>%s</div>', $wrapper, esc_html__('Erfahrungsbericht nicht gefunden.', 'fitness-skg'));
     }
 
     $excerpt = $post->post_excerpt ?: wp_trim_words($post->post_content, 35);
@@ -793,7 +807,11 @@ function fitness_skg_render_review_card_block(array $attributes, string $content
     $image = get_the_post_thumbnail($post, 'thumbnail', ['class' => 'fitness-review-card__image', 'loading' => 'lazy']);
     $image_html = $image ? '<div class="fitness-review-card__photo">' . $image . '</div>' : '';
 
-    $output  = '<article class="fitness-review-card">';
+    $wrapper_attributes = get_block_wrapper_attributes([
+        'class' => 'fitness-review-card',
+    ]);
+
+    $output  = sprintf('<article %s>', $wrapper_attributes);
     $output .= $rating_html;
     $output .= '<blockquote class="fitness-review-card__quote">' . wp_kses_post($excerpt) . '</blockquote>';
     $output .= '<footer class="fitness-review-card__footer">';
