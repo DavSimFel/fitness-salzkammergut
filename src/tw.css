@@ -224,7 +224,7 @@
   }
 
   .wp-block-fitness-review-feed .fitness-review-feed__text {
-    @apply tw-m-0 tw-text-soft-white tw-text-center;
+    @apply tw-m-0 tw-text-soft-white tw-text-center tw-text-xs;
   }
 
   .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__container {
