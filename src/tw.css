@@ -3,22 +3,47 @@
 @tailwind utilities;
 
 @layer base {
-  a {
+  :root {
+    /* Shared defaults for interactive hover behaviour */
+    --fs-interactive-transition-duration: 200ms;
+    --fs-interactive-transition-easing: ease;
+    --fs-interactive-hover-decoration-color: currentColor;
+    --fs-interactive-hover-color: inherit;
+  }
+
+  :where(a) {
     @apply hover:tw-underline;
-    transition: color 200ms ease, text-decoration-color 200ms ease, background-color 200ms ease;
   }
 
-  a:hover {    
-    text-decoration-color: currentColor;
+  :where(
+      a,
+      button,
+      .wp-element-button,
+      .wp-block-button__link,
+      .wp-block-navigation-item__content,
+      .wp-block-navigation__responsive-container-open,
+      .wp-block-navigation__responsive-container-close
+    ) {
+    transition:
+      color var(--fs-interactive-transition-duration) var(--fs-interactive-transition-easing),
+      background-color var(--fs-interactive-transition-duration) var(--fs-interactive-transition-easing),
+      border-color var(--fs-interactive-transition-duration) var(--fs-interactive-transition-easing),
+      box-shadow var(--fs-interactive-transition-duration) var(--fs-interactive-transition-easing),
+      text-decoration-color var(--fs-interactive-transition-duration) var(--fs-interactive-transition-easing),
+      transform var(--fs-interactive-transition-duration) var(--fs-interactive-transition-easing);
   }
 
-  button,
-  .wp-element-button,
-  .wp-block-button__link,
-  .wp-block-navigation-item__content,
-  .wp-block-navigation__responsive-container-open,
-  .wp-block-navigation__responsive-container-close {
-    transition: color 200ms ease, background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+  :where(
+      a,
+      button,
+      .wp-element-button,
+      .wp-block-button__link,
+      .wp-block-navigation-item__content,
+      .wp-block-navigation__responsive-container-open,
+      .wp-block-navigation__responsive-container-close
+    ):hover {
+    text-decoration-color: var(--fs-interactive-hover-decoration-color, currentColor);
+    color: var(--fs-interactive-hover-color, inherit);
   }
 }
 
