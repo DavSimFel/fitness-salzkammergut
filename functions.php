@@ -197,7 +197,7 @@ add_action('init', function () {
         'label'        => $studio_brand_labels['name'],
         'public'       => true,
         'show_in_rest' => true,
-        'hierarchical' => false,
+        'hierarchical' => true,
         'rewrite'      => ['slug' => 'studio'],
         'capabilities' => $capabilities,
     ]);
