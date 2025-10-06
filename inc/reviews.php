@@ -648,7 +648,7 @@ function fitness_skg_render_review_feed_block(array $attributes, string $content
             ? fitness_skg_truncate_review_text($entry['text'], $max_length)
             : $entry['text'];
 
-        $author_name = $entry['author'] !== '' ? $entry['author'] : __('Google Nutzer:in', 'fitness-skg');
+        $author_name = $entry['author'] !== '' ? fitness_skg_abbreviate_author_name($entry['author']) : __('Google Nutzer:in', 'fitness-skg');
 
         $date_display = '';
         $datetime_attr = '';
@@ -742,6 +742,33 @@ function fitness_skg_render_star_icons(?float $rating): string
     }
 
     return implode('', $icons);
+}
+
+function fitness_skg_abbreviate_author_name(string $name): string
+{
+    $normalised = trim(preg_replace('/\s+/u', ' ', $name));
+    if ($normalised === '') {
+        return '';
+    }
+
+    $parts = preg_split('/\s+/u', $normalised);
+    if ($parts === false || count($parts) < 2) {
+        return $normalised;
+    }
+
+    $first = array_shift($parts);
+    $last  = array_pop($parts);
+    if (function_exists('mb_substr')) {
+        $initial = mb_strtoupper(mb_substr($last, 0, 1));
+    } else {
+        $initial = strtoupper(substr($last, 0, 1));
+    }
+
+    if ($initial === '') {
+        return $first;
+    }
+
+    return $first . ' ' . $initial . '.';
 }
 
 function fitness_skg_render_rating_json_ld($block, float $rating, int $count): string

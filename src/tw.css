@@ -232,7 +232,7 @@
   }
 
   .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item {
-    @apply tw-w-full;
+    @apply tw-w-full tw-mx-12;
   }
 
   .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content {
