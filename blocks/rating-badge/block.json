@@ -22,19 +22,7 @@
   },
   "supports": {
     "html": false,
-    "align": ["left", "center", "right", "wide", "full"],
-    "spacing": {
-      "margin": true,
-      "padding": true
-    },
-    "color": {
-      "text": true,
-      "background": true
-    },
-    "typography": {
-      "fontSize": true
-    },
-    "shadow": true
+    "align": ["left", "center", "right", "wide", "full"]
   },
-  "editorScript": "fitness-skg-review-blocks"
+  "editorScript": "fitness-skg-google-review-blocks"
 }

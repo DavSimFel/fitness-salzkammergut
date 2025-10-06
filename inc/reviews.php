@@ -15,10 +15,12 @@ fitness_skg_bootstrap_reviews();
 function fitness_skg_bootstrap_reviews(): void
 {
     add_action('admin_init', 'fitness_skg_register_reviews_settings');
-    add_action('add_meta_boxes', 'fitness_skg_register_place_id_metabox');
-    add_action('save_post', 'fitness_skg_save_place_id_meta');
     add_action('init', 'fitness_skg_register_place_id_meta');
     add_action('init', 'fitness_skg_register_review_blocks');
+    add_action('studio_brand_add_form_fields', 'fitness_skg_render_brand_place_id_add_field');
+    add_action('studio_brand_edit_form_fields', 'fitness_skg_render_brand_place_id_edit_field');
+    add_action('created_studio_brand', 'fitness_skg_save_brand_place_id');
+    add_action('edited_studio_brand', 'fitness_skg_save_brand_place_id');
 }
 
 function fitness_skg_register_place_id_meta(): void
@@ -36,6 +38,88 @@ function fitness_skg_register_place_id_meta(): void
             return current_user_can('edit_posts');
         },
     ]);
+
+    register_term_meta('studio_brand', FITNESS_SKG_PLACE_ID_META_KEY, [
+        'type'              => 'string',
+        'single'            => true,
+        'sanitize_callback' => 'fitness_skg_sanitize_place_id',
+        'show_in_rest'      => [
+            'schema' => [
+                'type' => 'string',
+            ],
+        ],
+        'auth_callback'     => static function () {
+            return current_user_can('manage_categories');
+        },
+    ]);
+}
+
+function fitness_skg_render_brand_place_id_add_field(): void
+{
+    wp_nonce_field('fitness_skg_save_brand_place_id', 'fitness_skg_brand_place_id_nonce');
+    ?>
+    <div class="form-field term-place-id-wrap">
+        <label for="fitness_skg_place_id"><?php esc_html_e('Google My Business Place ID', 'fitness-skg'); ?></label>
+        <input type="text" name="fitness_skg_place_id" id="fitness_skg_place_id" value="" />
+        <p class="description"><?php esc_html_e('Example: ChIJp0lN6FDmc0cRKoZzTxqHwX0', 'fitness-skg'); ?></p>
+    </div>
+    <?php
+}
+
+function fitness_skg_render_brand_place_id_edit_field(WP_Term $term): void
+{
+    wp_nonce_field('fitness_skg_save_brand_place_id', 'fitness_skg_brand_place_id_nonce');
+    $value = get_term_meta($term->term_id, FITNESS_SKG_PLACE_ID_META_KEY, true);
+    ?>
+    <tr class="form-field term-place-id-wrap">
+        <th scope="row"><label for="fitness_skg_place_id"><?php esc_html_e('Google My Business Place ID', 'fitness-skg'); ?></label></th>
+        <td>
+            <input type="text" name="fitness_skg_place_id" id="fitness_skg_place_id" value="<?php echo esc_attr($value); ?>" class="regular-text" />
+            <p class="description"><?php esc_html_e('Example: ChIJp0lN6FDmc0cRKoZzTxqHwX0', 'fitness-skg'); ?></p>
+        </td>
+    </tr>
+    <?php
+}
+
+function fitness_skg_save_brand_place_id(int $term_id): void
+{
+    if (! isset($_POST['fitness_skg_brand_place_id_nonce'])) {
+        return;
+    }
+
+    $nonce = wp_unslash((string) $_POST['fitness_skg_brand_place_id_nonce']);
+    if (! wp_verify_nonce($nonce, 'fitness_skg_save_brand_place_id')) {
+        return;
+    }
+
+    if (! current_user_can('manage_categories')) {
+        return;
+    }
+
+    $raw = isset($_POST['fitness_skg_place_id']) ? wp_unslash((string) $_POST['fitness_skg_place_id']) : '';
+    $value = fitness_skg_sanitize_place_id($raw);
+
+    if ($value !== '') {
+        update_term_meta($term_id, FITNESS_SKG_PLACE_ID_META_KEY, $value);
+    } else {
+        delete_term_meta($term_id, FITNESS_SKG_PLACE_ID_META_KEY);
+    }
+}
+
+function fitness_skg_get_brand_place_id(?int $term_id): ?string
+{
+    if (! $term_id) {
+        return null;
+    }
+
+    $value = get_term_meta($term_id, FITNESS_SKG_PLACE_ID_META_KEY, true);
+    if (! $value) {
+        return null;
+    }
+
+    $sanitized = fitness_skg_sanitize_place_id((string) $value);
+
+    return $sanitized !== '' ? $sanitized : null;
 }
 
 function fitness_skg_register_reviews_settings(): void
@@ -60,51 +144,6 @@ function fitness_skg_render_reviews_api_field(): void
     $value = get_option(FITNESS_SKG_REVIEWS_API_OPTION, '');
     echo '<input type="text" id="fitness_skg_reviews_api_key" name="' . esc_attr(FITNESS_SKG_REVIEWS_API_OPTION) . '" value="' . esc_attr($value) . '" class="regular-text" autocomplete="off" />';
     echo '<p class="description">' . esc_html__('Use a restricted Places API key (Details API enabled).', 'fitness-skg') . '</p>';
-}
-
-function fitness_skg_register_place_id_metabox(): void
-{
-    add_meta_box(
-        'fitness_skg_place_id',
-        __('Google Place ID', 'fitness-skg'),
-        'fitness_skg_render_place_id_metabox',
-        'studio',
-        'side',
-        'default'
-    );
-}
-
-function fitness_skg_render_place_id_metabox(WP_Post $post): void
-{
-    wp_nonce_field('fitness_skg_save_place_id', 'fitness_skg_place_id_nonce');
-    $value = get_post_meta($post->ID, FITNESS_SKG_PLACE_ID_META_KEY, true);
-    echo '<p><label for="fitness_skg_place_id_input">' . esc_html__('Copy the Place ID from Google Places.', 'fitness-skg') . '</label></p>';
-    echo '<input type="text" id="fitness_skg_place_id_input" name="fitness_skg_place_id" value="' . esc_attr($value) . '" class="widefat" />';
-    echo '<p class="description">' . esc_html__('Example: ChIJp0lN6FDmc0cRKoZzTxqHwX0', 'fitness-skg') . '</p>';
-}
-
-function fitness_skg_save_place_id_meta(int $post_id): void
-{
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-        return;
-    }
-
-    if (! isset($_POST['fitness_skg_place_id_nonce']) || ! wp_verify_nonce($_POST['fitness_skg_place_id_nonce'], 'fitness_skg_save_place_id')) {
-        return;
-    }
-
-    if (! current_user_can('edit_post', $post_id)) {
-        return;
-    }
-
-    $raw = isset($_POST['fitness_skg_place_id']) ? wp_unslash($_POST['fitness_skg_place_id']) : '';
-    $value = fitness_skg_sanitize_place_id($raw);
-
-    if ($value) {
-        update_post_meta($post_id, FITNESS_SKG_PLACE_ID_META_KEY, $value);
-    } else {
-        delete_post_meta($post_id, FITNESS_SKG_PLACE_ID_META_KEY);
-    }
 }
 
 function fitness_skg_sanitize_place_id(string $value): string
@@ -376,11 +415,43 @@ function fitness_skg_get_current_context_place_id(array $block_context = []): ?s
         return fitness_skg_sanitize_place_id((string) $block_context['placeId']);
     }
 
+    foreach (['termId', 'term_id', 'studioBrandId'] as $term_key) {
+        if (! empty($block_context[$term_key])) {
+            $term_place_id = fitness_skg_get_brand_place_id((int) $block_context[$term_key]);
+            if ($term_place_id) {
+                return $term_place_id;
+            }
+        }
+    }
+
     $post_id = $block_context['postId'] ?? get_the_ID();
     if ($post_id) {
-        $meta = get_post_meta((int) $post_id, FITNESS_SKG_PLACE_ID_META_KEY, true);
+        $post_id = (int) $post_id;
+
+        $term_ids = wp_get_post_terms($post_id, 'studio_brand', ['fields' => 'ids']);
+        if (! is_wp_error($term_ids)) {
+            foreach ($term_ids as $term_id) {
+                $term_place_id = fitness_skg_get_brand_place_id((int) $term_id);
+                if ($term_place_id) {
+                    return $term_place_id;
+                }
+            }
+        }
+
+        $meta = get_post_meta($post_id, FITNESS_SKG_PLACE_ID_META_KEY, true);
         if ($meta) {
-            return fitness_skg_sanitize_place_id((string) $meta);
+            $legacy = fitness_skg_sanitize_place_id((string) $meta);
+            if ($legacy !== '') {
+                return $legacy;
+            }
+        }
+    }
+
+    $queried = get_queried_object();
+    if ($queried instanceof WP_Term && $queried->taxonomy === 'studio_brand') {
+        $term_place_id = fitness_skg_get_brand_place_id((int) $queried->term_id);
+        if ($term_place_id) {
+            return $term_place_id;
         }
     }
 
@@ -390,12 +461,21 @@ function fitness_skg_get_current_context_place_id(array $block_context = []): ?s
 function fitness_skg_register_review_blocks(): void
 {
     $theme_dir = get_stylesheet_directory();
-    $script_path = $theme_dir . '/assets/blocks/reviews.js';
 
-    if (file_exists($script_path)) {
+    $scripts = [
+        'fitness-skg-google-review-blocks'  => '/assets/blocks/reviews.js',
+        'fitness-skg-linked-container-block' => '/assets/blocks/linked-container.js',
+    ];
+
+    foreach ($scripts as $handle => $relative_path) {
+        $script_path = $theme_dir . $relative_path;
+        if (! file_exists($script_path)) {
+            continue;
+        }
+
         wp_register_script(
-            'fitness-skg-review-blocks',
-            get_stylesheet_directory_uri() . '/assets/blocks/reviews.js',
+            $handle,
+            get_stylesheet_directory_uri() . $relative_path,
             ['wp-blocks', 'wp-element', 'wp-components', 'wp-i18n', 'wp-block-editor', 'wp-data', 'wp-server-side-render', 'wp-dom-ready'],
             filemtime($script_path) ?: wp_get_theme()->get('Version'),
             true
@@ -427,7 +507,6 @@ function fitness_skg_register_review_blocks(): void
         $result = register_block_type_from_metadata(
             $block['path'],
             [
-                'editor_script'   => 'fitness-skg-review-blocks',
                 'render_callback' => $block['callback'],
             ]
         );
@@ -830,14 +909,23 @@ function fitness_skg_get_all_place_ids(): array
 {
     global $wpdb;
     $meta_key = FITNESS_SKG_PLACE_ID_META_KEY;
-    $results = $wpdb->get_col($wpdb->prepare(
-        "SELECT DISTINCT meta_value FROM {$wpdb->postmeta} pm JOIN {$wpdb->posts} p ON p.ID = pm.post_id WHERE pm.meta_key = %s AND pm.meta_value <> '' AND p.post_type = 'studio' AND p.post_status IN ('publish','draft','pending','future','private')",
+    $term_values = $wpdb->get_col($wpdb->prepare(
+        "SELECT DISTINCT tm.meta_value FROM {$wpdb->termmeta} tm INNER JOIN {$wpdb->term_taxonomy} tt ON tt.term_id = tm.term_id WHERE tm.meta_key = %s AND tm.meta_value <> '' AND tt.taxonomy = %s",
+        $meta_key,
+        'studio_brand'
+    ));
+
+    $post_values = $wpdb->get_col($wpdb->prepare(
+        "SELECT DISTINCT pm.meta_value FROM {$wpdb->postmeta} pm INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id WHERE pm.meta_key = %s AND pm.meta_value <> '' AND p.post_type = 'studio' AND p.post_status IN ('publish','draft','pending','future','private')",
         $meta_key
     ));
 
-    if (! $results) {
+    $values = array_merge($term_values ?: [], $post_values ?: []);
+    if (! $values) {
         return [];
     }
 
-    return array_map('fitness_skg_sanitize_place_id', $results);
+    $sanitized = array_filter(array_map('fitness_skg_sanitize_place_id', $values));
+
+    return array_values(array_unique($sanitized));
 }

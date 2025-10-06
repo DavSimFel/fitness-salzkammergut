@@ -26,27 +26,7 @@
   },
   "supports": {
     "html": false,
-    "align": ["wide", "full"],
-    "spacing": {
-      "margin": true,
-      "padding": true,
-      "blockGap": true
-    },
-    "color": {
-      "text": true,
-      "background": true
-    },
-    "typography": {
-      "fontSize": true,
-      "lineHeight": true
-    },
-    "layout": {
-      "default": {
-        "type": "flex",
-        "orientation": "vertical"
-      },
-      "allowSwitching": true
-    }
+    "align": ["wide", "full"]
   },
-  "editorScript": "fitness-skg-review-blocks"
+  "editorScript": "fitness-skg-google-review-blocks"
 }

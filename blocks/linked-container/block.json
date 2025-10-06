@@ -23,25 +23,7 @@
   "supports": {
     "html": false,
     "anchor": true,
-    "align": ["wide", "full"],
-    "spacing": {
-      "margin": true,
-      "padding": true,
-      "blockGap": true
-    },
-    "color": {
-      "text": true,
-      "background": true,
-      "link": true
-    },
-    "typography": {
-      "fontSize": true,
-      "lineHeight": true
-    },
-    "shadow": true,
-    "layout": {
-      "allowSwitching": true
-    }
+    "align": ["wide", "full"]
   },
-  "editorScript": "fitness-skg-review-blocks"
+  "editorScript": "fitness-skg-linked-container-block"
 }
