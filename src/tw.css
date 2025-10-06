@@ -212,7 +212,7 @@
   }
 
   .wp-block-fitness-review-feed .fitness-review-feed__meta {
-    @apply tw-flex tw-flex-wrap tw-items-center tw-gap-2 tw-text-sm tw-opacity-80;
+    @apply tw-flex tw-flex-wrap tw-items-center tw-justify-center tw-gap-2 tw-text-xs tw-text-center tw-opacity-80;
   }
 
   .wp-block-fitness-review-feed .fitness-review-feed__author {
@@ -224,7 +224,7 @@
   }
 
   .wp-block-fitness-review-feed .fitness-review-feed__text {
-    @apply tw-m-0 tw-text-soft-white tw-text-center tw-text-xs;
+    @apply tw-m-0 tw-text-soft-white tw-text-center tw-text-xs tw-font-sans tw-font-extralight tw-italic;
   }
 
   .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__container {
