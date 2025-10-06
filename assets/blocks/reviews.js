@@ -6,10 +6,7 @@
     const { createElement: el, Fragment } = wp.element;
     const { __ } = wp.i18n || { __: (str) => str };
     const {
-        registerBlockType,
         updateBlockType,
-        unregisterBlockType,
-        getBlockType,
     } = wp.blocks || {};
     const {
         useBlockProps,
@@ -26,167 +23,13 @@
     } = wp.components || {};
     const ServerSideRender = wp.serverSideRender;
 
-    if ((!registerBlockType && !updateBlockType) || !useBlockProps || !InspectorControls || !ServerSideRender) {
+    if (!updateBlockType || !useBlockProps || !InspectorControls || !ServerSideRender) {
         return;
     }
-
-    const ensureBlockType = (name, settings) => {
-        const existing = getBlockType ? getBlockType(name) : null;
-
-        if (existing) {
-            if (typeof updateBlockType === 'function') {
-                updateBlockType(name, settings);
-                return;
-            }
-
-            if (typeof unregisterBlockType === 'function' && typeof registerBlockType === 'function') {
-                unregisterBlockType(name);
-                registerBlockType(name, settings);
-                return;
-            }
-        }
-
-        if (typeof registerBlockType === 'function') {
-            registerBlockType(name, settings);
-        }
-    };
 
     const wrapWithBlockProps = (content) => {
         const blockProps = useBlockProps();
         return el('div', blockProps, content);
-    };
-
-    const ratingBadgeSettings = {
-        apiVersion: 2,
-        title: __('Google Rating Badge', 'fitness-skg'),
-        description: __('Shows the Google rating and review count for a selected Place.', 'fitness-skg'),
-        category: 'widgets',
-        icon: 'star-filled',
-        attributes: {
-            placeId: {
-                type: 'string',
-                default: '',
-            },
-            showLogo: {
-                type: 'boolean',
-                default: true,
-            },
-            size: {
-                type: 'string',
-                default: 'medium',
-            },
-        },
-        supports: {
-            html: false,
-            align: ['left', 'center', 'right', 'wide', 'full'],
-            spacing: {
-                margin: true,
-                padding: true,
-            },
-            color: {
-                text: true,
-                background: true,
-            },
-            typography: {
-                fontSize: true,
-            },
-            shadow: true,
-        },
-        edit: RatingBadgeEdit,
-        save: () => null,
-    };
-
-    const reviewCardSettings = {
-        apiVersion: 2,
-        title: __('Testimonial Card', 'fitness-skg'),
-        description: __('Outputs a curated testimonial with live star rating from Google.', 'fitness-skg'),
-        category: 'widgets',
-        icon: 'format-quote',
-        attributes: {
-            testimonialId: {
-                type: 'integer',
-                default: 0,
-            },
-            placeId: {
-                type: 'string',
-                default: '',
-            },
-            showStars: {
-                type: 'boolean',
-                default: true,
-            },
-        },
-        supports: {
-            html: false,
-            align: ['left', 'center', 'right', 'wide'],
-            spacing: {
-                margin: true,
-                padding: true,
-            },
-            color: {
-                text: true,
-                background: true,
-            },
-            typography: {
-                fontSize: true,
-                lineHeight: true,
-            },
-            shadow: true,
-        },
-        edit: ReviewCardEdit,
-        save: () => null,
-    };
-
-    const reviewFeedSettings = {
-        apiVersion: 2,
-        title: __('Google Review Feed', 'fitness-skg'),
-        description: __('Displays the latest Google reviews from one or multiple Place IDs.', 'fitness-skg'),
-        category: 'widgets',
-        icon: 'list-view',
-        attributes: {
-            placeIds: {
-                type: 'string',
-                default: '',
-            },
-            limit: {
-                type: 'number',
-                default: 3,
-            },
-            minRating: {
-                type: 'number',
-                default: 4,
-            },
-            maxLength: {
-                type: 'number',
-                default: 180,
-            },
-        },
-        supports: {
-            html: false,
-            align: ['wide', 'full'],
-            spacing: {
-                margin: true,
-                padding: true,
-                blockGap: true,
-            },
-            color: {
-                text: true,
-                background: true,
-            },
-            typography: {
-                fontSize: true,
-                lineHeight: true,
-            },
-            layout: {
-                default: {
-                    type: 'flex',
-                    orientation: 'vertical',
-                },
-                allowSwitching: true,
-            },
-        },
-        edit: ReviewFeedEdit,
-        save: () => null,
     };
 
     const RatingBadgeEdit = (props) => {
@@ -345,10 +188,16 @@
     };
 
     wp.domReady(() => {
-        ensureBlockType('fitness/rating-badge', ratingBadgeSettings);
+        updateBlockType('fitness/rating-badge', {
+            edit: RatingBadgeEdit,
+        });
 
-        ensureBlockType('fitness/review-card', reviewCardSettings);
+        updateBlockType('fitness/review-card', {
+            edit: ReviewCardEdit,
+        });
 
-        ensureBlockType('fitness/review-feed', reviewFeedSettings);
+        updateBlockType('fitness/review-feed', {
+            edit: ReviewFeedEdit,
+        });
     });
 })(window.wp || {});
