@@ -81,47 +81,47 @@
 
 <!-- wp:column {"width":"50%","layout":{"type":"constrained","justifyContent":"right"}} -->
 <div class="wp-block-column" style="flex-basis:50%"><!-- wp:group {"style":{"layout":{"selfStretch":"fill","flexSize":null}},"layout":{"type":"flex","orientation":"vertical","flexWrap":"nowrap","justifyContent":"right"}} -->
-<div class="wp-block-group"><!-- wp:group {"metadata":{"name":"Gym Card - VIVO"},"style":{"border":{"radius":"10px"},"spacing":{"blockGap":"var:preset|spacing|50","padding":{"right":"var:preset|spacing|50","left":"var:preset|spacing|50","top":"var:preset|spacing|20","bottom":"var:preset|spacing|20"}},"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"backgroundColor":"black-30","textColor":"black-90","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
-<div class="wp-block-group has-black-90-color has-black-30-background-color has-text-color has-background has-link-color" style="border-radius:10px;padding-top:var(--wp--preset--spacing--20);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--50)"><!-- wp:image {"width":"auto","height":"42px","sizeSlug":"full","linkDestination":"none","className":"tw-flex-none","style":{"spacing":{"margin":{"top":"0","bottom":"0","left":"0","right":"0"}},"layout":{"selfStretch":"fit","flexSize":null}}} -->
-<figure class="wp-block-image size-full is-resized tw-flex-none" style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0"><img src="https://fitness-salzkammergut.at/wp-content/themes/fitness-salzkammergut/assets/images/Vivo_Symbol_Black.svg" alt="" style="width:auto;height:42px"/></figure>
+<div class="wp-block-group"><!-- wp:group {"metadata":{"name":"Gym Card - VIVO"},"className":"tw-gym-card","style":{"border":{"radius":"10px"},"spacing":{"blockGap":"var:preset|spacing|50","padding":{"right":"var:preset|spacing|50","left":"var:preset|spacing|50","top":"var:preset|spacing|20","bottom":"var:preset|spacing|20"}},"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"backgroundColor":"black-30","textColor":"black-90","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
+<div class="wp-block-group has-black-90-color has-black-30-background-color has-text-color has-background has-link-color" style="border-radius:10px;padding-top:var(--wp--preset--spacing--20);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--50)"><!-- wp:image {"width":"auto","height":"42px","sizeSlug":"full","linkDestination":"none","className":"tw-gym-card__logo tw-flex-none","style":{"spacing":{"margin":{"top":"0","bottom":"0","left":"0","right":"0"}},"layout":{"selfStretch":"fit","flexSize":null}}} -->
+<figure class="wp-block-image size-full is-resized tw-gym-card__logo tw-flex-none" style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0"><img src="https://fitness-salzkammergut.at/wp-content/themes/fitness-salzkammergut/assets/images/Vivo_Symbol_Black.svg" alt="" style="width:auto;height:42px"/></figure>
 <!-- /wp:image -->
 
 <!-- wp:group {"style":{"layout":{"selfStretch":"fit","flexSize":null},"spacing":{"blockGap":"var:preset|spacing|20","padding":{"top":"0","bottom":"0","left":"0","right":"var:preset|spacing|60"}},"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90","layout":{"type":"flex","orientation":"vertical","flexWrap":"nowrap"}} -->
 <div class="wp-block-group has-black-90-color has-text-color has-link-color" style="padding-top:0;padding-right:var(--wp--preset--spacing--60);padding-bottom:0;padding-left:0"><!-- wp:fitness/rating-badge {"placeId":"ChIJBcVrP6dLcUcRBuhInry255U","showLogo":false,"size":"small","textColor":"black-60","fontSize":"xs","style":{"spacing":{"padding":{"top":"0","bottom":"0"}},"elements":{"link":{"color":{"text":"var:preset|color|black-60"}}}}} /-->
 
-<!-- wp:paragraph {"style":{"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90"} -->
-<p class="has-black-90-color has-text-color has-link-color">Dein <strong>VIVO</strong> in<br>Bad Goisern</p>
+<!-- wp:paragraph {"className":"tw-gym-card__title","style":{"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90"} -->
+<p class="has-black-90-color has-text-color has-link-color tw-gym-card__title">Dein <strong>VIVO</strong> in<br>Bad Goisern</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:paragraph {"style":{"typography":{"fontStyle":"normal","fontWeight":"200"},"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90","fontSize":"xs","fontFamily":"work-sans"} -->
-<p class="has-black-90-color has-text-color has-link-color has-work-sans-font-family has-xs-font-size" style="font-style:normal;font-weight:200">Mehr über VIVO</p>
+<!-- wp:paragraph {"className":"tw-gym-card__cta","style":{"typography":{"fontStyle":"normal","fontWeight":"200"},"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90","fontSize":"xs","fontFamily":"work-sans"} -->
+<p class="has-black-90-color has-text-color has-link-color has-work-sans-font-family has-xs-font-size tw-gym-card__cta" style="font-style:normal;font-weight:200">Mehr über VIVO</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:paragraph {"style":{"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90"} -->
-<p class="has-black-90-color has-text-color has-link-color">►</p>
+<!-- wp:paragraph {"className":"tw-gym-card__arrow","style":{"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90"} -->
+<p class="has-black-90-color has-text-color has-link-color tw-gym-card__arrow">►</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:group {"metadata":{"name":"Gym Card - ExcitingFit"},"style":{"border":{"radius":"10px"},"spacing":{"blockGap":"var:preset|spacing|50","padding":{"right":"var:preset|spacing|50","left":"var:preset|spacing|50","top":"var:preset|spacing|20","bottom":"var:preset|spacing|20"}},"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"backgroundColor":"black-30","textColor":"black-90","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
-<div class="wp-block-group has-black-90-color has-black-30-background-color has-text-color has-background has-link-color" style="border-radius:10px;padding-top:var(--wp--preset--spacing--20);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--50)"><!-- wp:image {"width":"auto","height":"42px","sizeSlug":"full","linkDestination":"none","className":"tw-flex-none","style":{"spacing":{"margin":{"top":"0","bottom":"0","left":"0","right":"0"}},"layout":{"selfStretch":"fit","flexSize":null}}} -->
-<figure class="wp-block-image size-full is-resized tw-flex-none" style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0"><img src="https://fitness-salzkammergut.at/wp-content/themes/fitness-salzkammergut/assets/images/Excitingfit_Symbol_Black.svg" alt="" style="width:auto;height:42px"/></figure>
+<!-- wp:group {"metadata":{"name":"Gym Card - ExcitingFit"},"className":"tw-gym-card","style":{"border":{"radius":"10px"},"spacing":{"blockGap":"var:preset|spacing|50","padding":{"right":"var:preset|spacing|50","left":"var:preset|spacing|50","top":"var:preset|spacing|20","bottom":"var:preset|spacing|20"}},"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"backgroundColor":"black-30","textColor":"black-90","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
+<div class="wp-block-group has-black-90-color has-black-30-background-color has-text-color has-background has-link-color" style="border-radius:10px;padding-top:var(--wp--preset--spacing--20);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--50)"><!-- wp:image {"width":"auto","height":"42px","sizeSlug":"full","linkDestination":"none","className":"tw-gym-card__logo tw-flex-none","style":{"spacing":{"margin":{"top":"0","bottom":"0","left":"0","right":"0"}},"layout":{"selfStretch":"fit","flexSize":null}}} -->
+<figure class="wp-block-image size-full is-resized tw-gym-card__logo tw-flex-none" style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0"><img src="https://fitness-salzkammergut.at/wp-content/themes/fitness-salzkammergut/assets/images/Excitingfit_Symbol_Black.svg" alt="" style="width:auto;height:42px"/></figure>
 <!-- /wp:image -->
 
 <!-- wp:group {"style":{"layout":{"selfStretch":"fit","flexSize":null},"spacing":{"blockGap":"var:preset|spacing|20","padding":{"top":"0","bottom":"0","left":"0","right":"var:preset|spacing|60"}},"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90","layout":{"type":"flex","orientation":"vertical","flexWrap":"nowrap"}} -->
 <div class="wp-block-group has-black-90-color has-text-color has-link-color" style="padding-top:0;padding-right:var(--wp--preset--spacing--60);padding-bottom:0;padding-left:0"><!-- wp:fitness/rating-badge {"placeId":"ChIJ59nsISpNcUcRIQ2RH8DwoAE","showLogo":false,"size":"small","textColor":"black-60","fontSize":"xs","style":{"spacing":{"padding":{"top":"0","bottom":"0"}},"elements":{"link":{"color":{"text":"var:preset|color|black-60"}}}}} /-->
 
-<!-- wp:paragraph {"style":{"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90"} -->
-<p class="has-black-90-color has-text-color has-link-color">Dein <strong>ExcitingFit</strong><br>in Bad Ischl</p>
+<!-- wp:paragraph {"className":"tw-gym-card__title","style":{"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90"} -->
+<p class="has-black-90-color has-text-color has-link-color tw-gym-card__title">Dein <strong>ExcitingFit</strong><br>in Bad Ischl</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:paragraph {"style":{"typography":{"fontStyle":"normal","fontWeight":"200"},"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90","fontSize":"xs","fontFamily":"work-sans"} -->
-<p class="has-black-90-color has-text-color has-link-color has-work-sans-font-family has-xs-font-size" style="font-style:normal;font-weight:200">Mehr über ExcitingFit</p>
+<!-- wp:paragraph {"className":"tw-gym-card__cta","style":{"typography":{"fontStyle":"normal","fontWeight":"200"},"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90","fontSize":"xs","fontFamily":"work-sans"} -->
+<p class="has-black-90-color has-text-color has-link-color has-work-sans-font-family has-xs-font-size tw-gym-card__cta" style="font-style:normal;font-weight:200">Mehr über ExcitingFit</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:paragraph {"style":{"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90"} -->
-<p class="has-black-90-color has-text-color has-link-color">►</p>
+<!-- wp:paragraph {"className":"tw-gym-card__arrow","style":{"elements":{"link":{"color":{"text":"var:preset|color|black-90"}}}},"textColor":"black-90"} -->
+<p class="has-black-90-color has-text-color has-link-color tw-gym-card__arrow">►</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:group --></div>
 <!-- /wp:group --></div>
