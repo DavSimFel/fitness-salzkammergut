@@ -115,7 +115,21 @@
             showLogo: { type: 'boolean', default: true },
             size: { type: 'string', default: 'medium' }
         },
-        supports: { html: false },
+        supports: {
+            html: false,
+            align: ['left', 'center', 'right', 'wide', 'full'],
+            spacing: {
+                margin: true,
+                padding: true,
+            },
+            color: {
+                text: true,
+                background: true,
+            },
+            typography: {
+                fontSize: true,
+            },
+        },
         edit: renderRatingEdit,
         save: function () {
             return null;
@@ -132,7 +146,22 @@
             placeId: { type: 'string', default: '' },
             showStars: { type: 'boolean', default: true }
         },
-        supports: { html: false },
+        supports: {
+            html: false,
+            align: ['left', 'center', 'right', 'wide'],
+            spacing: {
+                margin: true,
+                padding: true,
+            },
+            color: {
+                text: true,
+                background: true,
+            },
+            typography: {
+                fontSize: true,
+                lineHeight: true,
+            },
+        },
         edit: renderReviewCardEdit,
         save: function () {
             return null;
@@ -213,7 +242,23 @@
             minRating: { type: 'number', default: 4 },
             maxLength: { type: 'number', default: 180 }
         },
-        supports: { html: false },
+        supports: {
+            html: false,
+            align: ['wide', 'full'],
+            spacing: {
+                margin: true,
+                padding: true,
+                blockGap: true,
+            },
+            color: {
+                text: true,
+                background: true,
+            },
+            typography: {
+                fontSize: true,
+                lineHeight: true,
+            },
+        },
         edit: renderReviewFeedEdit,
         save: function () {
             return null;
