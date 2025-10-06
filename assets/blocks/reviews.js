@@ -129,6 +129,7 @@
             typography: {
                 fontSize: true,
             },
+            shadow: true,
         },
         edit: renderRatingEdit,
         save: function () {
@@ -161,6 +162,7 @@
                 fontSize: true,
                 lineHeight: true,
             },
+            shadow: true,
         },
         edit: renderReviewCardEdit,
         save: function () {
@@ -257,6 +259,14 @@
             typography: {
                 fontSize: true,
                 lineHeight: true,
+            },
+            layout: {
+                default: {
+                    type: 'flex',
+                    orientation: 'vertical',
+                    justifyContent: 'flex-start',
+                },
+                allowSwitching: true,
             },
         },
         edit: renderReviewFeedEdit,

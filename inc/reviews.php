@@ -436,6 +436,7 @@ function fitness_skg_register_review_blocks(): void
             'typography' => [
                 'fontSize' => true,
             ],
+            'shadow'    => true,
         ],
     ];
 
@@ -479,6 +480,7 @@ function fitness_skg_register_review_blocks(): void
                 'fontSize'   => true,
                 'lineHeight' => true,
             ],
+            'shadow'    => true,
         ],
     ];
 
@@ -526,6 +528,14 @@ function fitness_skg_register_review_blocks(): void
             'typography' => [
                 'fontSize'   => true,
                 'lineHeight' => true,
+            ],
+            'layout'    => [
+                'default'        => [
+                    'type'         => 'flex',
+                    'orientation'  => 'vertical',
+                    'justifyContent' => 'flex-start',
+                ],
+                'allowSwitching' => true,
             ],
         ],
     ];
@@ -589,7 +599,7 @@ function fitness_skg_render_review_feed_block(array $attributes, string $content
 {
     $place_ids = fitness_skg_parse_place_ids($attributes['placeIds'] ?? '', $block->context ?? []);
     if (! $place_ids) {
-        $wrapper = get_block_wrapper_attributes(['class' => 'fitness-review-feed is-empty']);
+        $wrapper = get_block_wrapper_attributes(['class' => 'is-empty']);
 
         return sprintf(
             '<div %s>%s</div>',
@@ -640,7 +650,7 @@ function fitness_skg_render_review_feed_block(array $attributes, string $content
     }
 
     if (! $collected) {
-        $wrapper = get_block_wrapper_attributes(['class' => 'fitness-review-feed is-empty']);
+        $wrapper = get_block_wrapper_attributes(['class' => 'is-empty']);
 
         return sprintf(
             '<div %s>%s</div>',
@@ -696,7 +706,7 @@ function fitness_skg_render_review_feed_block(array $attributes, string $content
         $items_html .= '</article>';
     }
 
-    $wrapper = get_block_wrapper_attributes(['class' => 'fitness-review-feed']);
+    $wrapper = get_block_wrapper_attributes();
 
     return sprintf('<div %s>%s</div>', $wrapper, $items_html);
 }
