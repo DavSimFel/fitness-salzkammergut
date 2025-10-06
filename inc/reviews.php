@@ -152,17 +152,15 @@ function fitness_skg_fetch_place_rating(string $place_id)
         return new WP_Error('fitness_skg_missing_api_key', __('Google Places API key not configured.', 'fitness-skg'));
     }
 
-    $endpoint = add_query_arg(
-        [
-            'place_id' => $place_id,
-            'fields'   => 'rating,user_ratings_total',
-            'key'      => $api_key,
-        ],
-        'https://maps.googleapis.com/maps/api/place/details/json'
-    );
+    $encoded_id = rawurlencode($place_id);
+    $endpoint   = sprintf('https://places.googleapis.com/v1/places/%s', $encoded_id);
 
     $response = wp_remote_get($endpoint, [
         'timeout' => 8,
+        'headers' => [
+            'X-Goog-Api-Key'    => $api_key,
+            'X-Goog-FieldMask'  => 'rating,userRatingCount',
+        ],
     ]);
 
     if (is_wp_error($response)) {
@@ -184,17 +182,16 @@ function fitness_skg_fetch_place_rating(string $place_id)
         return new WP_Error('fitness_skg_json_error', __('Invalid JSON in Places API response.', 'fitness-skg'));
     }
 
-    $status = $data['status'] ?? '';
-    if ($status !== 'OK') {
-        $error_message = $data['error_message'] ?? '';
-        $details = $error_message ? sprintf('%s — %s', (string) $status, $error_message) : (string) $status;
+    if (isset($data['error'])) {
+        $status         = $data['error']['status'] ?? 'UNKNOWN';
+        $error_message  = $data['error']['message'] ?? '';
+        $details        = $error_message ? sprintf('%s — %s', (string) $status, $error_message) : (string) $status;
 
         return new WP_Error('fitness_skg_api_error', sprintf(__('Places API error: %s', 'fitness-skg'), $details));
     }
 
-    $result = $data['result'] ?? [];
-    $rating = isset($result['rating']) ? (float) $result['rating'] : null;
-    $count  = isset($result['user_ratings_total']) ? (int) $result['user_ratings_total'] : null;
+    $rating = isset($data['rating']) ? (float) $data['rating'] : null;
+    $count  = isset($data['userRatingCount']) ? (int) $data['userRatingCount'] : null;
 
     return [
         'rating'     => $rating,
