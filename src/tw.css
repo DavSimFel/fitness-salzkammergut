@@ -228,11 +228,11 @@
   }
 
   .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__container {
-    @apply tw-items-center tw-text-center tw-gap-5;
+    @apply tw-flex tw-flex-col tw-items-center tw-text-center tw-gap-5;
   }
 
   .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item {
-    @apply tw-w-full tw-mx-12;
+    @apply tw-w-full tw-my-2;
   }
 
   .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content {
@@ -282,7 +282,7 @@
     @apply tw-text-2xl tw-leading-none tw-transition tw-duration-[250ms] tw-ease-[ease];
   }
 
-  .tw-gym-card:hover .tw-gym-card__arrow {
+.tw-gym-card:hover .tw-gym-card__arrow {
     @apply tw-text-lime tw-translate-x-1.5;
   }
 }

@@ -114,6 +114,15 @@ const maxWidthScale = [
 const dimensionExtras = ['auto', 'full', 'screen', 'min', 'max', 'fit'];
 const responsiveVariants = ['sm', 'md', 'lg', 'xl', '2xl'];
 
+const runtimeSafelist = [
+  'is-menu-open',
+  'has-modal-open',
+  'wp-block-navigation__responsive-container',
+  'wp-block-navigation__container',
+  'wp-block-navigation-item',
+  'wp-block-navigation-item__content',
+];
+
 const buildSafelist = () => {
   if (!enableFullBuild) return [];
 
@@ -208,7 +217,7 @@ module.exports = {
   corePlugins: {
     preflight: false,
   },
-  safelist: buildSafelist(),
+  safelist: [...buildSafelist(), ...runtimeSafelist],
   theme: {
     extend: {
       colors: palette,
