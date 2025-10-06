@@ -228,11 +228,11 @@
   }
 
   .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__container {
-    @apply tw-flex tw-flex-col tw-items-center tw-text-center tw-gap-5;
+    @apply tw-flex tw-flex-col tw-items-center tw-text-center tw-gap-5 tw-w-full;
   }
 
   .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item {
-    @apply tw-w-full tw-my-3 tw-mx-3;
+    @apply tw-w-full;
   }
 
   .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content {
