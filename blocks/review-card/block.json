@@ -37,6 +37,5 @@
     },
     "shadow": true
   },
-  "editorScript": "fitness-skg-review-blocks",
-  "render": "fitness_skg_render_review_card_block"
+  "editorScript": "fitness-skg-review-blocks"
 }

@@ -402,31 +402,36 @@ function fitness_skg_register_review_blocks(): void
         );
     }
 
-    $block_base_dir = dirname(__DIR__) . '/blocks';
+    $block_base_dir = $theme_dir . '/blocks';
 
-    register_block_type_from_metadata(
-        $block_base_dir . '/rating-badge',
+    $blocks = [
         [
-            'editor_script'   => 'fitness-skg-review-blocks',
-            'render_callback' => 'fitness_skg_render_rating_badge_block',
-        ]
-    );
+            'path'     => $block_base_dir . '/rating-badge',
+            'callback' => 'fitness_skg_render_rating_badge_block',
+        ],
+        [
+            'path'     => $block_base_dir . '/review-card',
+            'callback' => 'fitness_skg_render_review_card_block',
+        ],
+        [
+            'path'     => $block_base_dir . '/review-feed',
+            'callback' => 'fitness_skg_render_review_feed_block',
+        ],
+    ];
 
-    register_block_type_from_metadata(
-        $block_base_dir . '/review-card',
-        [
-            'editor_script'   => 'fitness-skg-review-blocks',
-            'render_callback' => 'fitness_skg_render_review_card_block',
-        ]
-    );
+    foreach ($blocks as $block) {
+        $result = register_block_type_from_metadata(
+            $block['path'],
+            [
+                'editor_script'   => 'fitness-skg-review-blocks',
+                'render_callback' => $block['callback'],
+            ]
+        );
 
-    register_block_type_from_metadata(
-        $block_base_dir . '/review-feed',
-        [
-            'editor_script'   => 'fitness-skg-review-blocks',
-            'render_callback' => 'fitness_skg_render_review_feed_block',
-        ]
-    );
+        if (is_wp_error($result)) {
+            error_log(sprintf('fitness_skg block registration failed for %s: %s', $block['path'], $result->get_error_message()));
+        }
+    }
 }
 
 function fitness_skg_render_rating_badge_block(array $attributes, string $content, $block): string

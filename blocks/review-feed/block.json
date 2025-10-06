@@ -48,6 +48,5 @@
       "allowSwitching": true
     }
   },
-  "editorScript": "fitness-skg-review-blocks",
-  "render": "fitness_skg_render_review_feed_block"
+  "editorScript": "fitness-skg-review-blocks"
 }
