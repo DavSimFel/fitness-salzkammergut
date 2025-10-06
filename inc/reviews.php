@@ -417,6 +417,10 @@ function fitness_skg_register_review_blocks(): void
             'path'     => $block_base_dir . '/review-feed',
             'callback' => 'fitness_skg_render_review_feed_block',
         ],
+        [
+            'path'     => $block_base_dir . '/linked-container',
+            'callback' => 'fitness_skg_render_linked_container_block',
+        ],
     ];
 
     foreach ($blocks as $block) {
@@ -596,6 +600,43 @@ function fitness_skg_render_review_feed_block(array $attributes, string $content
     $wrapper = get_block_wrapper_attributes();
 
     return sprintf('<div %s>%s</div>', $wrapper, $items_html);
+}
+
+function fitness_skg_render_linked_container_block(array $attributes, string $content, $block = null): string
+{
+    $url            = isset($attributes['url']) ? trim((string) $attributes['url']) : '';
+    $escaped_url    = $url !== '' ? esc_url($url) : '';
+    $opens_in_new   = ! empty($attributes['opensInNewTab']);
+    $rel_input      = isset($attributes['rel']) ? sanitize_text_field((string) $attributes['rel']) : '';
+    $rel_tokens     = $rel_input !== '' ? preg_split('/\s+/', $rel_input) : [];
+
+    if ($opens_in_new) {
+        $rel_tokens[] = 'noopener';
+        $rel_tokens[] = 'noreferrer';
+    }
+
+    $rel_tokens = array_unique(array_filter(array_map('sanitize_text_field', (array) $rel_tokens)));
+    $rel_value  = implode(' ', $rel_tokens);
+
+    $extra_attrs = [];
+
+    if ($escaped_url !== '') {
+        $extra_attrs['href'] = $escaped_url;
+
+        if ($opens_in_new) {
+            $extra_attrs['target'] = '_blank';
+        }
+
+        if ($rel_value !== '') {
+            $extra_attrs['rel'] = $rel_value;
+        }
+    }
+
+    $tag                  = $escaped_url !== '' ? 'a' : 'div';
+    $wrapper_attributes   = get_block_wrapper_attributes($extra_attrs);
+    $rendered_inner_block = $content !== '' ? $content : ''; // InnerBlocks already rendered by WP.
+
+    return sprintf('<%1$s %2$s>%3$s</%1$s>', $tag, $wrapper_attributes, $rendered_inner_block);
 }
 
 function fitness_skg_render_star_icons(?float $rating): string

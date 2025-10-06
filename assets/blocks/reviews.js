@@ -13,6 +13,8 @@
     const {
         useBlockProps,
         InspectorControls,
+        InnerBlocks,
+        __experimentalLinkControl,
     } = wp.blockEditor || wp.editor || {};
     const {
         PanelBody,
@@ -23,6 +25,7 @@
         RangeControl,
         TextareaControl,
     } = wp.components || {};
+    const LinkControl = __experimentalLinkControl;
     const ServerSideRender = wp.serverSideRender;
 
     if (!registerBlockType || !useBlockProps || !InspectorControls || !ServerSideRender) {
@@ -189,6 +192,88 @@
         );
     };
 
+    const LinkedContainerEdit = (props) => {
+        const { attributes, setAttributes } = props;
+        const { url, opensInNewTab, rel } = attributes;
+
+        if (!useBlockProps || !InnerBlocks) {
+            return null;
+        }
+
+        const blockProps = useBlockProps({
+            'data-has-link': url ? 'true' : 'false',
+        });
+
+        const inspector = el(
+            InspectorControls,
+            null,
+            el(
+                PanelBody,
+                { title: __('Verlinkung', 'fitness-skg'), initialOpen: true },
+                LinkControl
+                    ? el(LinkControl, {
+                        value: {
+                            url: url || '',
+                            opensInNewTab: !!opensInNewTab,
+                            rel: rel || '',
+                        },
+                        onChange: (nextValue) => {
+                            if (!nextValue) {
+                                setAttributes({ url: '', opensInNewTab: false, rel: '' });
+                                return;
+                            }
+
+                            setAttributes({
+                                url: nextValue.url || '',
+                                opensInNewTab: !!nextValue.opensInNewTab,
+                                rel: nextValue.rel || '',
+                            });
+                        },
+                        forceIsEditingLink: true,
+                        showInitialSuggestions: true,
+                    })
+                    : el(
+                        Fragment,
+                        null,
+                        el(TextControl, {
+                            label: __('URL', 'fitness-skg'),
+                            value: url || '',
+                            onChange: (value) => setAttributes({ url: value }),
+                            placeholder: __('https://beispiel.com', 'fitness-skg'),
+                        }),
+                        el(ToggleControl, {
+                            label: __('In neuem Tab öffnen', 'fitness-skg'),
+                            checked: !!opensInNewTab,
+                            onChange: (value) => setAttributes({ opensInNewTab: value }),
+                        }),
+                        el(TextControl, {
+                            label: __('Rel-Attribute', 'fitness-skg'),
+                            value: rel || '',
+                            onChange: (value) => setAttributes({ rel: value }),
+                            help: __('Leer lassen, um Standardwerte zu verwenden.', 'fitness-skg'),
+                        })
+                    ),
+                el(Notice, {
+                    status: 'info',
+                    isDismissible: false,
+                }, url
+                    ? __('Die gesamte Box wird auf die gewählte URL verlinkt.', 'fitness-skg')
+                    : __('Ohne URL bleibt der Container statisch.', 'fitness-skg'))
+            )
+        );
+
+        return el(
+            Fragment,
+            null,
+            inspector,
+            el(
+                'div',
+                blockProps,
+                el(InnerBlocks, null)
+            )
+        );
+    };
+
     const blocks = [
         {
             name: 'fitness/rating-badge',
@@ -326,6 +411,55 @@
                     },
                 },
                 edit: ReviewFeedEdit,
+                save: () => null,
+            },
+        },
+        {
+            name: 'fitness/linked-container',
+            settings: {
+                apiVersion: 2,
+                title: __('Linked Container', 'fitness-skg'),
+                description: __('Macht alle enthaltenen Blöcke per Link vollständig klickbar.', 'fitness-skg'),
+                category: 'design',
+                icon: 'admin-links',
+                attributes: {
+                    url: {
+                        type: 'string',
+                        default: '',
+                    },
+                    opensInNewTab: {
+                        type: 'boolean',
+                        default: false,
+                    },
+                    rel: {
+                        type: 'string',
+                        default: '',
+                    },
+                },
+                supports: {
+                    html: false,
+                    anchor: true,
+                    align: ['wide', 'full'],
+                    spacing: {
+                        margin: true,
+                        padding: true,
+                        blockGap: true,
+                    },
+                    color: {
+                        text: true,
+                        background: true,
+                        link: true,
+                    },
+                    typography: {
+                        fontSize: true,
+                        lineHeight: true,
+                    },
+                    shadow: true,
+                    layout: {
+                        allowSwitching: true,
+                    },
+                },
+                edit: LinkedContainerEdit,
                 save: () => null,
             },
         },

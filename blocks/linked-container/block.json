@@ -1,0 +1,47 @@
+{
+  "apiVersion": 2,
+  "name": "fitness/linked-container",
+  "title": "Linked Container",
+  "description": "Wraps inner blocks in an optional link for fully clickable cards.",
+  "category": "design",
+  "icon": "admin-links",
+  "textdomain": "fitness-skg",
+  "attributes": {
+    "url": {
+      "type": "string",
+      "default": ""
+    },
+    "opensInNewTab": {
+      "type": "boolean",
+      "default": false
+    },
+    "rel": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": ["wide", "full"],
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "blockGap": true
+    },
+    "color": {
+      "text": true,
+      "background": true,
+      "link": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true
+    },
+    "shadow": true,
+    "layout": {
+      "allowSwitching": true
+    }
+  },
+  "editorScript": "fitness-skg-review-blocks"
+}
