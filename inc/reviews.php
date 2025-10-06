@@ -423,7 +423,19 @@ function fitness_skg_register_review_blocks(): void
             ],
         ],
         'supports' => [
-            'html' => false,
+            'html'      => false,
+            'align'     => ['left', 'center', 'right', 'wide', 'full'],
+            'spacing'   => [
+                'margin'  => true,
+                'padding' => true,
+            ],
+            'color'     => [
+                'text'       => true,
+                'background' => true,
+            ],
+            'typography' => [
+                'fontSize' => true,
+            ],
         ],
     ];
 
@@ -453,7 +465,20 @@ function fitness_skg_register_review_blocks(): void
             ],
         ],
         'supports' => [
-            'html' => false,
+            'html'      => false,
+            'align'     => ['left', 'center', 'right', 'wide'],
+            'spacing'   => [
+                'margin'  => true,
+                'padding' => true,
+            ],
+            'color'     => [
+                'text'       => true,
+                'background' => true,
+            ],
+            'typography' => [
+                'fontSize'   => true,
+                'lineHeight' => true,
+            ],
         ],
     ];
 
