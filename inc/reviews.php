@@ -662,6 +662,8 @@ function fitness_skg_render_review_feed_block(array $attributes, string $content
         $items_html .= '<article class="fitness-review-feed__item">';
         $items_html .= '<div class="fitness-review-feed__header">';
         $items_html .= '<span class="fitness-review-feed__stars" aria-label="' . esc_attr($label) . '">' . $stars_html . '</span>';
+        $items_html .= '</div>';
+        $items_html .= '<p class="fitness-review-feed__text">' . esc_html($display_text) . '</p>';
         $items_html .= '<div class="fitness-review-feed__meta">';
         $items_html .= '<span class="fitness-review-feed__author">' . esc_html($author_name) . '</span>';
         if ($date_display) {
@@ -671,8 +673,6 @@ function fitness_skg_render_review_feed_block(array $attributes, string $content
         }
         $items_html .= $place_badge;
         $items_html .= '</div>';
-        $items_html .= '</div>';
-        $items_html .= '<p class="fitness-review-feed__text">' . esc_html($display_text) . '</p>';
         $items_html .= '</article>';
     }
 
