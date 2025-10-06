@@ -28,7 +28,7 @@
   }
 
   .tw-btn .wp-block-button__link {
-    @apply tw-inline-flex tw-items-center tw-justify-center tw-rounded-full tw-text-base tw-font-semibold tw-leading-tight tw-transition tw-duration-150 tw-ease-out tw-px-5 tw-py-3;
+    @apply hover:tw-no-underline tw-inline-flex tw-items-center tw-justify-center tw-rounded-full tw-text-base tw-font-semibold tw-leading-tight tw-transition tw-duration-150 tw-ease-out tw-px-5 tw-py-3;
     box-shadow: 0 18px 28px -18px rgba(14, 30, 37, 0.45);
   }
 
