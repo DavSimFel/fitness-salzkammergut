@@ -108,14 +108,6 @@ add_action('enqueue_block_assets', 'fitness_skg_enqueue_theme_styles');
 add_action('enqueue_block_editor_assets', function (): void {
     $theme_version = wp_get_theme()->get('Version') ?: '1.0.0';
 
-    wp_enqueue_script(
-        'fitness-skg-extend-nav-allowed-blocks',
-        get_stylesheet_directory_uri() . '/extend-nav-allowed-blocks.js',
-        ['wp-hooks', 'wp-blocks'],
-        $theme_version,
-        true
-    );
-
     $editor_script_path = get_stylesheet_directory() . '/assets/admin/featured-video-editor.js';
     if (file_exists($editor_script_path)) {
         wp_enqueue_script(
