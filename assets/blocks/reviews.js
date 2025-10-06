@@ -3,7 +3,7 @@
         return;
     }
 
-    const { createElement: el, Fragment } = wp.element;
+    const { createElement: el, Fragment, useState } = wp.element;
     const { __ } = wp.i18n || { __: (str) => str };
     const {
         registerBlockType,
@@ -14,6 +14,8 @@
         useBlockProps,
         InspectorControls,
         InnerBlocks,
+        BlockControls,
+        LinkControl,
         __experimentalLinkControl,
     } = wp.blockEditor || wp.editor || {};
     const {
@@ -24,8 +26,12 @@
         Notice,
         RangeControl,
         TextareaControl,
+        ToolbarButton,
+        ToolbarGroup,
+        Popover,
     } = wp.components || {};
-    const LinkControl = __experimentalLinkControl;
+    const { link: linkIcon, linkOff } = wp.icons || {};
+    const EffectiveLinkControl = LinkControl || __experimentalLinkControl;
     const ServerSideRender = wp.serverSideRender;
 
     if (!registerBlockType || !useBlockProps || !InspectorControls || !ServerSideRender) {
@@ -200,72 +206,125 @@
             return null;
         }
 
+        const [isLinkUIVisible, setIsLinkUIVisible] = useState(false);
+
         const blockProps = useBlockProps({
             'data-has-link': url ? 'true' : 'false',
         });
 
+        const linkObject = {
+            url: url || '',
+            opensInNewTab: !!opensInNewTab,
+            rel: rel || '',
+        };
+
+        const applyLink = (nextValue) => {
+            if (!nextValue) {
+                setAttributes({ url: '', opensInNewTab: false, rel: '' });
+                return;
+            }
+
+            setAttributes({
+                url: nextValue.url || '',
+                opensInNewTab: !!nextValue.opensInNewTab,
+                rel: nextValue.rel || '',
+            });
+        };
+
+        const removeLink = () => {
+            setAttributes({ url: '', opensInNewTab: false, rel: '' });
+            setIsLinkUIVisible(false);
+        };
+
+        const toolbar = ToolbarGroup && ToolbarButton && BlockControls
+            ? el(
+                BlockControls,
+                { group: 'block' },
+                el(
+                    ToolbarGroup,
+                    null,
+                    el(ToolbarButton, {
+                        icon: linkIcon,
+                        label: url ? __('Link bearbeiten', 'fitness-skg') : __('Link hinzufügen', 'fitness-skg'),
+                        onClick: () => setIsLinkUIVisible(true),
+                        isPressed: isLinkUIVisible,
+                    }),
+                    url
+                        ? el(ToolbarButton, {
+                            icon: linkOff,
+                            label: __('Link entfernen', 'fitness-skg'),
+                            onClick: removeLink,
+                        })
+                        : null
+                )
+            )
+            : null;
+
+        const linkPopover = isLinkUIVisible && EffectiveLinkControl && Popover
+            ? el(
+                Popover,
+                {
+                    position: 'bottom center',
+                    onClose: () => setIsLinkUIVisible(false),
+                    className: 'fitness-linked-container__link-popover',
+                },
+                el(EffectiveLinkControl, {
+                    value: linkObject,
+                    onChange: (nextValue) => {
+                        applyLink(nextValue);
+                        if (!nextValue || !nextValue.url) {
+                            setIsLinkUIVisible(false);
+                        }
+                    },
+                    onRemove: removeLink,
+                    forceIsEditingLink: true,
+                    showInitialSuggestions: true,
+                })
+            )
+            : null;
+
+        const fallbackLinkControls = !EffectiveLinkControl
+            ? el(
+                Fragment,
+                null,
+                el(TextControl, {
+                    label: __('URL', 'fitness-skg'),
+                    value: url || '',
+                    onChange: (value) => setAttributes({ url: value }),
+                    placeholder: __('https://beispiel.com', 'fitness-skg'),
+                }),
+                el(ToggleControl, {
+                    label: __('In neuem Tab öffnen', 'fitness-skg'),
+                    checked: !!opensInNewTab,
+                    onChange: (value) => setAttributes({ opensInNewTab: value }),
+                }),
+                el(TextControl, {
+                    label: __('Rel-Attribute', 'fitness-skg'),
+                    value: rel || '',
+                    onChange: (value) => setAttributes({ rel: value }),
+                    help: __('Leer lassen, um Standardwerte zu verwenden.', 'fitness-skg'),
+                })
+            )
+            : null;
+
         const inspector = el(
             InspectorControls,
             null,
-            el(
-                PanelBody,
-                { title: __('Verlinkung', 'fitness-skg'), initialOpen: true },
-                LinkControl
-                    ? el(LinkControl, {
-                        value: {
-                            url: url || '',
-                            opensInNewTab: !!opensInNewTab,
-                            rel: rel || '',
-                        },
-                        onChange: (nextValue) => {
-                            if (!nextValue) {
-                                setAttributes({ url: '', opensInNewTab: false, rel: '' });
-                                return;
-                            }
-
-                            setAttributes({
-                                url: nextValue.url || '',
-                                opensInNewTab: !!nextValue.opensInNewTab,
-                                rel: nextValue.rel || '',
-                            });
-                        },
-                        forceIsEditingLink: true,
-                        showInitialSuggestions: true,
-                    })
-                    : el(
-                        Fragment,
-                        null,
-                        el(TextControl, {
-                            label: __('URL', 'fitness-skg'),
-                            value: url || '',
-                            onChange: (value) => setAttributes({ url: value }),
-                            placeholder: __('https://beispiel.com', 'fitness-skg'),
-                        }),
-                        el(ToggleControl, {
-                            label: __('In neuem Tab öffnen', 'fitness-skg'),
-                            checked: !!opensInNewTab,
-                            onChange: (value) => setAttributes({ opensInNewTab: value }),
-                        }),
-                        el(TextControl, {
-                            label: __('Rel-Attribute', 'fitness-skg'),
-                            value: rel || '',
-                            onChange: (value) => setAttributes({ rel: value }),
-                            help: __('Leer lassen, um Standardwerte zu verwenden.', 'fitness-skg'),
-                        })
-                    ),
-                el(Notice, {
-                    status: 'info',
-                    isDismissible: false,
-                }, url
-                    ? __('Die gesamte Box wird auf die gewählte URL verlinkt.', 'fitness-skg')
-                    : __('Ohne URL bleibt der Container statisch.', 'fitness-skg'))
-            )
+            fallbackLinkControls,
+            el(Notice, {
+                status: 'info',
+                isDismissible: false,
+            }, url
+                ? __('Die gesamte Box wird auf die gewählte URL verlinkt.', 'fitness-skg')
+                : __('Ohne URL bleibt der Container statisch.', 'fitness-skg'))
         );
 
         return el(
             Fragment,
             null,
+            toolbar,
             inspector,
+            linkPopover,
             el(
                 'div',
                 blockProps,
