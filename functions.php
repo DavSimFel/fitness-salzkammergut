@@ -199,7 +199,6 @@ add_action('init', function () {
         'show_in_rest' => true,
         'hierarchical' => false,
         'rewrite'      => ['slug' => 'studio'],
-        'meta_box_cb'  => 'post_categories_meta_box',
         'capabilities' => $capabilities,
     ]);
 
