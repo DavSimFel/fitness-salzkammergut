@@ -1,0 +1,41 @@
+{
+  "apiVersion": 2,
+  "name": "fitness/rating-badge",
+  "title": "Google Rating Badge",
+  "description": "Shows the Google rating and review count for a selected Place.",
+  "category": "widgets",
+  "icon": "star-filled",
+  "textdomain": "fitness-skg",
+  "attributes": {
+    "placeId": {
+      "type": "string",
+      "default": ""
+    },
+    "showLogo": {
+      "type": "boolean",
+      "default": true
+    },
+    "size": {
+      "type": "string",
+      "default": "medium"
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["left", "center", "right", "wide", "full"],
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "text": true,
+      "background": true
+    },
+    "typography": {
+      "fontSize": true
+    },
+    "shadow": true
+  },
+  "editorScript": "fitness-skg-review-blocks",
+  "render": "fitness_skg_render_rating_badge_block"
+}

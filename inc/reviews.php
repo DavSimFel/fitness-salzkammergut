@@ -389,162 +389,35 @@ function fitness_skg_get_current_context_place_id(array $block_context = []): ?s
 
 function fitness_skg_register_review_blocks(): void
 {
-    $dir = get_stylesheet_directory();
-    $editor_script = $dir . '/assets/blocks/reviews.js';
-    $editor_handle = null;
-    if (file_exists($editor_script)) {
+    $theme_dir = get_stylesheet_directory();
+    $script_path = $theme_dir . '/assets/blocks/reviews.js';
+
+    if (file_exists($script_path)) {
         wp_register_script(
-            'fitness-skg-review-blocks-editor',
+            'fitness-skg-review-blocks',
             get_stylesheet_directory_uri() . '/assets/blocks/reviews.js',
-            ['wp-blocks', 'wp-element', 'wp-components', 'wp-i18n', 'wp-block-editor', 'wp-data', 'wp-server-side-render'],
-            filemtime($editor_script) ?: wp_get_theme()->get('Version'),
+            ['wp-blocks', 'wp-element', 'wp-components', 'wp-i18n', 'wp-block-editor', 'wp-data', 'wp-server-side-render', 'wp-dom-ready'],
+            filemtime($script_path) ?: wp_get_theme()->get('Version'),
             true
         );
-        $editor_handle = 'fitness-skg-review-blocks-editor';
     }
 
-    $rating_args = [
-        'api_version'     => 2,
-        'category'        => 'widgets',
-        'icon'            => 'star-filled',
-        'render_callback' => 'fitness_skg_render_rating_badge_block',
-        'attributes'      => [
-            'placeId' => [
-                'type'    => 'string',
-                'default' => '',
-            ],
-            'showLogo' => [
-                'type'    => 'boolean',
-                'default' => true,
-            ],
-            'size' => [
-                'type'    => 'string',
-                'default' => 'medium',
-            ],
-        ],
-        'supports' => [
-            'html'      => false,
-            'align'     => ['left', 'center', 'right', 'wide', 'full'],
-            'spacing'   => [
-                'margin'  => true,
-                'padding' => true,
-            ],
-            'color'     => [
-                'text'       => true,
-                'background' => true,
-            ],
-            'typography' => [
-                'fontSize' => true,
-            ],
-            'shadow'    => true,
-        ],
-    ];
+    $block_base_dir = dirname(__DIR__) . '/blocks';
 
-    if ($editor_handle) {
-        $rating_args['editor_script'] = $editor_handle;
-    }
+    register_block_type_from_metadata(
+        $block_base_dir . '/rating-badge',
+        ['editor_script' => 'fitness-skg-review-blocks']
+    );
 
-    register_block_type('fitness/rating-badge', $rating_args);
+    register_block_type_from_metadata(
+        $block_base_dir . '/review-card',
+        ['editor_script' => 'fitness-skg-review-blocks']
+    );
 
-    $review_args = [
-        'api_version'     => 2,
-        'category'        => 'widgets',
-        'icon'            => 'format-quote',
-        'render_callback' => 'fitness_skg_render_review_card_block',
-        'attributes'      => [
-            'testimonialId' => [
-                'type'    => 'integer',
-                'default' => 0,
-            ],
-            'placeId' => [
-                'type'    => 'string',
-                'default' => '',
-            ],
-            'showStars' => [
-                'type'    => 'boolean',
-                'default' => true,
-            ],
-        ],
-        'supports' => [
-            'html'      => false,
-            'align'     => ['left', 'center', 'right', 'wide'],
-            'spacing'   => [
-                'margin'  => true,
-                'padding' => true,
-            ],
-            'color'     => [
-                'text'       => true,
-                'background' => true,
-            ],
-            'typography' => [
-                'fontSize'   => true,
-                'lineHeight' => true,
-            ],
-            'shadow'    => true,
-        ],
-    ];
-
-    if ($editor_handle) {
-        $review_args['editor_script'] = $editor_handle;
-    }
-
-    register_block_type('fitness/review-card', $review_args);
-
-    $feed_args = [
-        'api_version'     => 2,
-        'category'        => 'widgets',
-        'icon'            => 'list-view',
-        'render_callback' => 'fitness_skg_render_review_feed_block',
-        'attributes'      => [
-            'placeIds' => [
-                'type'    => 'string',
-                'default' => '',
-            ],
-            'limit' => [
-                'type'    => 'number',
-                'default' => 3,
-            ],
-            'minRating' => [
-                'type'    => 'number',
-                'default' => 4,
-            ],
-            'maxLength' => [
-                'type'    => 'number',
-                'default' => 180,
-            ],
-        ],
-        'supports' => [
-            'html'      => false,
-            'align'     => ['wide', 'full'],
-            'spacing'   => [
-                'margin'   => true,
-                'padding'  => true,
-                'blockGap' => true,
-            ],
-            'color'     => [
-                'text'       => true,
-                'background' => true,
-            ],
-            'typography' => [
-                'fontSize'   => true,
-                'lineHeight' => true,
-            ],
-            'layout'    => [
-                'default'        => [
-                    'type'         => 'flex',
-                    'orientation'  => 'vertical',
-                    'justifyContent' => 'flex-start',
-                ],
-                'allowSwitching' => true,
-            ],
-        ],
-    ];
-
-    if ($editor_handle) {
-        $feed_args['editor_script'] = $editor_handle;
-    }
-
-    register_block_type('fitness/review-feed', $feed_args);
+    register_block_type_from_metadata(
+        $block_base_dir . '/review-feed',
+        ['editor_script' => 'fitness-skg-review-blocks']
+    );
 }
 
 function fitness_skg_render_rating_badge_block(array $attributes, string $content, $block): string

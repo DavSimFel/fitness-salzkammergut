@@ -1,0 +1,42 @@
+{
+  "apiVersion": 2,
+  "name": "fitness/review-card",
+  "title": "Testimonial Card",
+  "description": "Outputs a curated testimonial with live star rating from Google.",
+  "category": "widgets",
+  "icon": "format-quote",
+  "textdomain": "fitness-skg",
+  "attributes": {
+    "testimonialId": {
+      "type": "integer",
+      "default": 0
+    },
+    "placeId": {
+      "type": "string",
+      "default": ""
+    },
+    "showStars": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["left", "center", "right", "wide"],
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "text": true,
+      "background": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true
+    },
+    "shadow": true
+  },
+  "editorScript": "fitness-skg-review-blocks",
+  "render": "fitness_skg_render_review_card_block"
+}

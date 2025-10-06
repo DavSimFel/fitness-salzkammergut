@@ -1,0 +1,53 @@
+{
+  "apiVersion": 2,
+  "name": "fitness/review-feed",
+  "title": "Google Review Feed",
+  "description": "Displays the latest Google reviews from one or multiple Place IDs.",
+  "category": "widgets",
+  "icon": "list-view",
+  "textdomain": "fitness-skg",
+  "attributes": {
+    "placeIds": {
+      "type": "string",
+      "default": ""
+    },
+    "limit": {
+      "type": "number",
+      "default": 3
+    },
+    "minRating": {
+      "type": "number",
+      "default": 4
+    },
+    "maxLength": {
+      "type": "number",
+      "default": 180
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"],
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "blockGap": true
+    },
+    "color": {
+      "text": true,
+      "background": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true
+    },
+    "layout": {
+      "default": {
+        "type": "flex",
+        "orientation": "vertical"
+      },
+      "allowSwitching": true
+    }
+  },
+  "editorScript": "fitness-skg-review-blocks",
+  "render": "fitness_skg_render_review_feed_block"
+}
