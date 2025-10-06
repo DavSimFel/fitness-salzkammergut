@@ -9,6 +9,9 @@
         updateBlockType,
     } = wp.blocks || {};
     const {
+        addFilter,
+    } = wp.hooks || {};
+    const {
         useBlockProps,
         InspectorControls,
     } = wp.blockEditor || wp.editor || {};
@@ -23,12 +26,12 @@
     } = wp.components || {};
     const ServerSideRender = wp.serverSideRender;
 
-    if (!updateBlockType || !useBlockProps || !InspectorControls || !ServerSideRender) {
+    if ((!updateBlockType && !addFilter) || !useBlockProps || !InspectorControls || !ServerSideRender) {
         return;
     }
 
     const wrapWithBlockProps = (content) => {
-        const blockProps = useBlockProps();
+        const blockProps = useBlockProps({ __experimentalSkipSerialization: true });
         return el('div', blockProps, content);
     };
 
@@ -186,6 +189,31 @@
             )
         );
     };
+
+    const applyEditOverride = (settings, name) => {
+        if (!settings) {
+            return settings;
+        }
+
+        switch (name) {
+            case 'fitness/rating-badge':
+                return Object.assign({}, settings, { edit: RatingBadgeEdit });
+            case 'fitness/review-card':
+                return Object.assign({}, settings, { edit: ReviewCardEdit });
+            case 'fitness/review-feed':
+                return Object.assign({}, settings, { edit: ReviewFeedEdit });
+            default:
+                return settings;
+        }
+    };
+
+    if (typeof addFilter === 'function') {
+        addFilter('blocks.registerBlockType', 'fitness-skg/review-block-edits', applyEditOverride);
+    }
+
+    if (typeof updateBlockType !== 'function') {
+        return;
+    }
 
     wp.domReady(() => {
         updateBlockType('fitness/rating-badge', {

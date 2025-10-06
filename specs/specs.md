@@ -563,7 +563,7 @@ Security: Calls go through a **server-side proxy WP REST endpoint** to avoid exp
 - [x] Create **`archive-studio.html`**, **`single-studio.html`**, **`archive-kurs.html`**, **`single-kurs.html`**, **`page-ziel.html`** block templates
 - [ ] Register PHP-rendered blocks: `rating-badge`, `opening-hours`, `timetable-embed` (block.json + render callback stubs)
 - [ ] Implement default context for Place IDs / Studio mapping and document transient caching + manual fallbacks
-  - [ ] `rating-badge` block exposes Google My Business rating + count for Home & Studio usage
+  - [x] `rating-badge` block exposes Google My Business rating + count for Home & Studio usage
   - [ ] Document GMB credential storage (env/option) and fallback copy when API offline
   - [x] Assign Tailwind presets within patterns/templates to match `theme.json`
   - [x] Add admin menu icons + localized labels for CPTs/taxonomies
