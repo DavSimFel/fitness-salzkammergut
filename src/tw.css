@@ -202,6 +202,10 @@
     @apply tw-text-sm tw-opacity-70;
   }
 
+  .wp-block-fitness-review-feed {
+    @apply tw-flex tw-flex-col tw-gap-3;
+  }
+
   .wp-block-fitness-review-feed .fitness-review-feed__item {
     @apply tw-flex tw-flex-col tw-gap-3;
   }
