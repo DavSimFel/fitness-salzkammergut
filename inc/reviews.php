@@ -406,17 +406,26 @@ function fitness_skg_register_review_blocks(): void
 
     register_block_type_from_metadata(
         $block_base_dir . '/rating-badge',
-        ['editor_script' => 'fitness-skg-review-blocks']
+        [
+            'editor_script'   => 'fitness-skg-review-blocks',
+            'render_callback' => 'fitness_skg_render_rating_badge_block',
+        ]
     );
 
     register_block_type_from_metadata(
         $block_base_dir . '/review-card',
-        ['editor_script' => 'fitness-skg-review-blocks']
+        [
+            'editor_script'   => 'fitness-skg-review-blocks',
+            'render_callback' => 'fitness_skg_render_review_card_block',
+        ]
     );
 
     register_block_type_from_metadata(
         $block_base_dir . '/review-feed',
-        ['editor_script' => 'fitness-skg-review-blocks']
+        [
+            'editor_script'   => 'fitness-skg-review-blocks',
+            'render_callback' => 'fitness_skg_render_review_feed_block',
+        ]
     );
 }
 
