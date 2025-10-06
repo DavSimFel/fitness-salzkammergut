@@ -290,7 +290,6 @@
   }
 
   .tw-gym-card:hover {
-    transform: translateY(-6px);
     background-color: var(--wp--preset--color--soft-white);
     box-shadow: 0 28px 46px -30px rgba(14, 30, 37, 0.3);
   }
