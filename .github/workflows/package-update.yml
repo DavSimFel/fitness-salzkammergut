@@ -1,0 +1,23 @@
+name: Trigger Package Update
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  trigger-package-update:
+    name: Trigger package update webhook
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger production update
+        if: github.ref == 'refs/heads/main'
+        run: |
+          curl --fail --silent --show-error \
+            "https://fitness-salzkammergut.at/wp-json/dfg/v1/package_update?secret=e9f296221d0f8caa7557e023de834cd15b34bac69fc4578ff8fbd214913fc72d&type=theme&package=fitness-salzkammergut"
+      - name: Trigger staging update
+        if: github.ref == 'refs/heads/dev'
+        run: |
+          curl --fail --silent --show-error \
+            "https://staging.fitness-salzkammergut.at/wp-json/dfg/v1/package_update?secret=e9f296221d0f8caa7557e023de834cd15b34bac69fc4578ff8fbd214913fc72d&type=theme&package=fitness-salzkammergut"
