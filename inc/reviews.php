@@ -154,9 +154,9 @@ function fitness_skg_fetch_place_rating(string $place_id)
 
     $endpoint = add_query_arg(
         [
-            'placeid' => rawurlencode($place_id),
-            'fields'  => 'rating,user_ratings_total',
-            'key'     => $api_key,
+            'place_id' => $place_id,
+            'fields'   => 'rating,user_ratings_total',
+            'key'      => $api_key,
         ],
         'https://maps.googleapis.com/maps/api/place/details/json'
     );
@@ -186,7 +186,10 @@ function fitness_skg_fetch_place_rating(string $place_id)
 
     $status = $data['status'] ?? '';
     if ($status !== 'OK') {
-        return new WP_Error('fitness_skg_api_error', sprintf(__('Places API error: %s', 'fitness-skg'), (string) $status));
+        $error_message = $data['error_message'] ?? '';
+        $details = $error_message ? sprintf('%s — %s', (string) $status, $error_message) : (string) $status;
+
+        return new WP_Error('fitness_skg_api_error', sprintf(__('Places API error: %s', 'fitness-skg'), $details));
     }
 
     $result = $data['result'] ?? [];
@@ -487,12 +490,15 @@ function fitness_skg_cli_refresh_single(string $place_id): void
 {
     $cache_key = 'fitness_skg_place_' . md5($place_id);
     delete_transient($cache_key);
-    $data = fitness_skg_get_place_rating_data($place_id);
 
-    if ($data['rating'] === null) {
-        WP_CLI::warning(sprintf('Failed to refresh %s.', $place_id));
+    $data = fitness_skg_fetch_place_rating($place_id);
+    if (is_wp_error($data)) {
+        WP_CLI::warning(sprintf('Failed to refresh %1$s: %2$s', $place_id, $data->get_error_message()));
         return;
     }
+
+    set_transient($cache_key, $data, 15 * MINUTE_IN_SECONDS);
+    update_option('fitness_skg_fallback_' . $cache_key, $data, false);
 
     WP_CLI::success(sprintf('Refreshed %s: %.1f (%d)', $place_id, $data['rating'], $data['count']));
 }
