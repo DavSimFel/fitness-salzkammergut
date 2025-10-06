@@ -489,7 +489,21 @@ function fitness_skg_register_review_blocks(): void
             ],
         ],
         'supports' => [
-            'html' => false,
+            'html'      => false,
+            'align'     => ['wide', 'full'],
+            'spacing'   => [
+                'margin'   => true,
+                'padding'  => true,
+                'blockGap' => true,
+            ],
+            'color'     => [
+                'text'       => true,
+                'background' => true,
+            ],
+            'typography' => [
+                'fontSize'   => true,
+                'lineHeight' => true,
+            ],
         ],
     ];
 
@@ -546,7 +560,13 @@ function fitness_skg_render_review_feed_block(array $attributes, string $content
 {
     $place_ids = fitness_skg_parse_place_ids($attributes['placeIds'] ?? '', $block->context ?? []);
     if (! $place_ids) {
-        return '<div class="fitness-review-feed is-empty">' . esc_html__('Keine Google-Rezensionen gefunden.', 'fitness-skg') . '</div>';
+        $wrapper = get_block_wrapper_attributes(['class' => 'fitness-review-feed is-empty']);
+
+        return sprintf(
+            '<div %s>%s</div>',
+            $wrapper,
+            esc_html__('Keine Google-Rezensionen gefunden.', 'fitness-skg')
+        );
     }
 
     $limit      = max(1, (int) ($attributes['limit'] ?? 3));
@@ -591,7 +611,13 @@ function fitness_skg_render_review_feed_block(array $attributes, string $content
     }
 
     if (! $collected) {
-        return '<div class="fitness-review-feed is-empty">' . esc_html__('Keine Google-Rezensionen im gewünschten Bereich.', 'fitness-skg') . '</div>';
+        $wrapper = get_block_wrapper_attributes(['class' => 'fitness-review-feed is-empty']);
+
+        return sprintf(
+            '<div %s>%s</div>',
+            $wrapper,
+            esc_html__('Keine Google-Rezensionen im gewünschten Bereich.', 'fitness-skg')
+        );
     }
 
     usort($collected, static function (array $a, array $b) {
@@ -641,7 +667,9 @@ function fitness_skg_render_review_feed_block(array $attributes, string $content
         $items_html .= '</article>';
     }
 
-    return '<div class="fitness-review-feed">' . $items_html . '</div>';
+    $wrapper = get_block_wrapper_attributes(['class' => 'fitness-review-feed']);
+
+    return sprintf('<div %s>%s</div>', $wrapper, $items_html);
 }
 
 function fitness_skg_render_star_icons(?float $rating): string
