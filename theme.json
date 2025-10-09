@@ -357,7 +357,7 @@
 				},
 				"typography": {
 					"fontFamily": "var(--wp--preset--font-family--tiempos-text)",
-					"fontSize": "var(--wp--preset--font-size--4xl)",
+					"fontSize": "var(--wp--preset--font-size--3xl)",
 					"fontStyle": "normal",
 					"fontWeight": "500",
 					"lineHeight": "1.5"
@@ -365,12 +365,12 @@
 			},
 			"core/paragraph": {
 				"color": {
-					"text": "var(--wp--preset--color--soft-white)"
+					"text": "var(--wp--preset--color--black-90)"
 				},
 				"elements": {
 					"link": {
 						"color": {
-							"text": "var(--wp--preset--color--soft-white)"
+							"text": "var(--wp--preset--color--black-90)"
 						}
 					}
 				},
