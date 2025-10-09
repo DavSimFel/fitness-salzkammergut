@@ -204,7 +204,39 @@
             align: ['wide', 'full'],
         },
         edit: LinkedContainerEdit,
-        save: () => null,
+        save: (props = {}) => {
+            const { attributes = {} } = props;
+            const { url, opensInNewTab, rel } = attributes;
+            const dataHasLink = url ? 'true' : 'false';
+            const blockProps =
+                (useBlockProps && useBlockProps.save && useBlockProps.save({ 'data-has-link': dataHasLink })) || {
+                    'data-has-link': dataHasLink,
+                };
+            const innerContent =
+                InnerBlocks && InnerBlocks.Content
+                    ? el(InnerBlocks.Content, null)
+                    : null;
+
+            if (url) {
+                const relValue = rel || (opensInNewTab ? 'noopener noreferrer' : undefined);
+
+                return el(
+                    'div',
+                    blockProps,
+                    el(
+                        'a',
+                        {
+                            href: url,
+                            target: opensInNewTab ? '_blank' : undefined,
+                            rel: relValue,
+                        },
+                        innerContent
+                    )
+                );
+            }
+
+            return el('div', blockProps, innerContent);
+        },
     };
 
     wp.domReady(() => {
