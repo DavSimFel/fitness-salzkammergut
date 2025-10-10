@@ -255,6 +255,12 @@
     @apply tw-relative tw-transition tw-duration-[250ms] tw-ease-[ease];
   }
 
+  [data-has-link="true"] > a,
+  [data-has-link="true"] > a:hover,
+  [data-has-link="true"] > a:focus {
+    @apply tw-no-underline;
+  }
+
   .tw-gym-card:hover {
     @apply tw-bg-soft-white tw-shadow-[0_28px_46px_-30px_rgba(14,30,37,0.3)];
   }
