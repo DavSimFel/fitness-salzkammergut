@@ -1,9 +1,9 @@
 (function () {
     const SELECTORS = {
-        root: '[data-review-carousel]',
-        track: '[data-review-carousel-track]',
-        prev: '[data-review-carousel-prev]',
-        next: '[data-review-carousel-next]',
+        root: '[data-review-carousel], .tw-review-carousel',
+        track: '[data-review-carousel-track], .tw-review-carousel__track',
+        prev: '[data-review-carousel-prev], .tw-review-carousel__nav--prev',
+        next: '[data-review-carousel-next], .tw-review-carousel__nav--next',
     };
 
     const ROTATION_INTERVAL = 7000;
