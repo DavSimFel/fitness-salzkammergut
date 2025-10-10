@@ -482,6 +482,25 @@ function fitness_skg_register_review_blocks(): void
         );
     }
 
+    $frontend_scripts = [
+        'fitness-skg-review-carousel' => '/assets/front/review-carousel.js',
+    ];
+
+    foreach ($frontend_scripts as $handle => $relative_path) {
+        $script_path = $theme_dir . $relative_path;
+        if (! file_exists($script_path)) {
+            continue;
+        }
+
+        wp_register_script(
+            $handle,
+            get_stylesheet_directory_uri() . $relative_path,
+            [],
+            filemtime($script_path) ?: wp_get_theme()->get('Version'),
+            true
+        );
+    }
+
     $block_base_dir = $theme_dir . '/blocks';
 
     $blocks = [
@@ -800,9 +819,213 @@ function fitness_skg_render_rating_json_ld($block, float $rating, int $count): s
     return '<script type="application/ld+json">' . wp_json_encode($data) . '</script>';
 }
 
+function fitness_skg_collect_testimonial_context_terms(array $block_context = []): array
+{
+    $studio_terms = [];
+    $ziel_terms   = [];
+
+    $append = static function (array &$bucket, $value): void {
+        $id = (int) $value;
+        if ($id > 0) {
+            $bucket[$id] = $id;
+        }
+    };
+
+    if (! empty($block_context['studioBrandId'])) {
+        $append($studio_terms, $block_context['studioBrandId']);
+    }
+
+    if (! empty($block_context['studioBrandIds']) && is_array($block_context['studioBrandIds'])) {
+        foreach ($block_context['studioBrandIds'] as $studio_id) {
+            $append($studio_terms, $studio_id);
+        }
+    }
+
+    if (! empty($block_context['termTaxonomy']) && ! empty($block_context['termId'])) {
+        if ($block_context['termTaxonomy'] === 'studio_brand') {
+            $append($studio_terms, $block_context['termId']);
+        }
+
+        if ($block_context['termTaxonomy'] === 'ziel_topic') {
+            $append($ziel_terms, $block_context['termId']);
+        }
+    }
+
+    if (! empty($block_context['term_id']) && empty($block_context['termTaxonomy'])) {
+        $context_term = get_term((int) $block_context['term_id']);
+        if ($context_term instanceof WP_Term) {
+            if ($context_term->taxonomy === 'studio_brand') {
+                $append($studio_terms, $context_term->term_id);
+            } elseif ($context_term->taxonomy === 'ziel_topic') {
+                $append($ziel_terms, $context_term->term_id);
+            }
+        }
+    }
+
+    $post_id = isset($block_context['postId']) ? (int) $block_context['postId'] : 0;
+    if (! $post_id) {
+        $post_id = get_the_ID() ? (int) get_the_ID() : 0;
+    }
+
+    if ($post_id) {
+        $post_studios = wp_get_post_terms($post_id, 'studio_brand', ['fields' => 'ids']);
+        if (! is_wp_error($post_studios)) {
+            foreach ($post_studios as $term_id) {
+                $append($studio_terms, $term_id);
+            }
+        }
+
+        $post_ziel = wp_get_post_terms($post_id, 'ziel_topic', ['fields' => 'ids']);
+        if (! is_wp_error($post_ziel)) {
+            foreach ($post_ziel as $term_id) {
+                $append($ziel_terms, $term_id);
+            }
+        }
+    }
+
+    $queried = get_queried_object();
+    if ($queried instanceof WP_Term) {
+        if ($queried->taxonomy === 'studio_brand') {
+            $append($studio_terms, $queried->term_id);
+        } elseif ($queried->taxonomy === 'ziel_topic') {
+            $append($ziel_terms, $queried->term_id);
+        }
+    }
+
+    return [
+        'studio' => array_values($studio_terms),
+        'ziel'   => array_values($ziel_terms),
+    ];
+}
+
+function fitness_skg_find_related_testimonial_ids(array $block_context = [], int $limit = 6): array
+{
+    $terms        = fitness_skg_collect_testimonial_context_terms($block_context);
+    $studio_terms = $terms['studio'];
+    $ziel_terms   = $terms['ziel'];
+
+    $tax_queries = [];
+
+    if ($studio_terms && $ziel_terms) {
+        $tax_queries[] = [
+            'relation' => 'AND',
+            [
+                'taxonomy' => 'studio_brand',
+                'field'    => 'term_id',
+                'terms'    => $studio_terms,
+            ],
+            [
+                'taxonomy' => 'ziel_topic',
+                'field'    => 'term_id',
+                'terms'    => $ziel_terms,
+            ],
+        ];
+    }
+
+    if ($studio_terms) {
+        $tax_queries[] = [
+            [
+                'taxonomy' => 'studio_brand',
+                'field'    => 'term_id',
+                'terms'    => $studio_terms,
+            ],
+        ];
+    }
+
+    if ($ziel_terms) {
+        $tax_queries[] = [
+            [
+                'taxonomy' => 'ziel_topic',
+                'field'    => 'term_id',
+                'terms'    => $ziel_terms,
+            ],
+        ];
+    }
+
+    // Fallback: no taxonomy filter.
+    $tax_queries[] = [];
+
+    $found_ids = [];
+
+    foreach ($tax_queries as $tax_query) {
+        $query_args = [
+            'post_type'           => 'testimonial',
+            'post_status'         => 'publish',
+            'posts_per_page'      => $limit,
+            'ignore_sticky_posts' => true,
+            'orderby'             => 'rand',
+            'no_found_rows'       => true,
+            'fields'              => 'ids',
+        ];
+
+        if ($tax_query) {
+            $query_args['tax_query'] = $tax_query;
+        }
+
+        $query = new WP_Query($query_args);
+        if (! $query->have_posts()) {
+            continue;
+        }
+
+        foreach ($query->posts as $post_id) {
+            $post_id = (int) $post_id;
+
+            if (! in_array($post_id, $found_ids, true)) {
+                $found_ids[] = $post_id;
+            }
+
+            if (count($found_ids) >= $limit) {
+                break 2;
+            }
+        }
+    }
+
+    return $found_ids;
+}
+
+function fitness_skg_next_auto_testimonial_id(array $block_context = [], int $limit = 6): ?int
+{
+    static $cached_ids = [];
+
+    $terms     = fitness_skg_collect_testimonial_context_terms($block_context);
+    $post_id   = isset($block_context['postId']) ? (int) $block_context['postId'] : (int) get_the_ID();
+    $signature = md5(
+        wp_json_encode(
+            [
+                'post'   => $post_id,
+                'studio' => array_values($terms['studio']),
+                'ziel'   => array_values($terms['ziel']),
+            ]
+        )
+    );
+
+    if (! isset($cached_ids[$signature])) {
+        $cached_ids[$signature] = fitness_skg_find_related_testimonial_ids($block_context, $limit);
+    }
+
+    if (! $cached_ids[$signature]) {
+        return null;
+    }
+
+    $next = array_shift($cached_ids[$signature]);
+
+    return $next ? (int) $next : null;
+}
+
 function fitness_skg_render_review_card_block(array $attributes, string $content, $block): string
 {
     $testimonial_id = isset($attributes['testimonialId']) ? (int) $attributes['testimonialId'] : 0;
+    $block_context  = [];
+    if (is_object($block) && isset($block->context) && is_array($block->context)) {
+        $block_context = $block->context;
+    } elseif (is_array($block) && isset($block['context']) && is_array($block['context'])) {
+        $block_context = $block['context'];
+    }
+
+    if (! $testimonial_id) {
+        $testimonial_id = fitness_skg_next_auto_testimonial_id($block_context);
+    }
+
     if (! $testimonial_id) {
         $wrapper = get_block_wrapper_attributes([
             'class' => 'fitness-review-card is-empty',
@@ -824,7 +1047,7 @@ function fitness_skg_render_review_card_block(array $attributes, string $content
     $date    = get_the_date(get_option('date_format'), $post);
     $name    = get_the_title($post);
 
-    $place_id = fitness_skg_sanitize_place_id($attributes['placeId'] ?? '') ?: fitness_skg_get_current_context_place_id($block->context ?? []);
+    $place_id = fitness_skg_sanitize_place_id($attributes['placeId'] ?? '') ?: fitness_skg_get_current_context_place_id($block_context);
     $rating_data = ! empty($attributes['showStars']) ? fitness_skg_get_place_rating_data($place_id) : ['rating' => null, 'count' => null];
     $rating_html = '';
     if (! empty($attributes['showStars'])) {
@@ -866,6 +1089,10 @@ function fitness_skg_render_review_card_block(array $attributes, string $content
     $output .= '</div>';
     $output .= '</footer>';
     $output .= '</article>';
+
+    if (! is_admin()) {
+        wp_enqueue_script('fitness-skg-review-carousel');
+    }
 
     return $output;
 }
