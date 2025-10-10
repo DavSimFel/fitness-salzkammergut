@@ -48,6 +48,44 @@
 }
 
 @layer components {
+  .ziel-grid {
+    @apply tw-mx-auto tw-max-w-[1120px] tw-px-6 tw-py-8;
+  }
+
+  .ziel-grid__cards {
+    @apply tw-flex tw-flex-wrap tw-justify-center tw-gap-6;
+  }
+
+  .ziel-card {
+    @apply tw-flex tw-h-60 tw-w-full tw-max-w-[22rem] tw-flex-col tw-justify-between tw-rounded-[10px] tw-bg-white tw-p-6 tw-shadow-[0_18px_34px_-20px_rgba(12,20,28,0.35)] tw-transition tw-duration-200;
+  }
+
+  .ziel-card--focus {
+    @apply tw-bg-lime;
+  }
+
+  .ziel-card--secondary {
+    background: linear-gradient(135deg, rgba(255,225,125,0.9), rgba(255,166,87,0.85));
+  }
+
+  .ziel-card__icon {
+    @apply tw-h-12 tw-w-12;
+  }
+
+  .ziel-card__title {
+    @apply tw-m-0 tw-text-2xl tw-font-semibold tw-leading-tight tw-text-almost-black;
+  }
+
+  @screen lg {
+    .ziel-card--focus {
+      @apply tw-basis-[40%];
+    }
+
+    .ziel-card--secondary {
+      @apply tw-basis-[calc(30%-1rem)];
+    }
+  }
+
   .tw-container-gutter {
     @apply tw-mx-auto tw-max-w-[1280px] tw-px-6;
   }
